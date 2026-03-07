@@ -176,12 +176,82 @@
     border-radius: 12px;
   }
 
+  /* Floating decorative circles */
+  .decorated-header {
+    position: relative;
+  }
+  .deco-circle {
+    position: absolute; border-radius: 50%;
+    animation: deco-float 6s ease-in-out infinite;
+  }
+  .deco-circle:nth-child(1) {
+    width: 48px; height: 48px; background: #7c9070; opacity: 0.7;
+    top: -20px; left: 10%; animation-delay: 0s;
+  }
+  .deco-circle:nth-child(2) {
+    width: 32px; height: 32px; background: #5b8aaa; opacity: 0.6;
+    top: 10px; right: 12%; animation-delay: 1.2s;
+  }
+  .deco-circle:nth-child(3) {
+    width: 56px; height: 56px; background: #c4704b; opacity: 0.5;
+    top: -30px; right: 22%; animation-delay: 2.4s;
+  }
+  .deco-circle:nth-child(4) {
+    width: 24px; height: 24px; background: #8a7aaa; opacity: 0.7;
+    top: 20px; left: 22%; animation-delay: 0.8s;
+  }
+  .deco-circle:nth-child(5) {
+    width: 40px; height: 40px; background: #aa8a5a; opacity: 0.55;
+    top: -10px; left: 42%; animation-delay: 1.8s;
+  }
+  .deco-circle:nth-child(6) {
+    width: 28px; height: 28px; background: #7c9070; opacity: 0.5;
+    top: 30px; right: 35%; animation-delay: 3s;
+  }
+  @keyframes deco-float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.08); }
+  }
+
+  /* Choice card grid */
+  .choice-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .choice-card {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 24px; border: 1.5px solid #e0ddd8; border-radius: 14px;
+    background: #fff; cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  }
+  .choice-card:hover {
+    border-color: #7c9070; transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(124,144,112,0.12);
+  }
+  .choice-card-left {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .choice-card-left h4 {
+    font-size: 0.95rem; font-weight: 600; color: #1a1a2a;
+  }
+  .choice-card-left span {
+    font-size: 0.78rem; color: #7a7a8a;
+  }
+  .choice-card-right {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .choice-card-emoji { font-size: 1.6rem; }
+  .choice-card-arrow {
+    width: 18px; height: 18px; stroke: #bbb;
+    transition: stroke 0.2s, transform 0.2s;
+  }
+  .choice-card:hover .choice-card-arrow { stroke: #7c9070; transform: translateX(2px); }
+
   /* Quote / testimonial section */
   .quotes-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
   }
   .quote-card {
-    background: #f8f6f3; border-radius: 16px; padding: 32px 28px;
+    background: #fff; border-radius: 16px; padding: 32px 28px;
     display: flex; flex-direction: column; justify-content: space-between;
     min-height: 220px;
   }
@@ -237,6 +307,7 @@
     .stats-row { flex-direction: column; gap: 30px; }
     .feature-card-full { flex-direction: column; gap: 16px; }
     .scroll-card { flex: 0 0 240px; min-height: 260px; }
+    .choice-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -412,10 +483,90 @@
 
 
 <!-- ═══════════════════════════════════════════
+     CHOICE GRID — "What are you looking for?"
+     ═══════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <h2>What matters most to you?</h2>
+    <p>Every family learns differently. Boundless adapts to yours.</p>
+  </div>
+
+  <div class="choice-grid">
+    <a href="#how" class="choice-card">
+      <div class="choice-card-left">
+        <h4>Track their progress</h4>
+        <span>See exactly where they stand</span>
+      </div>
+      <div class="choice-card-right">
+        <span class="choice-card-emoji">📈</span>
+        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </a>
+    <a href="#how" class="choice-card">
+      <div class="choice-card-left">
+        <h4>Practice maths daily</h4>
+        <span>939 exercises, zero screen fatigue</span>
+      </div>
+      <div class="choice-card-right">
+        <span class="choice-card-emoji">🧮</span>
+        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </a>
+    <a href="#how" class="choice-card">
+      <div class="choice-card-left">
+        <h4>Schedule lessons</h4>
+        <span>Structure without rigidity</span>
+      </div>
+      <div class="choice-card-right">
+        <span class="choice-card-emoji">📅</span>
+        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </a>
+    <a href="#how" class="choice-card">
+      <div class="choice-card-left">
+        <h4>Connect with a tutor</h4>
+        <span>Shared visibility, aligned teaching</span>
+      </div>
+      <div class="choice-card-right">
+        <span class="choice-card-emoji">👩‍🏫</span>
+        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </a>
+    <a href="#how" class="choice-card">
+      <div class="choice-card-left">
+        <h4>Keep kids motivated</h4>
+        <span>Trophies, streaks, and rewards</span>
+      </div>
+      <div class="choice-card-right">
+        <span class="choice-card-emoji">🏆</span>
+        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </a>
+    <a href="#how" class="choice-card">
+      <div class="choice-card-left">
+        <h4>Build study aids</h4>
+        <span>Child-created cheat cards</span>
+      </div>
+      <div class="choice-card-right">
+        <span class="choice-card-emoji">🃏</span>
+        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
      WHY — Testimonials / Values
      ═══════════════════════════════════════════ -->
 <section class="section section-alt">
-  <div class="section-header">
+  <div class="section-header decorated-header">
+    <div class="deco-circle"></div>
+    <div class="deco-circle"></div>
+    <div class="deco-circle"></div>
+    <div class="deco-circle"></div>
+    <div class="deco-circle"></div>
+    <div class="deco-circle"></div>
     <h2>Built different, on purpose</h2>
   </div>
 
