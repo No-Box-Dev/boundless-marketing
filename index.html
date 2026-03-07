@@ -59,34 +59,35 @@
   .pc1-card h3 { font-size: 0.9rem; color: #1a3a5a; }
   .pc1-card p { font-size: 0.75rem; color: #5a7a9a; }
 
-  /* Plane with banner */
-  .pc1-plane-wrap {
-    position: absolute; top: 18%; left: -400px;
+  /* Hot air balloon with cloud */
+  .pc1-balloon-wrap {
+    position: absolute; left: -300px;
     z-index: 15;
-    animation: fly-across 14s linear infinite;
+    animation: float-across 18s linear infinite;
   }
-  .pc1-plane {
-    display: flex; align-items: center; white-space: nowrap;
+  .pc1-balloon-icon {
+    display: block;
+    font-size: 3.5rem;
+    text-align: center;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    margin-bottom: -8px;
   }
-  .pc1-plane-icon {
-    font-size: 2rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-  }
-  .pc1-banner {
-    display: inline-block;
-    background: rgba(255,255,255,0.88);
-    padding: 6px 20px 6px 14px;
-    border-radius: 4px 20px 20px 4px;
-    margin-left: 4px;
-    font-size: 0.85rem;
+  .pc1-cloud-text {
+    background: rgba(255,255,255,0.9);
+    padding: 14px 24px;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    text-align: center;
+    font-size: 0.8rem;
     font-weight: 500;
     color: #1a3a5a;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border-left: 3px solid rgba(124,144,112,0.5);
+    line-height: 1.5;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    max-width: 200px;
   }
-  @keyframes fly-across {
-    0%   { left: -500px; top: 52%; }
-    100% { left: 110%; top: 46%; }
+  @keyframes float-across {
+    0%   { left: -300px; top: 48%; }
+    50%  { top: 44%; }
+    100% { left: 110%; top: 48%; }
   }
 
   /* Scroll hint */
@@ -388,10 +389,14 @@
      SECTION 1 — Mountain Layers (Hero)
      ═══════════════════════════════════════════════ -->
 <section id="hero" class="pc1-hero">
-  <div class="pc1-plane-wrap">
-    <div class="pc1-plane">
-      <span class="pc1-plane-icon">✈️</span>
-      <span class="pc1-banner">Layered learning experiences for curious minds — climb higher with every lesson.</span>
+  <div class="pc1-balloon-wrap">
+    <span class="pc1-balloon-icon">🎈</span>
+    <div class="pc1-cloud-text">
+      Layered learning<br>
+      experiences for<br>
+      curious minds —<br>
+      climb higher with<br>
+      every lesson.
     </div>
   </div>
 
