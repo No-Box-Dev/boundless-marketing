@@ -116,7 +116,7 @@
     max-width: 480px; margin: 0 auto; line-height: 1.6;
   }
   .storybook-scroll {
-    display: flex; gap: 28px; overflow-x: auto;
+    display: flex; gap: 24px; overflow-x: auto;
     padding: 0 40px 20px;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -125,49 +125,33 @@
   .storybook-scroll::-webkit-scrollbar { display: none; }
 
   .chapter-card {
-    flex: 0 0 420px; scroll-snap-align: start;
-    background: #fff; border-radius: 24px; overflow: hidden;
-    display: flex; flex-direction: column;
-    min-height: 580px;
+    flex: 0 0 340px; scroll-snap-align: start;
+    border-radius: 20px; overflow: hidden;
+    position: relative; min-height: 520px;
+    background-size: cover; background-position: center;
+    cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .chapter-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.2);
   }
-  .chapter-card-img {
-    height: 260px; background-size: cover; background-position: center;
-    flex-shrink: 0;
-  }
-  .chapter-card-text {
-    padding: 28px 28px 32px; flex: 1;
-    display: flex; flex-direction: column;
+  .chapter-card-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 32px 28px;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
   }
   .chapter-card-num {
     font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 3px; margin-bottom: 10px;
+    letter-spacing: 3px; margin-bottom: 8px; color: rgba(255,255,255,0.7);
   }
-  .chapter-card-text h3 {
-    font-size: 1.35rem; font-weight: 800; line-height: 1.2;
-    margin-bottom: 10px; color: #1a1a2a;
+  .chapter-card-overlay h3 {
+    font-size: 1.4rem; font-weight: 800; line-height: 1.2;
+    margin-bottom: 6px; color: #fff;
   }
-  .chapter-card-text p {
-    font-size: 0.85rem; color: #5a5a6a; line-height: 1.6;
-    margin-bottom: 6px;
+  .chapter-card-overlay p {
+    font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.5;
   }
-  .chapter-card-text .feature-list {
-    list-style: none; margin-top: auto; padding-top: 12px;
-  }
-  .chapter-card-text .feature-list li {
-    font-size: 0.8rem; color: #3a3a4a; padding: 4px 0;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .check-icon {
-    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    background: #7c9070;
-  }
-  .check-icon svg { width: 10px; height: 10px; stroke: #fff; }
 
   /* ═══════════════════════════════════════════
      APP DEMO — Mini mockup
@@ -418,8 +402,7 @@
      ═══════════════════════════════════════════ */
   @media (max-width: 900px) {
     .hero h1 { font-size: 2.6rem; }
-    .chapter-card { flex: 0 0 300px; min-height: 480px; }
-    .chapter-card-img { height: 200px; }
+    .chapter-card { flex: 0 0 280px; min-height: 420px; }
     .storybook { padding: 60px 0; }
     .storybook-scroll { padding: 0 20px 20px; gap: 16px; }
     .demo-inner { grid-template-columns: 1fr; gap: 40px; }
@@ -467,63 +450,35 @@
   </div>
 
   <div class="storybook-scroll">
-    <!-- Chapter 1 — Mountains -->
-    <div class="chapter-card">
-      <div class="chapter-card-img" style="background-image: url('hero-bg.png');"></div>
-      <div class="chapter-card-text">
-        <div class="chapter-card-num" style="color:#7c9070;">Chapter One</div>
-        <h3>Once upon a mountaintop, two kids set out to learn</h3>
-        <p>They weren't in a classroom. They were on the road — moving between countries, cultures, and time zones. But they never stopped being curious.</p>
-        <ul class="feature-list">
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Exercises that adapt to your child's level</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>15 minutes of focused practice per day</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>No screen fatigue — short, meaningful sessions</li>
-        </ul>
+    <div class="chapter-card" style="background-image: url('hero-bg.png');">
+      <div class="chapter-card-overlay">
+        <div class="chapter-card-num">Chapter One</div>
+        <h3>Once upon a mountaintop</h3>
+        <p>Two kids set out to learn — not in a classroom, but wherever their family took them.</p>
       </div>
     </div>
 
-    <!-- Chapter 2 — Deep Dive -->
-    <div class="chapter-card">
-      <div class="chapter-card-img" style="background-image: url('dive-bg.png');"></div>
-      <div class="chapter-card-text">
-        <div class="chapter-card-num" style="color:#5b8aaa;">Chapter Two</div>
-        <h3>They dove deeper — and the learning adapted</h3>
-        <p>Every exercise is built on proven teaching methods — Montessori, Singapore Math, bar models, number lines. Real pedagogy, not AI-generated worksheets.</p>
-        <ul class="feature-list">
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>939 exercises across 5+ methodologies</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Smart difficulty — promotes when ready</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Cheat cards your child builds themselves</li>
-        </ul>
+    <div class="chapter-card" style="background-image: url('dive-bg.png');">
+      <div class="chapter-card-overlay">
+        <div class="chapter-card-num">Chapter Two</div>
+        <h3>They dove deeper</h3>
+        <p>The learning adapted. 939 exercises across proven teaching methods.</p>
       </div>
     </div>
 
-    <!-- Chapter 3 — Horizon -->
-    <div class="chapter-card">
-      <div class="chapter-card-img" style="background-image: url('horizon-bg.png');"></div>
-      <div class="chapter-card-text">
-        <div class="chapter-card-num" style="color:#c4704b;">Chapter Three</div>
-        <h3>Beyond the horizon — parents see everything</h3>
-        <p>You see exactly what your child practised, where they excelled, and what needs attention. Not just "completed" — real insight into learning.</p>
-        <ul class="feature-list">
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Parent dashboard with per-subject progress</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Tutor connection — shared visibility</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Weekly summaries and attendance tracking</li>
-        </ul>
+    <div class="chapter-card" style="background-image: url('horizon-bg.png');">
+      <div class="chapter-card-overlay">
+        <div class="chapter-card-num">Chapter Three</div>
+        <h3>Beyond the Horizon</h3>
+        <p>Parents see everything — real insight into progress, not just grades.</p>
       </div>
     </div>
 
-    <!-- Chapter 4 — Night -->
-    <div class="chapter-card">
-      <div class="chapter-card-img" style="background-image: url('night-bg.png');"></div>
-      <div class="chapter-card-text">
-        <div class="chapter-card-num" style="color:#6a5a8a;">Chapter Four</div>
-        <h3>Under the stars, they rested — and celebrated</h3>
-        <p>Progress was earned. Streaks were built. Trophies were collected. And every night, their parents could see exactly how far they'd come.</p>
-        <ul class="feature-list">
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Daily streaks and trophy rewards</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Unlockable themes and backgrounds</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Motivation that comes from within</li>
-        </ul>
+    <div class="chapter-card" style="background-image: url('night-bg.png');">
+      <div class="chapter-card-overlay">
+        <div class="chapter-card-num">Chapter Four</div>
+        <h3>Under the Stars</h3>
+        <p>They rested, celebrated, and came back ready for more.</p>
       </div>
     </div>
   </div>
