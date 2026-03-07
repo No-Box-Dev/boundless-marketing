@@ -152,7 +152,7 @@
   .scroll-section { padding: 100px 0; }
   .scroll-section .section-header { padding: 0 40px; }
   .scroll-row {
-    display: flex; gap: 20px; overflow-x: auto;
+    display: flex; gap: 24px; overflow-x: auto;
     padding: 0 40px 20px;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -160,20 +160,31 @@
   }
   .scroll-row::-webkit-scrollbar { display: none; }
   .scroll-card {
-    flex: 0 0 280px; scroll-snap-align: start;
-    border-radius: 20px; padding: 32px 28px 28px;
-    color: #fff; position: relative; overflow: hidden;
-    min-height: 320px; display: flex; flex-direction: column; justify-content: flex-end;
-    transition: transform 0.2s ease;
+    flex: 0 0 320px; scroll-snap-align: start;
+    border-radius: 20px; overflow: hidden;
+    position: relative;
+    min-height: 420px; display: flex; flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
   }
-  .scroll-card:hover { transform: translateY(-4px); }
-  .scroll-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; }
-  .scroll-card p { font-size: 0.85rem; opacity: 0.9; line-height: 1.5; }
-  .scroll-card-tag {
-    position: absolute; top: 16px; left: 16px;
-    background: rgba(255,255,255,0.9); color: #1a1a2a;
-    font-size: 0.7rem; font-weight: 700; padding: 4px 10px;
-    border-radius: 12px;
+  .scroll-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  }
+  .scroll-card-img {
+    flex: 1; background-size: cover; background-position: center;
+    min-height: 260px;
+  }
+  .scroll-card-text {
+    padding: 24px 24px 28px; text-align: center;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 100%);
+    position: absolute; bottom: 0; left: 0; right: 0;
+  }
+  .scroll-card-text h3 {
+    font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 4px;
+  }
+  .scroll-card-text p {
+    font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.5;
   }
 
   /* Floating decorative circles */
@@ -306,7 +317,7 @@
     .quotes-grid { grid-template-columns: 1fr; }
     .stats-row { flex-direction: column; gap: 30px; }
     .feature-card-full { flex-direction: column; gap: 16px; }
-    .scroll-card { flex: 0 0 240px; min-height: 260px; }
+    .scroll-card { flex: 0 0 260px; min-height: 360px; }
     .choice-grid { grid-template-columns: 1fr; }
   }
 </style>
@@ -416,17 +427,33 @@
   </div>
 
   <div class="scroll-row">
-    <div class="scroll-card" style="background: url('hero-bg.png') center / cover no-repeat;">
-      <h3>Explore the Mountains</h3>
+    <div class="scroll-card">
+      <div class="scroll-card-img" style="background-image: url('hero-bg.png');"></div>
+      <div class="scroll-card-text">
+        <h3>Explore the Mountains</h3>
+        <p>Adaptive practice that grows with your child</p>
+      </div>
     </div>
-    <div class="scroll-card" style="background: url('dive-bg.png') center / cover no-repeat;">
-      <h3>Deep Dive</h3>
+    <div class="scroll-card">
+      <div class="scroll-card-img" style="background-image: url('dive-bg.png');"></div>
+      <div class="scroll-card-text">
+        <h3>Deep Dive</h3>
+        <p>Go deeper into subjects they love</p>
+      </div>
     </div>
-    <div class="scroll-card" style="background: url('horizon-bg.png') center / cover no-repeat;">
-      <h3>Beyond the Horizon</h3>
+    <div class="scroll-card">
+      <div class="scroll-card-img" style="background-image: url('horizon-bg.png');"></div>
+      <div class="scroll-card-text">
+        <h3>Beyond the Horizon</h3>
+        <p>Track progress across every milestone</p>
+      </div>
     </div>
-    <div class="scroll-card" style="background: url('night-bg.png') center / cover no-repeat;">
-      <h3>Under the Stars</h3>
+    <div class="scroll-card">
+      <div class="scroll-card-img" style="background-image: url('night-bg.png');"></div>
+      <div class="scroll-card-text">
+        <h3>Under the Stars</h3>
+        <p>Reflect, review, and celebrate growth</p>
+      </div>
     </div>
   </div>
 </section>
