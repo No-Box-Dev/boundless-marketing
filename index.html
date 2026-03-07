@@ -99,74 +99,75 @@
   .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
   /* ═══════════════════════════════════════════
-     STORYBOOK CHAPTERS — Full-width cards
+     STORYBOOK — Horizontal scroll on olive green
      ═══════════════════════════════════════════ */
-  .chapter {
-    margin: 0 40px 40px; border-radius: 28px; overflow: hidden;
-    display: grid; grid-template-columns: 1fr 1fr;
-    min-height: 480px;
-    transition: transform 0.3s ease;
+  .storybook {
+    background: #7c9070; padding: 80px 0;
   }
-  .chapter:hover { transform: translateY(-4px); }
-  .chapter-reversed { direction: rtl; }
-  .chapter-reversed > * { direction: ltr; }
-  .chapter-img {
-    background-size: cover; background-position: center;
-    min-height: 480px; position: relative;
+  .storybook-header {
+    text-align: center; margin-bottom: 48px; padding: 0 40px;
   }
-  .chapter-text {
-    padding: 60px 56px; display: flex; flex-direction: column;
-    justify-content: center;
+  .storybook-header h2 {
+    font-size: 2.4rem; font-weight: 800; color: #fff;
+    letter-spacing: -0.5px; margin-bottom: 10px;
   }
-  .chapter-num {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 3px; margin-bottom: 12px;
+  .storybook-header p {
+    font-size: 1rem; color: rgba(255,255,255,0.75);
+    max-width: 480px; margin: 0 auto; line-height: 1.6;
   }
-  .chapter-text h2 {
-    font-size: 2.2rem; font-weight: 800; line-height: 1.15;
-    margin-bottom: 16px; letter-spacing: -0.5px;
+  .storybook-scroll {
+    display: flex; gap: 28px; overflow-x: auto;
+    padding: 0 40px 20px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
-  .chapter-text p {
-    font-size: 0.95rem; line-height: 1.7; margin-bottom: 8px;
+  .storybook-scroll::-webkit-scrollbar { display: none; }
+
+  .chapter-card {
+    flex: 0 0 420px; scroll-snap-align: start;
+    background: #fff; border-radius: 24px; overflow: hidden;
+    display: flex; flex-direction: column;
+    min-height: 580px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  .chapter-text .feature-list {
-    list-style: none; margin-top: 16px;
+  .chapter-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.15);
   }
-  .chapter-text .feature-list li {
-    font-size: 0.88rem; color: #3a3a4a; padding: 6px 0;
-    display: flex; align-items: center; gap: 10px;
+  .chapter-card-img {
+    height: 260px; background-size: cover; background-position: center;
+    flex-shrink: 0;
+  }
+  .chapter-card-text {
+    padding: 28px 28px 32px; flex: 1;
+    display: flex; flex-direction: column;
+  }
+  .chapter-card-num {
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 10px;
+  }
+  .chapter-card-text h3 {
+    font-size: 1.35rem; font-weight: 800; line-height: 1.2;
+    margin-bottom: 10px; color: #1a1a2a;
+  }
+  .chapter-card-text p {
+    font-size: 0.85rem; color: #5a5a6a; line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .chapter-card-text .feature-list {
+    list-style: none; margin-top: auto; padding-top: 12px;
+  }
+  .chapter-card-text .feature-list li {
+    font-size: 0.8rem; color: #3a3a4a; padding: 4px 0;
+    display: flex; align-items: center; gap: 8px;
   }
   .check-icon {
-    width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
+    background: #7c9070;
   }
-  .check-icon svg { width: 12px; height: 12px; }
-
-  /* Chapter color themes */
-  .ch-mountains { background: #e8f0e4; }
-  .ch-mountains .chapter-num { color: #7c9070; }
-  .ch-mountains .chapter-text p { color: #4a5a44; }
-  .ch-mountains .check-icon { background: #7c9070; }
-  .ch-mountains .check-icon svg { stroke: #fff; }
-
-  .ch-dive { background: #e0eef8; }
-  .ch-dive .chapter-num { color: #5b8aaa; }
-  .ch-dive .chapter-text p { color: #3a5a6a; }
-  .ch-dive .check-icon { background: #5b8aaa; }
-  .ch-dive .check-icon svg { stroke: #fff; }
-
-  .ch-horizon { background: #f8ece0; }
-  .ch-horizon .chapter-num { color: #c4704b; }
-  .ch-horizon .chapter-text p { color: #6a4a3a; }
-  .ch-horizon .check-icon { background: #c4704b; }
-  .ch-horizon .check-icon svg { stroke: #fff; }
-
-  .ch-night { background: #1a1a2a; color: #fff; }
-  .ch-night .chapter-num { color: #7c9070; }
-  .ch-night .chapter-text h2 { color: #e8eef4; }
-  .ch-night .chapter-text p { color: #90a0b8; }
-  .ch-night .check-icon { background: #7c9070; }
-  .ch-night .check-icon svg { stroke: #fff; }
+  .check-icon svg { width: 10px; height: 10px; stroke: #fff; }
 
   /* ═══════════════════════════════════════════
      APP DEMO — Mini mockup
@@ -383,42 +384,33 @@
   .value-card p { font-size: 0.78rem; color: #5a5a6a; line-height: 1.5; }
 
   /* ═══════════════════════════════════════════
-     FOOTER — Night
+     FOOTER — Full-width night sky
      ═══════════════════════════════════════════ */
-  .footer-chapter {
-    margin: 40px 40px 0; border-radius: 28px 28px 0 0; overflow: hidden;
-    display: grid; grid-template-columns: 1fr 1fr;
-    min-height: 480px; background: #1a1a2a;
+  .footer-night {
+    position: relative; overflow: hidden;
+    background: url('night-bg.png') center bottom / cover no-repeat;
+    background-color: #0a0a1a;
+    width: 100%; min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 80px 40px 120px;
   }
-  .footer-chapter-img {
-    background: url('night-bg.png') center / cover no-repeat;
-    min-height: 480px;
+  .footer-night h2 {
+    font-size: 2.8rem; color: #e8eef4; font-weight: 800;
+    margin-bottom: 16px; letter-spacing: -0.5px; line-height: 1.15;
   }
-  .footer-chapter-text {
-    padding: 60px 56px; display: flex; flex-direction: column;
-    justify-content: center;
-  }
-  .footer-chapter-text .chapter-num {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 3px; margin-bottom: 12px; color: #7c9070;
-  }
-  .footer-chapter-text h2 {
-    font-size: 2.2rem; font-weight: 800; color: #e8eef4;
-    line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.5px;
-  }
-  .footer-chapter-text p {
-    font-size: 0.95rem; color: #90a0b8; line-height: 1.7;
-    margin-bottom: 24px;
+  .footer-night p {
+    font-size: 1.05rem; color: #90a8c0; max-width: 480px;
+    margin: 0 auto 32px; line-height: 1.65;
   }
   .footer-bottom {
-    background: #1a1a2a; padding: 40px;
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px 40px;
     display: flex; justify-content: space-between; align-items: center;
   }
-  .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.25); }
-  .footer-bottom a { color: rgba(255,255,255,0.35); text-decoration: none; }
-  .footer-bottom a:hover { color: rgba(255,255,255,0.5); }
+  .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.2); }
   .footer-links { display: flex; gap: 20px; }
-  .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.35); text-decoration: none; }
+  .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.3); text-decoration: none; }
   .footer-links a:hover { color: rgba(255,255,255,0.5); }
 
   /* ═══════════════════════════════════════════
@@ -426,16 +418,15 @@
      ═══════════════════════════════════════════ */
   @media (max-width: 900px) {
     .hero h1 { font-size: 2.6rem; }
-    .chapter { grid-template-columns: 1fr; margin: 0 20px 24px; }
-    .chapter-reversed { direction: ltr; }
-    .chapter-img { min-height: 280px; }
-    .chapter-text { padding: 36px 28px; }
-    .chapter-text h2 { font-size: 1.7rem; }
+    .chapter-card { flex: 0 0 300px; min-height: 480px; }
+    .chapter-card-img { height: 200px; }
+    .storybook { padding: 60px 0; }
+    .storybook-scroll { padding: 0 20px 20px; gap: 16px; }
     .demo-inner { grid-template-columns: 1fr; gap: 40px; }
     .benefits-grid { grid-template-columns: 1fr; }
     .values-inner { grid-template-columns: 1fr; }
-    .footer-chapter { grid-template-columns: 1fr; margin: 24px 20px 0; }
-    .footer-chapter-img { min-height: 280px; }
+    .footer-night h2 { font-size: 2rem; }
+    .footer-night { min-height: 70vh; }
     .stats-row { flex-direction: column; gap: 24px; }
     .nav-links a:not(.nav-cta) { display: none; }
   }
@@ -468,83 +459,74 @@
 </section>
 
 
-<!-- ═══ CHAPTER 1 — Mountains ═══ -->
-<section id="story">
-<div class="chapter ch-mountains">
-  <div class="chapter-img" style="background-image: url('hero-bg.png');"></div>
-  <div class="chapter-text">
-    <div class="chapter-num">Chapter One</div>
-    <h2>Once upon a mountaintop, two kids set out to learn</h2>
-    <p>They weren't in a classroom. They were on the road — moving between countries, cultures, and time zones. But they never stopped being curious.</p>
-    <p>Their parents needed something that could travel with them. Not a textbook. Not a video app. Something that understood where each child was, and met them there.</p>
-    <ul class="feature-list">
-      <li>
-        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-        Exercises that adapt to your child's level
-      </li>
-      <li>
-        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-        15 minutes of focused practice per day
-      </li>
-      <li>
-        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-        No screen fatigue — short, meaningful sessions
-      </li>
-    </ul>
+<!-- ═══ STORYBOOK — Horizontal scroll ═══ -->
+<section id="story" class="storybook">
+  <div class="storybook-header">
+    <h2>The Boundless story</h2>
+    <p>Scroll through the chapters that built this platform — from a family's need to a tool that grows with every child.</p>
   </div>
-</div>
 
+  <div class="storybook-scroll">
+    <!-- Chapter 1 — Mountains -->
+    <div class="chapter-card">
+      <div class="chapter-card-img" style="background-image: url('hero-bg.png');"></div>
+      <div class="chapter-card-text">
+        <div class="chapter-card-num" style="color:#7c9070;">Chapter One</div>
+        <h3>Once upon a mountaintop, two kids set out to learn</h3>
+        <p>They weren't in a classroom. They were on the road — moving between countries, cultures, and time zones. But they never stopped being curious.</p>
+        <ul class="feature-list">
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Exercises that adapt to your child's level</li>
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>15 minutes of focused practice per day</li>
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>No screen fatigue — short, meaningful sessions</li>
+        </ul>
+      </div>
+    </div>
 
-<!-- ═══ CHAPTER 2 — Deep Dive ═══ -->
-<div class="chapter ch-dive chapter-reversed">
-  <div class="chapter-img" style="background-image: url('dive-bg.png');"></div>
-  <div class="chapter-text">
-    <div class="chapter-num">Chapter Two</div>
-    <h2>They dove deeper — and the learning adapted</h2>
-    <p>Every exercise is built on proven teaching methods — Montessori, Singapore Math, bar models, number lines. Not generated by AI. Real pedagogy, designed by educators.</p>
-    <p>When things got easy, the challenge grew. When they struggled, support appeared — like a friend, not a teacher standing over them.</p>
-    <ul class="feature-list">
-      <li>
-        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-        939 exercises across 5+ methodologies
-      </li>
-      <li>
-        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-        Smart difficulty — promotes when ready, supports when stuck
-      </li>
-      <li>
-        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-        Cheat cards — study aids your child builds themselves
-      </li>
-    </ul>
+    <!-- Chapter 2 — Deep Dive -->
+    <div class="chapter-card">
+      <div class="chapter-card-img" style="background-image: url('dive-bg.png');"></div>
+      <div class="chapter-card-text">
+        <div class="chapter-card-num" style="color:#5b8aaa;">Chapter Two</div>
+        <h3>They dove deeper — and the learning adapted</h3>
+        <p>Every exercise is built on proven teaching methods — Montessori, Singapore Math, bar models, number lines. Real pedagogy, not AI-generated worksheets.</p>
+        <ul class="feature-list">
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>939 exercises across 5+ methodologies</li>
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Smart difficulty — promotes when ready</li>
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Cheat cards your child builds themselves</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Chapter 3 — Horizon -->
+    <div class="chapter-card">
+      <div class="chapter-card-img" style="background-image: url('horizon-bg.png');"></div>
+      <div class="chapter-card-text">
+        <div class="chapter-card-num" style="color:#c4704b;">Chapter Three</div>
+        <h3>Beyond the horizon — parents see everything</h3>
+        <p>You see exactly what your child practised, where they excelled, and what needs attention. Not just "completed" — real insight into learning.</p>
+        <ul class="feature-list">
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Parent dashboard with per-subject progress</li>
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Tutor connection — shared visibility</li>
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Weekly summaries and attendance tracking</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Chapter 4 — Night -->
+    <div class="chapter-card">
+      <div class="chapter-card-img" style="background-image: url('night-bg.png');"></div>
+      <div class="chapter-card-text">
+        <div class="chapter-card-num" style="color:#6a5a8a;">Chapter Four</div>
+        <h3>Under the stars, they rested — and celebrated</h3>
+        <p>Progress was earned. Streaks were built. Trophies were collected. And every night, their parents could see exactly how far they'd come.</p>
+        <ul class="feature-list">
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Daily streaks and trophy rewards</li>
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Unlockable themes and backgrounds</li>
+          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Motivation that comes from within</li>
+        </ul>
+      </div>
+    </div>
   </div>
-</div>
-
-
-<!-- ═══ CHAPTER 3 — Horizon ═══ -->
-<div class="chapter ch-horizon">
-  <div class="chapter-img" style="background-image: url('horizon-bg.png');"></div>
-  <div class="chapter-text">
-    <div class="chapter-num">Chapter Three</div>
-    <h2>Beyond the horizon — parents see everything</h2>
-    <p>This isn't a black box. You see exactly what your child practised, where they excelled, and what needs attention. Not just "completed" or "incomplete" — real insight.</p>
-    <p>Invite a tutor who sees the same data you do. Set homework profiles per child, per subject. Control difficulty, methodology, and pace.</p>
-    <ul class="feature-list">
-      <li>
-        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-        Parent dashboard with per-subject progress
-      </li>
-      <li>
-        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-        Tutor connection — shared visibility, aligned teaching
-      </li>
-      <li>
-        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-        Weekly summaries and attendance tracking
-      </li>
-    </ul>
-  </div>
-</div>
 </section>
 
 
@@ -765,27 +747,21 @@
 </section>
 
 
-<!-- ═══ FOOTER — Night chapter ═══ -->
-<div class="footer-chapter">
-  <div class="footer-chapter-img"></div>
-  <div class="footer-chapter-text">
-    <div class="chapter-num">The Next Chapter</div>
-    <h2>Ready to start your<br>child's journey?</h2>
-    <p>Begin with a short intake survey. Then we'll personally design a learning program around your child's strengths, gaps, and curiosity.</p>
-    <div style="display:flex; gap:12px; flex-wrap:wrap;">
-      <a href="#" class="btn-white">Start Intake Survey</a>
+<!-- ═══ FOOTER — Full-width night sky ═══ -->
+<section class="footer-night">
+  <h2>Ready to start your<br>next chapter?</h2>
+  <p>Begin with a short intake survey. Then we'll personally design a learning program around your child's strengths, gaps, and curiosity.</p>
+  <a href="#" class="btn-white" style="font-size: 1.05rem; padding: 16px 40px;">Start Intake Survey</a>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 Boundless Learning &middot; NoBoxDev</p>
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy</a>
     </div>
   </div>
-</div>
-
-<div class="footer-bottom">
-  <p>&copy; 2026 Boundless Learning &middot; NoBoxDev</p>
-  <div class="footer-links">
-    <a href="#">About</a>
-    <a href="#">Contact</a>
-    <a href="#">Privacy</a>
-  </div>
-</div>
+</section>
 
 
 <!-- ═══ NAV SCROLL EFFECT ═══ -->
