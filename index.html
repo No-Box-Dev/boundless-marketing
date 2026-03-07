@@ -57,16 +57,19 @@
   /* Twinkling stars in the bottom portion */
   .stars {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 1;
+    pointer-events: none; z-index: 5;
     opacity: 0;
     transition: opacity 0.3s;
   }
   .star {
     position: absolute; width: 2px; height: 2px;
     background: #fff; border-radius: 50%;
+    box-shadow: 0 0 3px 1px rgba(255,255,255,0.4);
     animation: twinkle 3s ease-in-out infinite;
   }
-  .star.big { width: 3px; height: 3px; }
+  .star.big { width: 3px; height: 3px; box-shadow: 0 0 5px 2px rgba(255,255,255,0.6); }
+  .star.warm { background: #ffe8a0; box-shadow: 0 0 4px 1px rgba(255,220,120,0.5); }
+  .star.warm.big { box-shadow: 0 0 6px 2px rgba(255,220,120,0.6); }
   /* Meteor / shooting star */
   .meteor {
     position: absolute; pointer-events: none;
@@ -91,6 +94,27 @@
   @keyframes twinkle {
     0%, 100% { opacity: 0.3; }
     50% { opacity: 1; }
+  }
+  /* Mystery flying silhouette */
+  .flyer {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    animation: flyAcross 12s linear forwards;
+  }
+  .flyer svg { width: 100%; height: auto; }
+  .flyer .cabin-light {
+    animation: cabinBlink 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes flyAcross {
+    0% { opacity: 0; transform: translateX(-80px); }
+    5% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(calc(100vw + 80px)); }
+  }
+  @keyframes cabinBlink {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
   }
   html { scroll-behavior: smooth; }
 
@@ -168,7 +192,8 @@
      HERO
      ═══════════════════════════════════════════ */
   .hero {
-    padding: 140px 40px 80px; text-align: center;
+    min-height: 100vh; padding: 160px 40px 120px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     background: transparent;
   }
   .hero-tagline {
@@ -538,11 +563,22 @@
      ═══════════════════════════════════════════ */
   .footer-night {
     position: relative; overflow: hidden;
-    background: url('night-mountains.png') center bottom / 100% auto no-repeat;
+    background: transparent;
     width: 100%; min-height: 100vh;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center; padding: 80px 40px 120px;
+  }
+  /* Mountains layer — in front of everything */
+  .footer-night::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 100%; z-index: 20;
+    background: url('night-mountains.png') center bottom / 100% auto no-repeat;
+    pointer-events: none;
+  }
+  /* Text sits between mountains and stars */
+  .footer-night h2, .footer-night p, .footer-night .footer-actions {
+    position: relative; z-index: 15;
   }
   .footer-night h2 {
     font-size: 2.8rem; color: #e8eef4; font-weight: 800;
@@ -553,7 +589,7 @@
     margin: 0 auto 32px; line-height: 1.65;
   }
   .footer-bottom {
-    position: absolute; bottom: 0; left: 0; right: 0;
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 21;
     padding: 24px 40px;
     display: flex; justify-content: space-between; align-items: center;
   }
@@ -1017,11 +1053,15 @@
 
   // Generate stars
   const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 140; i++) {
     const star = document.createElement('div');
-    star.className = 'star' + (Math.random() > 0.85 ? ' big' : '');
+    const r = Math.random();
+    let cls = 'star';
+    if (r > 0.88) cls += ' big';
+    if (Math.random() > 0.65) cls += ' warm';
+    star.className = cls;
     star.style.left = Math.random() * 100 + '%';
-    star.style.top = (40 + Math.random() * 60) + '%';
+    star.style.top = (35 + Math.random() * 65) + '%';
     star.style.animationDelay = (Math.random() * 4).toFixed(1) + 's';
     star.style.animationDuration = (2 + Math.random() * 3).toFixed(1) + 's';
     starsEl.appendChild(star);
@@ -1119,6 +1159,56 @@
     }, delay);
   }
   scheduleMeteor();
+
+  // Mystery flying silhouette — dark shape with cabin lights
+  const flyerShapes = [
+    // Shape 1: could be a plane... or something else
+    `<svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 22 C8 18 15 14 30 13 L50 12 C55 8 60 5 68 4 L75 4 C78 4 80 6 78 9 L72 12 L95 11 C100 8 105 6 110 7 C115 8 118 12 115 15 L105 16 L112 18 C114 19 114 22 112 23 L100 24 L72 24 L78 28 C80 30 78 33 75 33 L68 33 C60 32 55 29 50 25 L30 24 C15 23 8 26 5 22 Z" fill="rgba(15,15,30,0.85)"/>
+      <circle cx="62" cy="14" r="1.5" fill="#ffd" class="cabin-light"/>
+      <circle cx="68" cy="14" r="1.5" fill="#ffd" class="cabin-light" style="animation-delay:0.2s"/>
+      <circle cx="74" cy="13" r="1.5" fill="#ffd" class="cabin-light" style="animation-delay:0.4s"/>
+      <circle cx="56" cy="15" r="1.2" fill="#ffd" class="cabin-light" style="animation-delay:0.3s"/>
+      <circle cx="50" cy="16" r="1.2" fill="#ffd" class="cabin-light" style="animation-delay:0.5s"/>
+      <circle cx="80" cy="13" r="1" fill="#f44" opacity="0.9"/>
+    </svg>`,
+    // Shape 2: rounder, more mysterious — is it a blimp? a UFO?
+    `<svg viewBox="0 0 100 45" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="18" rx="40" ry="14" fill="rgba(15,15,30,0.85)"/>
+      <path d="M30 30 C35 35 45 38 50 38 C55 38 65 35 70 30 L68 30 C63 33 55 35 50 35 C45 35 37 33 32 30 Z" fill="rgba(15,15,30,0.7)"/>
+      <circle cx="35" cy="18" r="1.5" fill="#aef" class="cabin-light"/>
+      <circle cx="42" cy="17" r="1.5" fill="#aef" class="cabin-light" style="animation-delay:0.15s"/>
+      <circle cx="50" cy="17" r="1.8" fill="#aef" class="cabin-light" style="animation-delay:0.3s"/>
+      <circle cx="58" cy="17" r="1.5" fill="#aef" class="cabin-light" style="animation-delay:0.45s"/>
+      <circle cx="65" cy="18" r="1.5" fill="#aef" class="cabin-light" style="animation-delay:0.6s"/>
+      <circle cx="50" cy="32" r="2" fill="#ffa" class="cabin-light" style="animation-delay:0.1s"/>
+      <circle cx="10" cy="17" r="1" fill="#f44" opacity="0.8"/>
+      <circle cx="90" cy="17" r="1" fill="#0f0" opacity="0.8"/>
+    </svg>`
+  ];
+
+  function spawnFlyer() {
+    const scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    if (scrollPct < 0.45) return; // only in twilight/night
+    const flyer = document.createElement('div');
+    flyer.className = 'flyer';
+    const size = 40 + Math.random() * 30; // small so it's far away & mysterious
+    flyer.style.width = size + 'px';
+    flyer.style.top = (5 + Math.random() * 25) + '%';
+    flyer.style.left = '-80px';
+    flyer.innerHTML = flyerShapes[Math.floor(Math.random() * flyerShapes.length)];
+    starsEl.appendChild(flyer);
+    setTimeout(() => flyer.remove(), 13000);
+  }
+  function scheduleFlyer() {
+    const delay = 25000 + Math.random() * 35000; // every 25-60 seconds
+    setTimeout(() => {
+      spawnFlyer();
+      scheduleFlyer();
+    }, delay);
+  }
+  // First flyer after 10 seconds
+  setTimeout(() => { spawnFlyer(); scheduleFlyer(); }, 10000);
 </script>
 
 </body>
