@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boundless Learning</title>
+<title>Boundless Learning — What if school could travel with you?</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Baloo 2', sans-serif; color: #1a1a2a; overflow-x: hidden; background: #fff; }
+  body { font-family: 'Baloo 2', sans-serif; color: #1a1a2a; background: #fff; overflow-x: hidden; }
   html { scroll-behavior: smooth; }
 
   /* ── Buttons ── */
   .btn {
     display: inline-block; padding: 14px 32px; border-radius: 28px;
     background: #7c9070; color: #fff; font-weight: 600; font-size: 0.95rem;
-    text-decoration: none; border: none; cursor: pointer;
-    font-family: inherit;
+    text-decoration: none; border: none; cursor: pointer; font-family: inherit;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 2px 8px rgba(124,144,112,0.3);
   }
@@ -23,380 +22,533 @@
   .btn-outline {
     display: inline-block; padding: 12px 28px; border-radius: 28px;
     background: transparent; color: #1a1a2a; font-weight: 600; font-size: 0.9rem;
-    text-decoration: none; border: 2px solid #ddd; cursor: pointer;
-    font-family: inherit;
+    text-decoration: none; border: 2px solid #ddd; cursor: pointer; font-family: inherit;
     transition: border-color 0.2s, background 0.2s;
   }
   .btn-outline:hover { border-color: #7c9070; background: rgba(124,144,112,0.06); }
+  .btn-dark {
+    display: inline-block; padding: 14px 32px; border-radius: 28px;
+    background: #1a1a2a; color: #fff; font-weight: 600; font-size: 0.95rem;
+    text-decoration: none; border: none; cursor: pointer; font-family: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .btn-dark:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(0,0,0,0.3); }
+  .btn-white {
+    display: inline-block; padding: 14px 32px; border-radius: 28px;
+    background: #fff; color: #1a1a2a; font-weight: 600; font-size: 0.95rem;
+    text-decoration: none; border: none; cursor: pointer; font-family: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(0,0,0,0.2); }
+
+  /* CSS icons */
+  .icon {
+    width: 44px; height: 44px; border-radius: 12px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .icon svg { width: 22px; height: 22px; }
 
   /* ═══════════════════════════════════════════
-     HERO — Mountains
+     NAV
+     ═══════════════════════════════════════════ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+  .nav-logo {
+    font-size: 1.2rem; font-weight: 800; color: #1a1a2a;
+    text-decoration: none; letter-spacing: -0.5px;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 0.85rem; font-weight: 600; color: #5a5a6a;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #1a1a2a; }
+  .nav-cta {
+    padding: 8px 20px !important; font-size: 0.82rem !important;
+    border-radius: 20px !important;
+  }
+
+  /* ═══════════════════════════════════════════
+     HERO
      ═══════════════════════════════════════════ */
   .hero {
-    position: relative; overflow: hidden;
-    background: url('hero-bg.png') center top / 100% auto no-repeat;
-    background-color: #c0daf0;
-    width: 100%; min-height: 100vh;
+    padding: 140px 40px 80px; text-align: center;
+    background: linear-gradient(to bottom, #fff 0%, #f0f4f0 100%);
   }
-  .hero-content {
-    position: relative; z-index: 10;
-    padding: 100px 40px 40px; text-align: center;
+  .hero-tagline {
+    font-size: 0.8rem; font-weight: 700; color: #7c9070;
+    text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px;
   }
-  .hero-content h1 {
-    font-size: 3.4rem; color: #1a3a5a; margin-bottom: 16px;
-    font-weight: 800; letter-spacing: -1px; line-height: 1.15;
+  .hero h1 {
+    font-size: 3.6rem; font-weight: 800; color: #1a1a2a;
+    line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px;
+    max-width: 720px; margin-left: auto; margin-right: auto;
   }
-  .hero-content p {
-    font-size: 1.1rem; color: #3a5a7a; max-width: 520px;
-    margin: 0 auto 28px; line-height: 1.65;
+  .hero p {
+    font-size: 1.1rem; color: #5a5a6a; max-width: 560px;
+    margin: 0 auto 32px; line-height: 1.65;
   }
   .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
-  /* Balloon */
-  .balloon-wrap {
-    position: absolute; z-index: 15;
-    animation: balloon-drift 14s ease-in-out infinite;
-  }
-  .balloon-img { width: 380px; height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1)); }
-  .balloon-text {
-    position: absolute; top: 12%; left: 50%; transform: translateX(-50%);
-    text-align: center; font-size: 1.2rem; font-weight: 600;
-    color: #3a2a4a; line-height: 1.45; width: 220px; pointer-events: none;
-  }
-  @keyframes balloon-drift {
-    0%   { left: -15%; top: 55%; }
-    10%  { left: 8%;   top: 42%; }
-    20%  { left: 22%;  top: 48%; }
-    30%  { left: 38%;  top: 32%; }
-    40%  { left: 52%;  top: 40%; }
-    48%  { left: 65%;  top: 20%; }
-    55%  { left: 75%;  top: -5%; }
-    62%  { left: 80%;  top: -75%; }
-    70%  { left: 60%;  top: -75%; }
-    78%  { left: 30%;  top: -75%; }
-    85%  { left: -15%; top: -75%; }
-    92%  { left: -15%; top: 40%; }
-    100% { left: -15%; top: 55%; }
-  }
-
-  /* Scroll hint */
-  .scroll-hint {
-    position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-    z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 4px;
-    color: #fff; opacity: 0.7; text-decoration: none;
-    animation: pulse-down 2s ease-in-out infinite;
-  }
-  .scroll-hint span { font-size: 0.75rem; }
-  .scroll-hint svg { stroke: currentColor; }
-  @keyframes pulse-down { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
-
   /* ═══════════════════════════════════════════
-     MIDDLE SECTIONS — Clean white
+     STORYBOOK CHAPTERS — Full-width cards
      ═══════════════════════════════════════════ */
-  .section {
-    padding: 100px 40px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .section-alt {
-    background: #f8f6f3;
-  }
-  .section-header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
-  .section-header h2 {
-    font-size: 2.6rem; font-weight: 700; letter-spacing: -0.5px;
-    color: #1a1a2a; margin-bottom: 16px; line-height: 1.2;
-  }
-  .section-header p {
-    font-size: 1.05rem; color: #5a5a6a; max-width: 540px;
-    margin: 0 auto; line-height: 1.65;
-  }
-
-  /* Big feature cards — 2 column */
-  .features-grid {
+  .chapter {
+    margin: 0 40px 40px; border-radius: 28px; overflow: hidden;
     display: grid; grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    min-height: 480px;
+    transition: transform 0.3s ease;
   }
-  .feature-card {
-    background: #f8f6f3; border-radius: 20px; padding: 40px 36px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  .chapter:hover { transform: translateY(-4px); }
+  .chapter-reversed { direction: rtl; }
+  .chapter-reversed > * { direction: ltr; }
+  .chapter-img {
+    background-size: cover; background-position: center;
+    min-height: 480px; position: relative;
   }
-  .section-alt .feature-card { background: #fff; }
-  .feature-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  .chapter-text {
+    padding: 60px 56px; display: flex; flex-direction: column;
+    justify-content: center;
   }
-  .feature-card-icon { font-size: 2.2rem; margin-bottom: 16px; }
-  .feature-card h3 { font-size: 1.3rem; font-weight: 700; color: #1a1a2a; margin-bottom: 8px; }
-  .feature-card p { font-size: 0.92rem; color: #5a5a6a; line-height: 1.6; }
-
-  /* Full-width feature card */
-  .feature-card-full {
-    grid-column: 1 / -1;
-    display: flex; align-items: center; gap: 40px;
-    background: #f8f6f3; border-radius: 20px; padding: 40px 36px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  .chapter-num {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 12px;
   }
-  .section-alt .feature-card-full { background: #fff; }
-  .feature-card-full:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  .chapter-text h2 {
+    font-size: 2.2rem; font-weight: 800; line-height: 1.15;
+    margin-bottom: 16px; letter-spacing: -0.5px;
   }
-  .feature-card-full .feature-card-icon { font-size: 3rem; margin-bottom: 0; flex-shrink: 0; }
-  .feature-card-full h3 { font-size: 1.3rem; font-weight: 700; color: #1a1a2a; margin-bottom: 6px; }
-  .feature-card-full p { font-size: 0.92rem; color: #5a5a6a; line-height: 1.6; }
-
-  /* Horizontal scroll cards */
-  .scroll-section { padding: 100px 0; }
-  .scroll-section .section-header { padding: 0 40px; }
-  .scroll-row {
-    display: flex; gap: 24px; overflow-x: auto;
-    padding: 0 40px 20px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+  .chapter-text p {
+    font-size: 0.95rem; line-height: 1.7; margin-bottom: 8px;
   }
-  .scroll-row::-webkit-scrollbar { display: none; }
-  .scroll-card {
-    flex: 0 0 320px; scroll-snap-align: start;
-    border-radius: 20px; overflow: hidden;
-    position: relative;
-    min-height: 420px; display: flex; flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
+  .chapter-text .feature-list {
+    list-style: none; margin-top: 16px;
   }
-  .scroll-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-  }
-  .scroll-card-img {
-    flex: 1; background-size: cover; background-position: center;
-    min-height: 260px;
-  }
-  .scroll-card-text {
-    padding: 24px 24px 28px; text-align: center;
-    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 100%);
-    position: absolute; bottom: 0; left: 0; right: 0;
-  }
-  .scroll-card-text h3 {
-    font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 4px;
-  }
-  .scroll-card-text p {
-    font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.5;
-  }
-
-  /* Floating decorative circles */
-  .decorated-header {
-    position: relative;
-  }
-  .deco-circle {
-    position: absolute; border-radius: 50%;
-    animation: deco-float 6s ease-in-out infinite;
-  }
-  .deco-circle:nth-child(1) {
-    width: 48px; height: 48px; background: #7c9070; opacity: 0.7;
-    top: -20px; left: 10%; animation-delay: 0s;
-  }
-  .deco-circle:nth-child(2) {
-    width: 32px; height: 32px; background: #5b8aaa; opacity: 0.6;
-    top: 10px; right: 12%; animation-delay: 1.2s;
-  }
-  .deco-circle:nth-child(3) {
-    width: 56px; height: 56px; background: #c4704b; opacity: 0.5;
-    top: -30px; right: 22%; animation-delay: 2.4s;
-  }
-  .deco-circle:nth-child(4) {
-    width: 24px; height: 24px; background: #8a7aaa; opacity: 0.7;
-    top: 20px; left: 22%; animation-delay: 0.8s;
-  }
-  .deco-circle:nth-child(5) {
-    width: 40px; height: 40px; background: #aa8a5a; opacity: 0.55;
-    top: -10px; left: 42%; animation-delay: 1.8s;
-  }
-  .deco-circle:nth-child(6) {
-    width: 28px; height: 28px; background: #7c9070; opacity: 0.5;
-    top: 30px; right: 35%; animation-delay: 3s;
-  }
-  @keyframes deco-float {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-8px) scale(1.08); }
-  }
-
-  /* Choice card grid */
-  .choice-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-  }
-  .choice-card {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 22px 24px; border: 1.5px solid #e0ddd8; border-radius: 14px;
-    background: #fff; cursor: pointer;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
-  }
-  .choice-card:hover {
-    border-color: #7c9070; transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(124,144,112,0.12);
-  }
-  .choice-card-left {
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .choice-card-left h4 {
-    font-size: 0.95rem; font-weight: 600; color: #1a1a2a;
-  }
-  .choice-card-left span {
-    font-size: 0.78rem; color: #7a7a8a;
-  }
-  .choice-card-right {
+  .chapter-text .feature-list li {
+    font-size: 0.88rem; color: #3a3a4a; padding: 6px 0;
     display: flex; align-items: center; gap: 10px;
   }
-  .choice-card-emoji { font-size: 1.6rem; }
-  .choice-card-arrow {
-    width: 18px; height: 18px; stroke: #bbb;
-    transition: stroke 0.2s, transform 0.2s;
+  .check-icon {
+    width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
   }
-  .choice-card:hover .choice-card-arrow { stroke: #7c9070; transform: translateX(2px); }
+  .check-icon svg { width: 12px; height: 12px; }
 
-  /* Quote / testimonial section */
-  .quotes-grid {
+  /* Chapter color themes */
+  .ch-mountains { background: #e8f0e4; }
+  .ch-mountains .chapter-num { color: #7c9070; }
+  .ch-mountains .chapter-text p { color: #4a5a44; }
+  .ch-mountains .check-icon { background: #7c9070; }
+  .ch-mountains .check-icon svg { stroke: #fff; }
+
+  .ch-dive { background: #e0eef8; }
+  .ch-dive .chapter-num { color: #5b8aaa; }
+  .ch-dive .chapter-text p { color: #3a5a6a; }
+  .ch-dive .check-icon { background: #5b8aaa; }
+  .ch-dive .check-icon svg { stroke: #fff; }
+
+  .ch-horizon { background: #f8ece0; }
+  .ch-horizon .chapter-num { color: #c4704b; }
+  .ch-horizon .chapter-text p { color: #6a4a3a; }
+  .ch-horizon .check-icon { background: #c4704b; }
+  .ch-horizon .check-icon svg { stroke: #fff; }
+
+  .ch-night { background: #1a1a2a; color: #fff; }
+  .ch-night .chapter-num { color: #7c9070; }
+  .ch-night .chapter-text h2 { color: #e8eef4; }
+  .ch-night .chapter-text p { color: #90a0b8; }
+  .ch-night .check-icon { background: #7c9070; }
+  .ch-night .check-icon svg { stroke: #fff; }
+
+  /* ═══════════════════════════════════════════
+     APP DEMO — Mini mockup
+     ═══════════════════════════════════════════ */
+  .demo-section {
+    padding: 100px 40px;
+    background: #f8f6f3;
+  }
+  .demo-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center;
+  }
+  .demo-text h2 {
+    font-size: 2.4rem; font-weight: 800; margin-bottom: 16px;
+    line-height: 1.15; letter-spacing: -0.5px;
+  }
+  .demo-text p {
+    font-size: 0.95rem; color: #5a5a6a; line-height: 1.7; margin-bottom: 24px;
+  }
+
+  /* Mockup browser frame */
+  .mockup-browser {
+    background: #fff; border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+  .mockup-bar {
+    height: 36px; background: #f0ede8;
+    display: flex; align-items: center; padding: 0 14px; gap: 7px;
+  }
+  .mockup-dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; }
+  .mockup-dot:first-child { background: #f87171; }
+  .mockup-dot:nth-child(2) { background: #fbbf24; }
+  .mockup-dot:nth-child(3) { background: #34d399; }
+  .mockup-url {
+    flex: 1; margin-left: 12px; height: 22px; background: #e8e5e0;
+    border-radius: 6px; display: flex; align-items: center;
+    padding: 0 10px; font-size: 0.65rem; color: #8a8a8a;
+  }
+  .mockup-body { padding: 20px; }
+
+  /* Child dashboard mockup */
+  .mock-greeting {
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; color: #1a1a2a;
+  }
+  .mock-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    margin-bottom: 16px;
+  }
+  .mock-stat {
+    background: #f8f6f3; border-radius: 10px; padding: 12px; text-align: center;
+  }
+  .mock-stat-num { font-size: 1.4rem; font-weight: 800; }
+  .mock-stat-label { font-size: 0.6rem; color: #7a7a8a; }
+  .mock-subjects {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .mock-subject {
+    border-radius: 10px; padding: 14px; position: relative;
+  }
+  .mock-subject h4 { font-size: 0.75rem; font-weight: 700; margin-bottom: 4px; }
+  .mock-subject p { font-size: 0.6rem; color: #5a5a6a; }
+  .mock-progress {
+    height: 4px; background: rgba(0,0,0,0.08); border-radius: 2px;
+    margin-top: 8px; overflow: hidden;
+  }
+  .mock-progress-fill { height: 100%; border-radius: 2px; }
+
+  /* Exercise mockup */
+  .mock-exercise {
+    background: #fff; border-radius: 12px; padding: 16px;
+    border: 1px solid #eee; margin-top: 12px;
+  }
+  .mock-q {
+    font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; color: #1a1a2a;
+  }
+  .mock-options { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mock-opt {
+    padding: 6px 14px; border-radius: 8px; font-size: 0.7rem;
+    font-weight: 600; border: 1.5px solid #e0ddd8; color: #5a5a6a;
+  }
+  .mock-opt.correct {
+    border-color: #7c9070; background: #e8f0e4; color: #4a6a40;
+  }
+
+  /* ═══════════════════════════════════════════
+     BENEFITS
+     ═══════════════════════════════════════════ */
+  .benefits {
+    padding: 100px 40px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .benefits-header {
+    text-align: center; margin-bottom: 60px;
+  }
+  .benefits-header h2 {
+    font-size: 2.4rem; font-weight: 800; letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+  .benefits-header p {
+    font-size: 1rem; color: #5a5a6a; max-width: 520px;
+    margin: 0 auto; line-height: 1.65;
+  }
+  .benefits-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
   }
-  .quote-card {
-    background: #fff; border-radius: 16px; padding: 32px 28px;
-    display: flex; flex-direction: column; justify-content: space-between;
-    min-height: 220px;
+  .benefit-card {
+    background: #f8f6f3; border-radius: 20px; padding: 36px 28px;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-  .quote-card blockquote {
-    font-size: 1rem; color: #1a1a2a; line-height: 1.6;
-    margin-bottom: 20px; font-style: normal;
+  .benefit-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
   }
-  .quote-card cite {
-    font-size: 0.82rem; color: #7a7a8a; font-style: normal;
+  .benefit-card .icon { margin-bottom: 16px; }
+  .benefit-card h3 {
+    font-size: 1.15rem; font-weight: 700; margin-bottom: 8px;
+  }
+  .benefit-card p {
+    font-size: 0.88rem; color: #5a5a6a; line-height: 1.6;
   }
 
-  /* Stats row */
+  /* ═══════════════════════════════════════════
+     HOW IT WORKS — Steps
+     ═══════════════════════════════════════════ */
+  .steps-section {
+    padding: 100px 40px;
+    background: #f8f6f3;
+  }
+  .steps-inner {
+    max-width: 900px; margin: 0 auto;
+  }
+  .steps-header {
+    text-align: center; margin-bottom: 60px;
+  }
+  .steps-header h2 {
+    font-size: 2.4rem; font-weight: 800; letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+  .steps-header p {
+    font-size: 1rem; color: #5a5a6a; max-width: 480px;
+    margin: 0 auto; line-height: 1.65;
+  }
+  .steps-list {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .step {
+    display: flex; gap: 28px; align-items: flex-start;
+    padding: 32px 0;
+    border-bottom: 1px solid #e8e5e0;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-number {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: #7c9070; color: #fff; font-weight: 800; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content h3 {
+    font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;
+  }
+  .step-content p {
+    font-size: 0.9rem; color: #5a5a6a; line-height: 1.6;
+  }
+
+  /* ═══════════════════════════════════════════
+     STATS
+     ═══════════════════════════════════════════ */
   .stats-row {
     display: flex; justify-content: center; gap: 60px;
-    padding: 60px 40px;
-    text-align: center;
+    padding: 80px 40px; text-align: center;
   }
   .stat h3 { font-size: 2.8rem; font-weight: 800; color: #7c9070; }
-  .stat p { font-size: 0.9rem; color: #5a5a6a; margin-top: 4px; }
+  .stat p { font-size: 0.88rem; color: #5a5a6a; margin-top: 4px; }
+
+  /* ═══════════════════════════════════════════
+     VALUES / TRUST
+     ═══════════════════════════════════════════ */
+  .values-section {
+    padding: 100px 40px;
+    background: #f8f6f3;
+  }
+  .values-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center;
+  }
+  .values-text h2 {
+    font-size: 2.2rem; font-weight: 800; margin-bottom: 16px;
+    line-height: 1.15; letter-spacing: -0.5px;
+  }
+  .values-text p {
+    font-size: 0.95rem; color: #5a5a6a; line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .values-list {
+    list-style: none; margin-top: 20px;
+  }
+  .values-list li {
+    padding: 10px 0; font-size: 0.92rem; color: #3a3a4a;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid #e8e5e0;
+  }
+  .values-list li:last-child { border-bottom: none; }
+  .values-card-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .value-card {
+    background: #fff; border-radius: 16px; padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .value-card h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; }
+  .value-card p { font-size: 0.78rem; color: #5a5a6a; line-height: 1.5; }
 
   /* ═══════════════════════════════════════════
      FOOTER — Night
      ═══════════════════════════════════════════ */
-  .footer-night {
-    position: relative; overflow: hidden;
-    background: url('night-bg.png') center center / cover no-repeat;
-    width: 100%; min-height: 70vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 80px 40px;
+  .footer-chapter {
+    margin: 40px 40px 0; border-radius: 28px 28px 0 0; overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 480px; background: #1a1a2a;
   }
-  .footer-night h2 {
-    font-size: 2.6rem; color: #e0e8f0; font-weight: 700;
-    margin-bottom: 16px; letter-spacing: -0.5px;
+  .footer-chapter-img {
+    background: url('night-bg.png') center / cover no-repeat;
+    min-height: 480px;
   }
-  .footer-night p {
-    font-size: 1rem; color: #90a8c0; max-width: 480px;
-    margin: 0 auto 28px; line-height: 1.65;
+  .footer-chapter-text {
+    padding: 60px 56px; display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .footer-chapter-text .chapter-num {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 12px; color: #7c9070;
+  }
+  .footer-chapter-text h2 {
+    font-size: 2.2rem; font-weight: 800; color: #e8eef4;
+    line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.5px;
+  }
+  .footer-chapter-text p {
+    font-size: 0.95rem; color: #90a0b8; line-height: 1.7;
+    margin-bottom: 24px;
   }
   .footer-bottom {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    text-align: center; padding: 20px;
+    background: #1a1a2a; padding: 40px;
+    display: flex; justify-content: space-between; align-items: center;
   }
-  .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.2); }
-  .footer-bottom a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.25); }
+  .footer-bottom a { color: rgba(255,255,255,0.35); text-decoration: none; }
   .footer-bottom a:hover { color: rgba(255,255,255,0.5); }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.35); text-decoration: none; }
+  .footer-links a:hover { color: rgba(255,255,255,0.5); }
 
-  /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .hero-content h1 { font-size: 2.4rem; }
-    .section-header h2 { font-size: 2rem; }
-    .features-grid { grid-template-columns: 1fr; }
-    .quotes-grid { grid-template-columns: 1fr; }
-    .stats-row { flex-direction: column; gap: 30px; }
-    .feature-card-full { flex-direction: column; gap: 16px; }
-    .scroll-card { flex: 0 0 260px; min-height: 360px; }
-    .choice-grid { grid-template-columns: 1fr; }
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 2.6rem; }
+    .chapter { grid-template-columns: 1fr; margin: 0 20px 24px; }
+    .chapter-reversed { direction: ltr; }
+    .chapter-img { min-height: 280px; }
+    .chapter-text { padding: 36px 28px; }
+    .chapter-text h2 { font-size: 1.7rem; }
+    .demo-inner { grid-template-columns: 1fr; gap: 40px; }
+    .benefits-grid { grid-template-columns: 1fr; }
+    .values-inner { grid-template-columns: 1fr; }
+    .footer-chapter { grid-template-columns: 1fr; margin: 24px 20px 0; }
+    .footer-chapter-img { min-height: 280px; }
+    .stats-row { flex-direction: column; gap: 24px; }
+    .nav-links a:not(.nav-cta) { display: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     HERO — Mountains
-     ═══════════════════════════════════════════ -->
-<section id="hero" class="hero">
-  <!-- balloon hidden for now
-  <div class="balloon-wrap">
-    <div style="position:relative; display:inline-block;">
-      <img src="airballoon.png" class="balloon-img" alt="Hot air balloon">
-      <div class="balloon-text">Climb<br>higher<br>with<br>every<br>step</div>
-    </div>
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Boundless Learning</a>
+  <div class="nav-links">
+    <a href="#story">Our Story</a>
+    <a href="#demo">The App</a>
+    <a href="#benefits">Benefits</a>
+    <a href="#start">Get Started</a>
+    <a href="#start" class="btn nav-cta">Start Intake</a>
   </div>
-  -->
-
-  <div class="hero-content">
-    <h1>Boundless Learning</h1>
-    <p>Structured learning without the classroom walls. Built for families who travel, homeschool, or simply want their children to keep growing — wherever they are.</p>
-    <div class="hero-actions">
-      <a href="#start" class="btn">Get Started Free</a>
-      <a href="#how" class="btn-outline">See How It Works</a>
-    </div>
-  </div>
-
-  <a href="#how" class="scroll-hint">
-    <span>scroll to explore</span>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-  </a>
-</section>
+</nav>
 
 
-<!-- ═══════════════════════════════════════════
-     HOW IT WORKS
-     ═══════════════════════════════════════════ -->
-<section id="how" class="section">
-  <div class="section-header">
-    <h2>Learning that adapts<br>to your child</h2>
-    <p>No rigid curriculum. No pressure. Boundless watches how your child learns and adjusts the difficulty, pace, and content in real time.</p>
-  </div>
-
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-card-icon">🎯</div>
-      <h3>Smart Difficulty</h3>
-      <p>Exercises level up when your child is ready and provide support when they're stuck. No frustration, no boredom — just the right challenge.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-card-icon">⏱️</div>
-      <h3>Bite-Sized Sessions</h3>
-      <p>15 minutes of focused practice beats an hour of screen fatigue. Short, meaningful sessions that fit into any day.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-card-icon">🏆</div>
-      <h3>Built-In Rewards</h3>
-      <p>Trophies, streaks, and visual progress your child can actually see. Motivation that comes from within, not from nagging.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-card-icon">🃏</div>
-      <h3>Cheat Cards</h3>
-      <p>Personal study aids your child builds themselves. When they create their own reference cards, the learning sticks.</p>
-    </div>
-    <div class="feature-card-full">
-      <div class="feature-card-icon">📐</div>
-      <div>
-        <h3>939 exercises across proven methodologies</h3>
-        <p>Every exercise is based on established teaching methods — not generated by AI. Real pedagogy, real quality, real results.</p>
-      </div>
-    </div>
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-tagline">Boundless Learning</div>
+  <h1>What if school could<br>travel with you?</h1>
+  <p>Structured learning without walls. Help your child get ahead of the curve — without traditional school. Tailored, personalised learning programs designed around how your child actually learns.</p>
+  <div class="hero-actions">
+    <a href="#start" class="btn">Start Your Intake</a>
+    <a href="#story" class="btn-outline">Read Our Story</a>
   </div>
 </section>
 
 
-<!-- ═══════════════════════════════════════════
-     STATS
-     ═══════════════════════════════════════════ -->
+<!-- ═══ CHAPTER 1 — Mountains ═══ -->
+<section id="story">
+<div class="chapter ch-mountains">
+  <div class="chapter-img" style="background-image: url('hero-bg.png');"></div>
+  <div class="chapter-text">
+    <div class="chapter-num">Chapter One</div>
+    <h2>Once upon a mountaintop, two kids set out to learn</h2>
+    <p>They weren't in a classroom. They were on the road — moving between countries, cultures, and time zones. But they never stopped being curious.</p>
+    <p>Their parents needed something that could travel with them. Not a textbook. Not a video app. Something that understood where each child was, and met them there.</p>
+    <ul class="feature-list">
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        Exercises that adapt to your child's level
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        15 minutes of focused practice per day
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        No screen fatigue — short, meaningful sessions
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ═══ CHAPTER 2 — Deep Dive ═══ -->
+<div class="chapter ch-dive chapter-reversed">
+  <div class="chapter-img" style="background-image: url('dive-bg.png');"></div>
+  <div class="chapter-text">
+    <div class="chapter-num">Chapter Two</div>
+    <h2>They dove deeper — and the learning adapted</h2>
+    <p>Every exercise is built on proven teaching methods — Montessori, Singapore Math, bar models, number lines. Not generated by AI. Real pedagogy, designed by educators.</p>
+    <p>When things got easy, the challenge grew. When they struggled, support appeared — like a friend, not a teacher standing over them.</p>
+    <ul class="feature-list">
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        939 exercises across 5+ methodologies
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        Smart difficulty — promotes when ready, supports when stuck
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        Cheat cards — study aids your child builds themselves
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ═══ CHAPTER 3 — Horizon ═══ -->
+<div class="chapter ch-horizon">
+  <div class="chapter-img" style="background-image: url('horizon-bg.png');"></div>
+  <div class="chapter-text">
+    <div class="chapter-num">Chapter Three</div>
+    <h2>Beyond the horizon — parents see everything</h2>
+    <p>This isn't a black box. You see exactly what your child practised, where they excelled, and what needs attention. Not just "completed" or "incomplete" — real insight.</p>
+    <p>Invite a tutor who sees the same data you do. Set homework profiles per child, per subject. Control difficulty, methodology, and pace.</p>
+    <ul class="feature-list">
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        Parent dashboard with per-subject progress
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        Tutor connection — shared visibility, aligned teaching
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        Weekly summaries and attendance tracking
+      </li>
+    </ul>
+  </div>
+</div>
+</section>
+
+
+<!-- ═══ STATS ═══ -->
 <div class="stats-row">
   <div class="stat">
     <h3>939</h3>
@@ -417,199 +569,232 @@
 </div>
 
 
-<!-- ═══════════════════════════════════════════
-     EXPLORE — Horizontal scroll cards
-     ═══════════════════════════════════════════ -->
-<section class="scroll-section section-alt">
-  <div class="section-header">
-    <h2>Explore what's inside</h2>
-    <p>Swipe through the features that make Boundless different.</p>
+<!-- ═══ APP DEMO ═══ -->
+<section id="demo" class="demo-section">
+  <div class="demo-inner">
+    <div class="demo-text">
+      <h2>See it in action</h2>
+      <p>A clean, focused dashboard designed for children. No clutter, no distractions — just their subjects, their progress, and their next challenge.</p>
+      <p>Parents see the same data from their own dashboard. Tutors can be invited for shared visibility. Everyone stays on the same page.</p>
+      <a href="#start" class="btn">Start Your Intake</a>
+    </div>
+    <div class="mockup-browser">
+      <div class="mockup-bar">
+        <div class="mockup-dot"></div>
+        <div class="mockup-dot"></div>
+        <div class="mockup-dot"></div>
+        <div class="mockup-url">boundlesslearning.app/child-dashboard</div>
+      </div>
+      <div class="mockup-body">
+        <div class="mock-greeting">Good morning, Emma</div>
+        <div class="mock-stats">
+          <div class="mock-stat">
+            <div class="mock-stat-num" style="color: #c4704b;">12</div>
+            <div class="mock-stat-label">Day Streak</div>
+          </div>
+          <div class="mock-stat">
+            <div class="mock-stat-num" style="color: #7c9070;">8</div>
+            <div class="mock-stat-label">Trophies</div>
+          </div>
+          <div class="mock-stat">
+            <div class="mock-stat-num" style="color: #5b8aaa;">78%</div>
+            <div class="mock-stat-label">This Week</div>
+          </div>
+        </div>
+        <div class="mock-subjects">
+          <div class="mock-subject" style="background: #e8f0e4;">
+            <h4>Maths</h4>
+            <p>Level 3 — Addition & Subtraction</p>
+            <div class="mock-progress"><div class="mock-progress-fill" style="width:78%; background:#7c9070;"></div></div>
+          </div>
+          <div class="mock-subject" style="background: #e0eef8;">
+            <h4>Reading</h4>
+            <p>Level 2 — Comprehension</p>
+            <div class="mock-progress"><div class="mock-progress-fill" style="width:65%; background:#5b8aaa;"></div></div>
+          </div>
+        </div>
+        <div class="mock-exercise">
+          <div class="mock-q">What is 24 + 17?</div>
+          <div class="mock-options">
+            <div class="mock-opt">39</div>
+            <div class="mock-opt correct">41</div>
+            <div class="mock-opt">43</div>
+            <div class="mock-opt">37</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ BENEFITS ═══ -->
+<section id="benefits" class="benefits">
+  <div class="benefits-header">
+    <h2>Why parents choose Boundless</h2>
+    <p>Built by a family that needed this for their own children. Every feature exists because a real parent needed it.</p>
   </div>
 
-  <div class="scroll-row">
-    <div class="scroll-card">
-      <div class="scroll-card-img" style="background-image: url('hero-bg.png');"></div>
-      <div class="scroll-card-text">
-        <h3>Explore the Mountains</h3>
-        <p>Adaptive practice that grows with your child</p>
+  <div class="benefits-grid">
+    <div class="benefit-card">
+      <div class="icon" style="background:#e8f0e4;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4a6a40" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>Ahead of the curve</h3>
+      <p>Your child progresses at their own pace — often faster than traditional school, because every exercise targets their exact level.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="icon" style="background:#e4e8f8;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4a5a8a" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      </div>
+      <h3>Real pedagogy</h3>
+      <p>939 exercises built on proven methods — Montessori, Singapore Math, bar models, number lines. Not AI-generated worksheets.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="icon" style="background:#f8ece4;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8a5a4a" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3>No ads. No data selling.</h3>
+      <p>Small team, no investors, no pressure to monetise your child's attention. Your data stays yours.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="icon" style="background:#f0e4f0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#6a4a7a" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3>Personalised programs</h3>
+      <p>After your intake survey, we design a learning program tailored to your child's strengths, gaps, and goals.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="icon" style="background:#e4f0f0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3a6a6a" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <h3>Full visibility</h3>
+      <p>Parent dashboard shows real progress — per subject, per child. You see what was practised, mastery levels, and trends over time.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="icon" style="background:#f8f0e4;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#6a5a3a" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <h3>Personal coaching</h3>
+      <p>After intake, you get a personal chat with a student coach to align on goals, expectations, and your child's unique learning style.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ HOW TO START ═══ -->
+<section id="start" class="steps-section">
+  <div class="steps-inner">
+    <div class="steps-header">
+      <h2>How to get started</h2>
+      <p>Three steps to a personalised learning journey designed around your child.</p>
+    </div>
+
+    <div class="steps-list">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Complete your intake survey</h3>
+          <p>Tell us about your child — their age, grade, strengths, and what they find challenging. This helps us understand where they are and where they want to go.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Personal chat with your student coach</h3>
+          <p>After intake, you'll have a one-on-one conversation to align on learning goals, expectations, and your child's unique needs. No chatbots — a real person.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Your child starts their journey</h3>
+          <p>We set up a personalised learning program. Your child logs in, starts practising, and the adaptive engine takes it from there — adjusting difficulty in real time.</p>
+        </div>
       </div>
     </div>
-    <div class="scroll-card">
-      <div class="scroll-card-img" style="background-image: url('dive-bg.png');"></div>
-      <div class="scroll-card-text">
-        <h3>Deep Dive</h3>
-        <p>Go deeper into subjects they love</p>
-      </div>
+
+    <div style="text-align: center; margin-top: 48px;">
+      <a href="#" class="btn" style="font-size: 1.05rem; padding: 16px 40px;">Start Your Intake Survey</a>
     </div>
-    <div class="scroll-card">
-      <div class="scroll-card-img" style="background-image: url('horizon-bg.png');"></div>
-      <div class="scroll-card-text">
-        <h3>Beyond the Horizon</h3>
-        <p>Track progress across every milestone</p>
-      </div>
+  </div>
+</section>
+
+
+<!-- ═══ VALUES ═══ -->
+<section class="values-section">
+  <div class="values-inner">
+    <div class="values-text">
+      <h2>Built different,<br>on purpose</h2>
+      <p>We started Boundless because our own children weren't in formal school — but they never stopped being curious. We needed structure without killing the spark.</p>
+      <p>This isn't big EdTech. There's no investor pressure to add features you don't need. It's a small tool built carefully, by people who use it with their own kids.</p>
+      <ul class="values-list">
+        <li>
+          <div class="check-icon" style="background:#7c9070;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+          Psychology and technology, inseparable
+        </li>
+        <li>
+          <div class="check-icon" style="background:#7c9070;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+          Made by parents, for parents
+        </li>
+        <li>
+          <div class="check-icon" style="background:#7c9070;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
+          Small team, big care
+        </li>
+      </ul>
     </div>
-    <div class="scroll-card">
-      <div class="scroll-card-img" style="background-image: url('night-bg.png');"></div>
-      <div class="scroll-card-text">
-        <h3>Under the Stars</h3>
-        <p>Reflect, review, and celebrate growth</p>
+    <div class="values-card-grid">
+      <div class="value-card">
+        <h4>No AI-generated content</h4>
+        <p>Every exercise is handcrafted using proven teaching methods. Quality over quantity.</p>
+      </div>
+      <div class="value-card">
+        <h4>No gamification traps</h4>
+        <p>Rewards motivate, they don't manipulate. No loot boxes, no artificial urgency.</p>
+      </div>
+      <div class="value-card">
+        <h4>No data selling</h4>
+        <p>Your child's data is never sold, shared, or used for advertising. Period.</p>
+      </div>
+      <div class="value-card">
+        <h4>No investor pressure</h4>
+        <p>We grow at the pace of our families, not a fundraising timeline.</p>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- ═══════════════════════════════════════════
-     PARENT DASHBOARD
-     ═══════════════════════════════════════════ -->
-<section class="section">
-  <div class="section-header">
-    <h2>You stay in the loop</h2>
-    <p>A parent dashboard that shows real progress — not just "completed" or "not completed." See which concepts click, where they struggle, and how they improve over time.</p>
-  </div>
-
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-card-icon">📈</div>
-      <h3>Progress Overview</h3>
-      <p>Per-subject, per-child insight at a glance. See what was practised today, this week, this month.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-card-icon">👩‍🏫</div>
-      <h3>Tutor Connection</h3>
-      <p>Invite a tutor who sees the same data you do. Shared visibility, aligned teaching.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-card-icon">⚙️</div>
-      <h3>Homework Profiles</h3>
-      <p>Set preferences per child, per subject. Control difficulty, methodology, and pace.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-card-icon">📋</div>
-      <h3>No Surprises</h3>
-      <p>Weekly summaries of what was practised. Know exactly where your child stands.</p>
+<!-- ═══ FOOTER — Night chapter ═══ -->
+<div class="footer-chapter">
+  <div class="footer-chapter-img"></div>
+  <div class="footer-chapter-text">
+    <div class="chapter-num">The Next Chapter</div>
+    <h2>Ready to start your<br>child's journey?</h2>
+    <p>Begin with a short intake survey. Then we'll personally design a learning program around your child's strengths, gaps, and curiosity.</p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <a href="#" class="btn-white">Start Intake Survey</a>
     </div>
   </div>
-</section>
+</div>
 
-
-<!-- ═══════════════════════════════════════════
-     CHOICE GRID — "What are you looking for?"
-     ═══════════════════════════════════════════ -->
-<section class="section">
-  <div class="section-header">
-    <h2>What matters most to you?</h2>
-    <p>Every family learns differently. Boundless adapts to yours.</p>
+<div class="footer-bottom">
+  <p>&copy; 2026 Boundless Learning &middot; NoBoxDev</p>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+    <a href="#">Privacy</a>
   </div>
-
-  <div class="choice-grid">
-    <a href="#how" class="choice-card">
-      <div class="choice-card-left">
-        <h4>Track their progress</h4>
-        <span>See exactly where they stand</span>
-      </div>
-      <div class="choice-card-right">
-        <span class="choice-card-emoji">📈</span>
-        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-      </div>
-    </a>
-    <a href="#how" class="choice-card">
-      <div class="choice-card-left">
-        <h4>Practice maths daily</h4>
-        <span>939 exercises, zero screen fatigue</span>
-      </div>
-      <div class="choice-card-right">
-        <span class="choice-card-emoji">🧮</span>
-        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-      </div>
-    </a>
-    <a href="#how" class="choice-card">
-      <div class="choice-card-left">
-        <h4>Schedule lessons</h4>
-        <span>Structure without rigidity</span>
-      </div>
-      <div class="choice-card-right">
-        <span class="choice-card-emoji">📅</span>
-        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-      </div>
-    </a>
-    <a href="#how" class="choice-card">
-      <div class="choice-card-left">
-        <h4>Connect with a tutor</h4>
-        <span>Shared visibility, aligned teaching</span>
-      </div>
-      <div class="choice-card-right">
-        <span class="choice-card-emoji">👩‍🏫</span>
-        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-      </div>
-    </a>
-    <a href="#how" class="choice-card">
-      <div class="choice-card-left">
-        <h4>Keep kids motivated</h4>
-        <span>Trophies, streaks, and rewards</span>
-      </div>
-      <div class="choice-card-right">
-        <span class="choice-card-emoji">🏆</span>
-        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-      </div>
-    </a>
-    <a href="#how" class="choice-card">
-      <div class="choice-card-left">
-        <h4>Build study aids</h4>
-        <span>Child-created cheat cards</span>
-      </div>
-      <div class="choice-card-right">
-        <span class="choice-card-emoji">🃏</span>
-        <svg class="choice-card-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-      </div>
-    </a>
-  </div>
-</section>
+</div>
 
 
-<!-- ═══════════════════════════════════════════
-     WHY — Testimonials / Values
-     ═══════════════════════════════════════════ -->
-<section class="section section-alt">
-  <div class="section-header decorated-header">
-    <div class="deco-circle"></div>
-    <div class="deco-circle"></div>
-    <div class="deco-circle"></div>
-    <div class="deco-circle"></div>
-    <div class="deco-circle"></div>
-    <div class="deco-circle"></div>
-    <h2>Built different, on purpose</h2>
-  </div>
-
-  <div class="quotes-grid">
-    <div class="quote-card">
-      <blockquote>"We started Boundless because our own children weren't in formal school — but they never stopped being curious. We needed structure without killing the spark."</blockquote>
-      <cite>The founder — a parent, like you</cite>
-    </div>
-    <div class="quote-card">
-      <blockquote>"This isn't big EdTech. There's no investor pressure to add features you don't need. It's a small tool built carefully, by people who use it with their own kids."</blockquote>
-      <cite>On staying small and intentional</cite>
-    </div>
-    <div class="quote-card">
-      <blockquote>"We believe psychology and technology are inseparable. Every exercise, every reward, every moment of feedback is designed with how children actually learn in mind."</blockquote>
-      <cite>The NoBoxDev philosophy</cite>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════
-     FOOTER — Night
-     ═══════════════════════════════════════════ -->
-<section id="start" class="footer-night">
-  <h2>Ready to start the journey?</h2>
-  <p>Free to begin. No credit card. No ads. Just learning that grows with your child.</p>
-  <a href="#" class="btn" style="font-size: 1.1rem; padding: 16px 40px;">Get Started Free</a>
-
-  <div class="footer-bottom">
-    <p>&copy; 2026 Boundless Learning &middot; <a href="#">About</a> &middot; <a href="#">Contact</a> &middot; <a href="#">Privacy</a></p>
-  </div>
-</section>
+<!-- ═══ NAV SCROLL EFFECT ═══ -->
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+</script>
 
 </body>
 </html>
