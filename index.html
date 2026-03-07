@@ -127,11 +127,15 @@
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
-    background: rgba(192,218,240,0.7); backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(0,0,0,0.04);
-    transition: box-shadow 0.3s;
+    background: transparent; backdrop-filter: none;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s, backdrop-filter 0.3s, box-shadow 0.3s, border-color 0.3s;
   }
-  nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+  nav.scrolled {
+    background: rgba(192,218,240,0.7); backdrop-filter: blur(16px);
+    border-bottom-color: rgba(0,0,0,0.04);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+  }
   .nav-logo {
     font-size: 1.2rem; font-weight: 800; color: #1a1a2a;
     text-decoration: none; letter-spacing: -0.5px;
