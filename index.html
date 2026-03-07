@@ -57,16 +57,19 @@
   /* Twinkling stars in the bottom portion */
   .stars {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 1;
+    pointer-events: none; z-index: 5;
     opacity: 0;
     transition: opacity 0.3s;
   }
   .star {
     position: absolute; width: 2px; height: 2px;
     background: #fff; border-radius: 50%;
+    box-shadow: 0 0 3px 1px rgba(255,255,255,0.4);
     animation: twinkle 3s ease-in-out infinite;
   }
-  .star.big { width: 3px; height: 3px; }
+  .star.big { width: 3px; height: 3px; box-shadow: 0 0 5px 2px rgba(255,255,255,0.6); }
+  .star.warm { background: #ffe8a0; box-shadow: 0 0 4px 1px rgba(255,220,120,0.5); }
+  .star.warm.big { box-shadow: 0 0 6px 2px rgba(255,220,120,0.6); }
   /* Meteor / shooting star */
   .meteor {
     position: absolute; pointer-events: none;
@@ -91,6 +94,42 @@
   @keyframes twinkle {
     0%, 100% { opacity: 0.3; }
     50% { opacity: 1; }
+  }
+  /* Suitcase cursor */
+  html, body, * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='32' viewBox='0 0 28 32'%3E%3Cpath d='M14 1 C12 1 10 4 9 8 L8 14 L4 18 C3 19 3 21 4 21 L8 20 L8 24 L6 28 C5 30 6 31 8 31 L11 30 L12 31 L16 31 L17 30 L20 31 C22 31 23 30 22 28 L20 24 L20 20 L24 21 C25 21 25 19 24 18 L20 14 L19 8 C18 4 16 1 14 1 Z' fill='%23e8e8ec' stroke='%23999' stroke-width='0.8'/%3E%3Cellipse cx='14' cy='10' rx='2.5' ry='3' fill='%2388c8f0' stroke='%23668' stroke-width='0.5'/%3E%3Cpath d='M8 24 L6 28 C5 30 6 31 8 31 L10 30 L8 24Z' fill='%23f44' stroke='%23c33' stroke-width='0.5'/%3E%3Cpath d='M20 24 L22 28 C23 30 22 31 20 31 L18 30 L20 24Z' fill='%23f44' stroke='%23c33' stroke-width='0.5'/%3E%3Crect x='12' y='26' width='4' height='5' rx='1' fill='%23f80' stroke='%23c60' stroke-width='0.5'/%3E%3C/svg%3E") 14 2, auto; }
+  /* Click star burst */
+  .click-star {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 8px; height: 8px;
+    animation: starBurst 0.7s ease-out forwards;
+  }
+  .click-star svg { width: 100%; height: 100%; }
+  @keyframes starBurst {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.2); }
+    30% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx2), var(--dy2)) scale(0.4); }
+  }
+
+  /* Mystery flying silhouette */
+  .flyer {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    animation: flyAcross 12s linear forwards;
+  }
+  .flyer svg { width: 100%; height: auto; }
+  .flyer .cabin-light {
+    animation: cabinBlink 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes flyAcross {
+    0% { opacity: 0; transform: translateX(-80px); }
+    5% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(calc(100vw + 80px)); }
+  }
+  @keyframes cabinBlink {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
   }
   html { scroll-behavior: smooth; }
 
@@ -168,7 +207,8 @@
      HERO
      ═══════════════════════════════════════════ */
   .hero {
-    padding: 140px 40px 80px; text-align: center;
+    min-height: 100vh; padding: 160px 40px 120px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     background: transparent;
   }
   .hero-tagline {
@@ -538,11 +578,22 @@
      ═══════════════════════════════════════════ */
   .footer-night {
     position: relative; overflow: hidden;
-    background: url('night-mountains.png') center bottom / 100% auto no-repeat;
+    background: transparent;
     width: 100%; min-height: 100vh;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center; padding: 80px 40px 120px;
+  }
+  /* Mountains layer — in front of everything */
+  .footer-night::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 100%; z-index: 20;
+    background: url('night-mountains.png') center bottom / 100% auto no-repeat;
+    pointer-events: none;
+  }
+  /* Text sits between mountains and stars */
+  .footer-night h2, .footer-night p, .footer-night .footer-actions {
+    position: relative; z-index: 15;
   }
   .footer-night h2 {
     font-size: 2.8rem; color: #e8eef4; font-weight: 800;
@@ -553,7 +604,7 @@
     margin: 0 auto 32px; line-height: 1.65;
   }
   .footer-bottom {
-    position: absolute; bottom: 0; left: 0; right: 0;
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 21;
     padding: 24px 40px;
     display: flex; justify-content: space-between; align-items: center;
   }
@@ -970,15 +1021,15 @@
   // Generate clouds using custom image
   const cloudsEl = document.getElementById('clouds');
   const cloudConfigs = [
-    { size: 'large',  top: 4,  dur: 55 },
-    { size: 'medium', top: 10, dur: 40 },
-    { size: 'small',  top: 2,  dur: 30 },
-    { size: 'large',  top: 16, dur: 65 },
-    { size: 'medium', top: 7,  dur: 45 },
-    { size: 'small',  top: 20, dur: 35 },
-    { size: 'medium', top: 13, dur: 50 },
-    { size: 'small',  top: 5,  dur: 28 },
-    { size: 'large',  top: 22, dur: 60 },
+    { size: 'small',  top: 2,  dur: 32 },
+    { size: 'large',  top: 10, dur: 58 },
+    { size: 'medium', top: 20, dur: 44 },
+    { size: 'small',  top: 30, dur: 36 },
+    { size: 'large',  top: 5,  dur: 62 },
+    { size: 'medium', top: 38, dur: 48 },
+    { size: 'small',  top: 15, dur: 30 },
+    { size: 'medium', top: 26, dur: 52 },
+    { size: 'large',  top: 42, dur: 66 },
   ];
   cloudConfigs.forEach(c => {
     const cloud = document.createElement('div');
@@ -1017,11 +1068,15 @@
 
   // Generate stars
   const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 140; i++) {
     const star = document.createElement('div');
-    star.className = 'star' + (Math.random() > 0.85 ? ' big' : '');
+    const r = Math.random();
+    let cls = 'star';
+    if (r > 0.88) cls += ' big';
+    if (Math.random() > 0.65) cls += ' warm';
+    star.className = cls;
     star.style.left = Math.random() * 100 + '%';
-    star.style.top = (40 + Math.random() * 60) + '%';
+    star.style.top = (35 + Math.random() * 65) + '%';
     star.style.animationDelay = (Math.random() * 4).toFixed(1) + 's';
     star.style.animationDuration = (2 + Math.random() * 3).toFixed(1) + 's';
     starsEl.appendChild(star);
@@ -1119,6 +1174,87 @@
     }, delay);
   }
   scheduleMeteor();
+
+  // Mystery flying silhouette — dark shape with cabin lights
+  const flyerShapes = [
+    // Shape 1: could be a plane... or something else
+    `<svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 22 C8 18 15 14 30 13 L50 12 C55 8 60 5 68 4 L75 4 C78 4 80 6 78 9 L72 12 L95 11 C100 8 105 6 110 7 C115 8 118 12 115 15 L105 16 L112 18 C114 19 114 22 112 23 L100 24 L72 24 L78 28 C80 30 78 33 75 33 L68 33 C60 32 55 29 50 25 L30 24 C15 23 8 26 5 22 Z" fill="rgba(15,15,30,0.85)"/>
+      <circle cx="62" cy="14" r="1.5" fill="#ffd" class="cabin-light"/>
+      <circle cx="68" cy="14" r="1.5" fill="#ffd" class="cabin-light" style="animation-delay:0.2s"/>
+      <circle cx="74" cy="13" r="1.5" fill="#ffd" class="cabin-light" style="animation-delay:0.4s"/>
+      <circle cx="56" cy="15" r="1.2" fill="#ffd" class="cabin-light" style="animation-delay:0.3s"/>
+      <circle cx="50" cy="16" r="1.2" fill="#ffd" class="cabin-light" style="animation-delay:0.5s"/>
+      <circle cx="80" cy="13" r="1" fill="#f44" opacity="0.9"/>
+    </svg>`,
+    // Shape 2: rounder, more mysterious — is it a blimp? a UFO?
+    `<svg viewBox="0 0 100 45" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="18" rx="40" ry="14" fill="rgba(15,15,30,0.85)"/>
+      <path d="M30 30 C35 35 45 38 50 38 C55 38 65 35 70 30 L68 30 C63 33 55 35 50 35 C45 35 37 33 32 30 Z" fill="rgba(15,15,30,0.7)"/>
+      <circle cx="35" cy="18" r="1.5" fill="#aef" class="cabin-light"/>
+      <circle cx="42" cy="17" r="1.5" fill="#aef" class="cabin-light" style="animation-delay:0.15s"/>
+      <circle cx="50" cy="17" r="1.8" fill="#aef" class="cabin-light" style="animation-delay:0.3s"/>
+      <circle cx="58" cy="17" r="1.5" fill="#aef" class="cabin-light" style="animation-delay:0.45s"/>
+      <circle cx="65" cy="18" r="1.5" fill="#aef" class="cabin-light" style="animation-delay:0.6s"/>
+      <circle cx="50" cy="32" r="2" fill="#ffa" class="cabin-light" style="animation-delay:0.1s"/>
+      <circle cx="10" cy="17" r="1" fill="#f44" opacity="0.8"/>
+      <circle cx="90" cy="17" r="1" fill="#0f0" opacity="0.8"/>
+    </svg>`
+  ];
+
+  function spawnFlyer() {
+    const scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    if (scrollPct < 0.45) return; // only in twilight/night
+    const flyer = document.createElement('div');
+    flyer.className = 'flyer';
+    const size = 40 + Math.random() * 30; // small so it's far away & mysterious
+    flyer.style.width = size + 'px';
+    flyer.style.top = (5 + Math.random() * 25) + '%';
+    flyer.style.left = '-80px';
+    flyer.innerHTML = flyerShapes[Math.floor(Math.random() * flyerShapes.length)];
+    starsEl.appendChild(flyer);
+    setTimeout(() => flyer.remove(), 13000);
+  }
+  function scheduleFlyer() {
+    const delay = 25000 + Math.random() * 35000; // every 25-60 seconds
+    setTimeout(() => {
+      spawnFlyer();
+      scheduleFlyer();
+    }, delay);
+  }
+  // First flyer after 10 seconds
+  setTimeout(() => { spawnFlyer(); scheduleFlyer(); }, 10000);
+
+  // Click → star burst
+  const starColors = ['#ffe8a0', '#fff', '#ffd', '#aef', '#f9e076'];
+  const starSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><polygon points="10,1 12.5,7.5 19,8 14,12.5 15.5,19 10,15.5 4.5,19 6,12.5 1,8 7.5,7.5" fill="currentColor"/></svg>`;
+
+  document.addEventListener('click', (e) => {
+    const count = 5 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'click-star';
+      const angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.5;
+      const dist = 20 + Math.random() * 30;
+      const dist2 = dist + 15 + Math.random() * 20;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      const dx2 = Math.cos(angle) * dist2;
+      const dy2 = Math.sin(angle) * dist2 - 10;
+      el.style.left = e.clientX + 'px';
+      el.style.top = e.clientY + 'px';
+      el.style.setProperty('--dx', dx + 'px');
+      el.style.setProperty('--dy', dy + 'px');
+      el.style.setProperty('--dx2', dx2 + 'px');
+      el.style.setProperty('--dy2', dy2 + 'px');
+      el.style.color = starColors[Math.floor(Math.random() * starColors.length)];
+      el.style.width = (6 + Math.random() * 6) + 'px';
+      el.style.height = el.style.width;
+      el.innerHTML = starSvg;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 750);
+    }
+  });
 </script>
 
 </body>
