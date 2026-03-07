@@ -32,6 +32,36 @@
     /* gradient flows with scroll — sunrise to night */
   }
 
+  /* Clouds drifting in the sky */
+  .clouds {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    overflow: hidden;
+  }
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    filter: blur(8px);
+    animation: drift linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: ''; position: absolute;
+    background: inherit; border-radius: 50%;
+  }
+  .cloud::before {
+    width: 60%; height: 80%;
+    top: -30%; left: 15%;
+  }
+  .cloud::after {
+    width: 50%; height: 70%;
+    top: -20%; right: 10%;
+  }
+  @keyframes drift {
+    0% { transform: translateX(-200px); }
+    100% { transform: translateX(calc(100vw + 200px)); }
+  }
+
   /* Twinkling stars in the bottom portion */
   .stars {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -538,6 +568,8 @@
 </head>
 <body>
 
+<!-- Clouds layer -->
+<div class="clouds" id="clouds"></div>
 <!-- Stars layer -->
 <div class="stars" id="stars"></div>
 
@@ -918,6 +950,36 @@
 
 <!-- ═══ NAV SCROLL EFFECT ═══ -->
 <script>
+  // Generate clouds
+  const cloudsEl = document.getElementById('clouds');
+  const cloudConfigs = [
+    { w: 160, h: 50, top: 6, opacity: 0.5, dur: 45 },
+    { w: 220, h: 65, top: 12, opacity: 0.4, dur: 60 },
+    { w: 120, h: 40, top: 3, opacity: 0.6, dur: 35 },
+    { w: 180, h: 55, top: 18, opacity: 0.35, dur: 55 },
+    { w: 140, h: 45, top: 8, opacity: 0.45, dur: 40 },
+    { w: 200, h: 60, top: 22, opacity: 0.3, dur: 65 },
+    { w: 100, h: 35, top: 15, opacity: 0.5, dur: 38 },
+    { w: 170, h: 52, top: 25, opacity: 0.25, dur: 50 },
+  ];
+  cloudConfigs.forEach((c, i) => {
+    const cloud = document.createElement('div');
+    cloud.className = 'cloud';
+    cloud.style.width = c.w + 'px';
+    cloud.style.height = c.h + 'px';
+    cloud.style.top = c.top + '%';
+    cloud.style.opacity = c.opacity;
+    cloud.style.animationDuration = c.dur + 's';
+    cloud.style.animationDelay = -(Math.random() * c.dur).toFixed(0) + 's';
+    cloudsEl.appendChild(cloud);
+  });
+
+  // Fade clouds out as you scroll into sunset
+  window.addEventListener('scroll', () => {
+    const scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    cloudsEl.style.opacity = Math.max(0, 1 - scrollPct * 2.5).toFixed(2);
+  });
+
   // Generate stars
   const starsEl = document.getElementById('stars');
   for (let i = 0; i < 120; i++) {
