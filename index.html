@@ -95,6 +95,21 @@
     0%, 100% { opacity: 0.3; }
     50% { opacity: 1; }
   }
+  /* Suitcase cursor */
+  html, body, * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='32' viewBox='0 0 28 32'%3E%3Cpath d='M14 1 C12 1 10 4 9 8 L8 14 L4 18 C3 19 3 21 4 21 L8 20 L8 24 L6 28 C5 30 6 31 8 31 L11 30 L12 31 L16 31 L17 30 L20 31 C22 31 23 30 22 28 L20 24 L20 20 L24 21 C25 21 25 19 24 18 L20 14 L19 8 C18 4 16 1 14 1 Z' fill='%23e8e8ec' stroke='%23999' stroke-width='0.8'/%3E%3Cellipse cx='14' cy='10' rx='2.5' ry='3' fill='%2388c8f0' stroke='%23668' stroke-width='0.5'/%3E%3Cpath d='M8 24 L6 28 C5 30 6 31 8 31 L10 30 L8 24Z' fill='%23f44' stroke='%23c33' stroke-width='0.5'/%3E%3Cpath d='M20 24 L22 28 C23 30 22 31 20 31 L18 30 L20 24Z' fill='%23f44' stroke='%23c33' stroke-width='0.5'/%3E%3Crect x='12' y='26' width='4' height='5' rx='1' fill='%23f80' stroke='%23c60' stroke-width='0.5'/%3E%3C/svg%3E") 14 2, auto; }
+  /* Click star burst */
+  .click-star {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 8px; height: 8px;
+    animation: starBurst 0.7s ease-out forwards;
+  }
+  .click-star svg { width: 100%; height: 100%; }
+  @keyframes starBurst {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.2); }
+    30% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx2), var(--dy2)) scale(0.4); }
+  }
+
   /* Mystery flying silhouette */
   .flyer {
     position: absolute;
@@ -1006,15 +1021,15 @@
   // Generate clouds using custom image
   const cloudsEl = document.getElementById('clouds');
   const cloudConfigs = [
-    { size: 'large',  top: 4,  dur: 55 },
-    { size: 'medium', top: 10, dur: 40 },
-    { size: 'small',  top: 2,  dur: 30 },
-    { size: 'large',  top: 16, dur: 65 },
-    { size: 'medium', top: 7,  dur: 45 },
-    { size: 'small',  top: 20, dur: 35 },
-    { size: 'medium', top: 13, dur: 50 },
-    { size: 'small',  top: 5,  dur: 28 },
-    { size: 'large',  top: 22, dur: 60 },
+    { size: 'small',  top: 2,  dur: 32 },
+    { size: 'large',  top: 10, dur: 58 },
+    { size: 'medium', top: 20, dur: 44 },
+    { size: 'small',  top: 30, dur: 36 },
+    { size: 'large',  top: 5,  dur: 62 },
+    { size: 'medium', top: 38, dur: 48 },
+    { size: 'small',  top: 15, dur: 30 },
+    { size: 'medium', top: 26, dur: 52 },
+    { size: 'large',  top: 42, dur: 66 },
   ];
   cloudConfigs.forEach(c => {
     const cloud = document.createElement('div');
@@ -1209,6 +1224,37 @@
   }
   // First flyer after 10 seconds
   setTimeout(() => { spawnFlyer(); scheduleFlyer(); }, 10000);
+
+  // Click → star burst
+  const starColors = ['#ffe8a0', '#fff', '#ffd', '#aef', '#f9e076'];
+  const starSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><polygon points="10,1 12.5,7.5 19,8 14,12.5 15.5,19 10,15.5 4.5,19 6,12.5 1,8 7.5,7.5" fill="currentColor"/></svg>`;
+
+  document.addEventListener('click', (e) => {
+    const count = 5 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'click-star';
+      const angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.5;
+      const dist = 20 + Math.random() * 30;
+      const dist2 = dist + 15 + Math.random() * 20;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      const dx2 = Math.cos(angle) * dist2;
+      const dy2 = Math.sin(angle) * dist2 - 10;
+      el.style.left = e.clientX + 'px';
+      el.style.top = e.clientY + 'px';
+      el.style.setProperty('--dx', dx + 'px');
+      el.style.setProperty('--dy', dy + 'px');
+      el.style.setProperty('--dx2', dx2 + 'px');
+      el.style.setProperty('--dy2', dy2 + 'px');
+      el.style.color = starColors[Math.floor(Math.random() * starColors.length)];
+      el.style.width = (6 + Math.random() * 6) + 'px';
+      el.style.height = el.style.width;
+      el.innerHTML = starSvg;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 750);
+    }
+  });
 </script>
 
 </body>
