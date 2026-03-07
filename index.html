@@ -127,18 +127,18 @@
   .chapter-card {
     flex: 0 0 calc(100vw - 120px); scroll-snap-align: start;
     border-radius: 28px; overflow: hidden;
-    min-height: 520px;
-    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 480px;
+    display: grid; grid-template-columns: 55% 45%;
     transition: transform 0.2s ease;
   }
   .chapter-card:hover { transform: translateY(-4px); }
   .chapter-card-img {
-    background-size: cover; background-position: center;
-    min-height: 520px;
+    background-size: cover; background-position: center bottom;
+    min-height: 480px;
   }
   .chapter-card-text {
     padding: 60px 56px; display: flex; flex-direction: column;
-    justify-content: center;
+    justify-content: center; position: relative; z-index: 2;
   }
   .chapter-card-num {
     font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
