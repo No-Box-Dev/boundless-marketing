@@ -17,10 +17,10 @@
 
   /* ── Shared CTA button ── */
   .wc1-btn {
-    display: inline-block; padding: 14px 36px; border-radius: 30px;
-    background: #7c9070; color: #fff; font-weight: 600; font-size: 1rem;
+    display: inline-block; padding: 12px 28px; border-radius: 24px;
+    background: #7c9070; color: #fff; font-weight: 600; font-size: 0.9rem;
     text-decoration: none; border: none; cursor: pointer;
-    box-shadow: 0 3px 12px rgba(124,144,112,0.35);
+    box-shadow: 0 2px 8px rgba(124,144,112,0.3);
     font-family: inherit;
     transition: transform 0.2s, box-shadow 0.2s;
   }
@@ -37,27 +37,30 @@
   }
   .pc1-content {
     position: relative; z-index: 10;
-    padding: 80px 40px 30px; text-align: center;
+    padding: 70px 40px 20px; text-align: center;
   }
-  .pc1-content h1 { font-size: 3.2rem; color: #1a3a5a; margin-bottom: 12px; }
-  .pc1-content p { font-size: 1.15rem; color: #3a5a7a; max-width: 500px; margin: 0 auto 24px; }
+  .pc1-content h1 { font-size: 2.8rem; color: #1a3a5a; margin-bottom: 10px; font-weight: 700; letter-spacing: -0.5px; }
+  .pc1-content p { font-size: 1rem; color: #3a5a7a; max-width: 460px; margin: 0 auto 20px; line-height: 1.6; }
   .pc1-cards {
     position: relative; z-index: 10;
-    display: flex; gap: 16px; justify-content: center; padding: 0 40px 50px; flex-wrap: wrap;
+    display: flex; gap: 10px; justify-content: center; padding: 0 40px 40px; flex-wrap: wrap;
   }
   .pc1-card {
-    background: rgba(255,255,255,0.92); border-radius: 14px; padding: 22px 18px; width: 180px;
-    text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    background: rgba(255,255,255,0.88); border-radius: 10px; padding: 14px 14px; width: 150px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     text-decoration: none; color: inherit;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    backdrop-filter: blur(8px);
   }
   .pc1-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.95);
   }
-  .pc1-card-icon { font-size: 1.8rem; margin-bottom: 6px; }
-  .pc1-card h3 { font-size: 0.9rem; color: #1a3a5a; }
-  .pc1-card p { font-size: 0.75rem; color: #5a7a9a; }
+  .pc1-card-icon { font-size: 1.3rem; margin-bottom: 4px; }
+  .pc1-card h3 { font-size: 0.78rem; color: #1a3a5a; font-weight: 600; }
+  .pc1-card p { font-size: 0.68rem; color: #5a7a9a; line-height: 1.4; }
 
   /* Hot air balloon */
   .pc1-balloon-wrap {
@@ -208,21 +211,24 @@
   }
   .pc3-content {
     position: relative; z-index: 10;
-    padding: 60px 40px 30px; text-align: center;
+    padding: 70px 40px 20px; text-align: center;
   }
-  .pc3-content h1 { font-size: 2.8rem; color: #3a1808; margin-bottom: 12px; }
-  .pc3-content p { font-size: 1.1rem; color: #5a3018; max-width: 500px; margin: 0 auto 24px; }
+  .pc3-content h1 { font-size: 2.4rem; color: #3a1808; margin-bottom: 10px; font-weight: 700; letter-spacing: -0.5px; }
+  .pc3-content p { font-size: 0.95rem; color: #5a3018; max-width: 460px; margin: 0 auto 20px; line-height: 1.6; }
   .pc3-cards {
     position: relative; z-index: 10;
-    display: flex; gap: 16px; justify-content: center; padding: 0 40px 50px; flex-wrap: wrap;
+    display: flex; gap: 10px; justify-content: center; padding: 0 40px 40px; flex-wrap: wrap;
   }
   .pc3-card {
-    background: rgba(255,252,240,0.85); border-radius: 16px; padding: 22px 18px; width: 175px;
-    text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    background: rgba(255,252,240,0.82); border-radius: 10px; padding: 14px 14px; width: 150px;
+    text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
-  .pc3-card-icon { font-size: 1.8rem; margin-bottom: 6px; }
-  .pc3-card h3 { font-size: 0.9rem; color: #3a1808; }
-  .pc3-card p { font-size: 0.75rem; color: #6a4028; }
+  .pc3-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); background: rgba(255,252,240,0.95); }
+  .pc3-card-icon { font-size: 1.3rem; margin-bottom: 4px; }
+  .pc3-card h3 { font-size: 0.78rem; color: #3a1808; font-weight: 600; }
+  .pc3-card p { font-size: 0.68rem; color: #6a4028; line-height: 1.4; }
 
   /* ═══════════════════════════════════════════
      SECTION 4 — Underwater
@@ -282,31 +288,33 @@
   }
   .pc4-content {
     position: relative; z-index: 10;
-    padding: 80px 40px 30px; text-align: center;
+    padding: 70px 40px 20px; text-align: center;
   }
-  .pc4-content h1 { font-size: 2.6rem; color: #e8f4ff; margin-bottom: 12px; }
-  .pc4-content p { font-size: 1.1rem; color: #c0e0f0; max-width: 480px; margin: 0 auto 24px; }
+  .pc4-content h1 { font-size: 2.4rem; color: #e8f4ff; margin-bottom: 10px; font-weight: 700; letter-spacing: -0.5px; }
+  .pc4-content p { font-size: 0.95rem; color: #c0e0f0; max-width: 460px; margin: 0 auto 20px; line-height: 1.6; }
   .pc4-btn {
-    display: inline-block; padding: 14px 36px; border-radius: 30px;
-    background: #7c9070; color: #fff; font-weight: 600; font-size: 1rem;
+    display: inline-block; padding: 12px 28px; border-radius: 24px;
+    background: #7c9070; color: #fff; font-weight: 600; font-size: 0.9rem;
     text-decoration: none; border: none; cursor: pointer;
-    box-shadow: 0 3px 12px rgba(124,144,112,0.35);
+    box-shadow: 0 2px 8px rgba(124,144,112,0.3);
     font-family: inherit;
     transition: transform 0.2s, box-shadow 0.2s;
   }
   .pc4-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(124,144,112,0.45); }
   .pc4-cards {
     position: relative; z-index: 10;
-    display: flex; gap: 16px; justify-content: center; padding: 30px 40px 60px; flex-wrap: wrap;
+    display: flex; gap: 10px; justify-content: center; padding: 20px 40px 50px; flex-wrap: wrap;
   }
   .pc4-card {
-    background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.2);
-    border-radius: 16px; padding: 22px 18px; width: 180px;
-    text-align: center; backdrop-filter: blur(4px);
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px; padding: 14px 14px; width: 150px;
+    text-align: center; backdrop-filter: blur(8px);
+    transition: background 0.2s ease, transform 0.2s ease;
   }
-  .pc4-card-icon { font-size: 1.8rem; margin-bottom: 6px; }
-  .pc4-card h3 { font-size: 0.9rem; color: #e8f4ff; }
-  .pc4-card p { font-size: 0.75rem; color: #a0d0e8; }
+  .pc4-card:hover { background: rgba(255,255,255,0.18); transform: translateY(-3px); }
+  .pc4-card-icon { font-size: 1.3rem; margin-bottom: 4px; }
+  .pc4-card h3 { font-size: 0.78rem; color: #e8f4ff; font-weight: 600; }
+  .pc4-card p { font-size: 0.68rem; color: #a0d0e8; line-height: 1.4; }
 
   /* ═══════════════════════════════════════════
      SECTION 5 — Night Forest (Ending)
@@ -356,10 +364,10 @@
   @keyframes pc5-glow { 0% { opacity: 0.3; } 100% { opacity: 1; } }
   .pc5-content {
     position: relative; z-index: 10;
-    padding: 70px 40px 30px; text-align: center;
+    padding: 70px 40px 20px; text-align: center;
   }
-  .pc5-content h1 { font-size: 2.6rem; color: #e0e8f0; margin-bottom: 12px; }
-  .pc5-content p { font-size: 1.1rem; color: #90a8c0; max-width: 480px; margin: 0 auto 24px; }
+  .pc5-content h1 { font-size: 2.4rem; color: #e0e8f0; margin-bottom: 10px; font-weight: 700; letter-spacing: -0.5px; }
+  .pc5-content p { font-size: 0.95rem; color: #90a8c0; max-width: 460px; margin: 0 auto 20px; line-height: 1.6; }
   .pc5-btn {
     display: inline-block; padding: 14px 36px; border-radius: 30px;
     background: #7c9070; color: #fff; font-weight: 700; font-size: 1rem;
@@ -371,16 +379,18 @@
   .pc5-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(124,144,112,0.45); }
   .pc5-cards {
     position: relative; z-index: 10;
-    display: flex; gap: 16px; justify-content: center; padding: 30px 40px 60px; flex-wrap: wrap;
+    display: flex; gap: 10px; justify-content: center; padding: 20px 40px 50px; flex-wrap: wrap;
   }
   .pc5-card {
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px; padding: 22px 18px; width: 180px;
-    text-align: center; backdrop-filter: blur(4px);
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px; padding: 14px 14px; width: 150px;
+    text-align: center; backdrop-filter: blur(8px);
+    transition: background 0.2s ease, transform 0.2s ease;
   }
-  .pc5-card-icon { font-size: 1.8rem; margin-bottom: 6px; }
-  .pc5-card h3 { font-size: 0.9rem; color: #d0d8e0; }
-  .pc5-card p { font-size: 0.75rem; color: #7890a8; }
+  .pc5-card:hover { background: rgba(255,255,255,0.12); transform: translateY(-3px); }
+  .pc5-card-icon { font-size: 1.3rem; margin-bottom: 4px; }
+  .pc5-card h3 { font-size: 0.78rem; color: #d0d8e0; font-weight: 600; }
+  .pc5-card p { font-size: 0.68rem; color: #7890a8; line-height: 1.4; }
 
   /* Footer */
   .footer {
