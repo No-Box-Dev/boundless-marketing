@@ -115,48 +115,70 @@
     font-size: 1rem; color: rgba(255,255,255,0.75);
     max-width: 480px; margin: 0 auto; line-height: 1.6;
   }
-  .storybook-scroll {
-    display: flex; gap: 24px; overflow-x: auto;
+  /* Book */
+  .book-wrapper {
+    display: flex; justify-content: center; align-items: center;
     padding: 0 40px 20px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
   }
-  .storybook-scroll::-webkit-scrollbar { display: none; }
-
-  .chapter-card {
-    flex: 0 0 calc(100vw - 120px); scroll-snap-align: start;
-    border-radius: 28px; overflow: hidden;
-    min-height: 480px;
-    display: grid; grid-template-columns: 55% 45%;
-    transition: transform 0.2s ease;
+  .book {
+    width: 900px; height: 520px;
+    position: relative; perspective: 1800px;
   }
-  .chapter-card:hover { transform: translateY(-4px); }
-  .chapter-card-img {
+  .book-page {
+    position: absolute; top: 0; right: 0;
+    width: 50%; height: 100%;
+    transform-origin: left center;
+    transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform-style: preserve-3d;
+    z-index: 1; cursor: pointer;
+  }
+  .book-page.flipped {
+    transform: rotateY(-180deg);
+    z-index: 0;
+  }
+  .page-front, .page-back {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    backface-visibility: hidden;
+    border-radius: 0 16px 16px 0; overflow: hidden;
+  }
+  .page-back {
+    transform: rotateY(180deg);
+    border-radius: 16px 0 0 16px;
+  }
+  /* Left static side */
+  .book-left {
+    position: absolute; top: 0; left: 0;
+    width: 50%; height: 100%;
+    border-radius: 16px 0 0 16px; overflow: hidden;
+  }
+  .book-left-img {
+    width: 100%; height: 100%;
     background-size: cover; background-position: center bottom;
-    min-height: 480px;
   }
-  .chapter-card-text {
-    padding: 60px 56px; display: flex; flex-direction: column;
-    justify-content: center; position: relative; z-index: 2;
+
+  /* Page content */
+  .page-content {
+    width: 100%; height: 100%;
+    padding: 48px 44px; display: flex; flex-direction: column;
+    justify-content: center; position: relative;
   }
-  .chapter-card-num {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 3px; margin-bottom: 12px;
+  .page-content .chapter-num {
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 10px;
   }
-  .chapter-card-text h3 {
-    font-size: 2rem; font-weight: 800; line-height: 1.15;
-    margin-bottom: 14px; letter-spacing: -0.5px;
+  .page-content h3 {
+    font-size: 1.6rem; font-weight: 800; line-height: 1.2;
+    margin-bottom: 12px; letter-spacing: -0.3px;
   }
-  .chapter-card-text p {
-    font-size: 0.95rem; line-height: 1.7; margin-bottom: 8px;
+  .page-content p {
+    font-size: 0.88rem; line-height: 1.65; margin-bottom: 6px;
   }
-  .chapter-card-text .feature-list {
-    list-style: none; margin-top: 16px;
+  .page-content .feature-list {
+    list-style: none; margin-top: 14px;
   }
-  .chapter-card-text .feature-list li {
-    font-size: 0.88rem; padding: 5px 0;
-    display: flex; align-items: center; gap: 10px;
+  .page-content .feature-list li {
+    font-size: 0.82rem; padding: 4px 0;
+    display: flex; align-items: center; gap: 8px;
   }
   .check-icon {
     width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
@@ -164,26 +186,50 @@
   }
   .check-icon svg { width: 10px; height: 10px; stroke: #fff; }
 
+  /* Page flip corner hint */
+  .page-corner {
+    position: absolute; bottom: 16px; right: 16px;
+    font-size: 0.7rem; font-weight: 600; color: rgba(0,0,0,0.3);
+    display: flex; align-items: center; gap: 4px;
+    transition: color 0.2s;
+  }
+  .page-corner svg { width: 14px; height: 14px; stroke: currentColor; }
+  .book-page:hover .page-corner { color: rgba(0,0,0,0.6); }
+  .page-back .page-corner { right: auto; left: 16px; }
+  .page-back .page-corner svg { transform: scaleX(-1); }
+
+  /* Page dot indicators */
+  .book-dots {
+    display: flex; justify-content: center; gap: 8px;
+    margin-top: 24px;
+  }
+  .book-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.3); border: none; cursor: pointer;
+    transition: background 0.3s, transform 0.2s; padding: 0;
+  }
+  .book-dot.active { background: #fff; transform: scale(1.3); }
+
   /* Chapter colors */
-  .ch-mountains { background: #e8f0e4; color: #1a2a1a; }
-  .ch-mountains .chapter-card-num { color: #5a7a4a; }
-  .ch-mountains .chapter-card-text p { color: #4a5a44; }
-  .ch-mountains .check-icon { background: #7c9070; }
+  .bg-mountains { background: #e8f0e4; color: #1a2a1a; }
+  .bg-mountains .chapter-num { color: #5a7a4a; }
+  .bg-mountains p { color: #4a5a44; }
+  .bg-mountains .check-icon { background: #7c9070; }
 
-  .ch-dive { background: #d0e8f4; color: #1a2a3a; }
-  .ch-dive .chapter-card-num { color: #4a7a9a; }
-  .ch-dive .chapter-card-text p { color: #3a5a6a; }
-  .ch-dive .check-icon { background: #5b8aaa; }
+  .bg-dive { background: #d0e8f4; color: #1a2a3a; }
+  .bg-dive .chapter-num { color: #4a7a9a; }
+  .bg-dive p { color: #3a5a6a; }
+  .bg-dive .check-icon { background: #5b8aaa; }
 
-  .ch-horizon { background: #f0e4d0; color: #2a1a0a; }
-  .ch-horizon .chapter-card-num { color: #9a6a3a; }
-  .ch-horizon .chapter-card-text p { color: #6a5040; }
-  .ch-horizon .check-icon { background: #c4704b; }
+  .bg-horizon { background: #f0e4d0; color: #2a1a0a; }
+  .bg-horizon .chapter-num { color: #9a6a3a; }
+  .bg-horizon p { color: #6a5040; }
+  .bg-horizon .check-icon { background: #c4704b; }
 
-  .ch-night { background: #1a1a2a; color: #e8eef4; }
-  .ch-night .chapter-card-num { color: #7c9070; }
-  .ch-night .chapter-card-text p { color: #90a0b8; }
-  .ch-night .check-icon { background: #7c9070; }
+  .bg-night { background: #1a1a2a; color: #e8eef4; }
+  .bg-night .chapter-num { color: #7c9070; }
+  .bg-night p { color: #90a0b8; }
+  .bg-night .check-icon { background: #7c9070; }
 
   /* ═══════════════════════════════════════════
      APP DEMO — Mini mockup
@@ -434,12 +480,12 @@
      ═══════════════════════════════════════════ */
   @media (max-width: 900px) {
     .hero h1 { font-size: 2.6rem; }
-    .chapter-card { flex: 0 0 calc(100vw - 60px); grid-template-columns: 1fr; min-height: auto; }
-    .chapter-card-img { min-height: 260px; }
-    .chapter-card-text { padding: 32px 28px; }
-    .chapter-card-text h3 { font-size: 1.5rem; }
+    .book { width: 100%; height: 400px; }
+    .page-content { padding: 24px 20px; }
+    .page-content h3 { font-size: 1.2rem; }
+    .page-content p { font-size: 0.78rem; }
     .storybook { padding: 60px 0; }
-    .storybook-scroll { padding: 0 20px 20px; gap: 16px; }
+    .book-wrapper { padding: 0 20px 20px; }
     .demo-inner { grid-template-columns: 1fr; gap: 40px; }
     .benefits-grid { grid-template-columns: 1fr; }
     .values-inner { grid-template-columns: 1fr; }
@@ -484,62 +530,111 @@
     <p>Scroll through the chapters that built this platform — from a family's need to a tool that grows with every child.</p>
   </div>
 
-  <div class="storybook-scroll">
-    <!-- Chapter 1 — Mountains (soft green) -->
-    <div class="chapter-card ch-mountains">
-      <div class="chapter-card-img" style="background-image: url('hero-bg.png');"></div>
-      <div class="chapter-card-text">
-        <div class="chapter-card-num">Chapter One</div>
-        <h3>Once upon a mountaintop, two kids set out to learn</h3>
-        <p>They weren't in a classroom. They were on the road — moving between countries and time zones. But they never stopped being curious.</p>
-        <ul class="feature-list">
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Exercises that adapt to your child's level</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>15 minutes of focused practice per day</li>
-        </ul>
+  <div class="book-wrapper">
+    <div class="book" id="storybook">
+      <!-- Left side — shows current chapter illustration -->
+      <div class="book-left" id="book-left">
+        <div class="book-left-img" id="book-left-img" style="background-image: url('hero-bg.png');"></div>
       </div>
-    </div>
 
-    <!-- Chapter 2 — Dive (ocean blue) -->
-    <div class="chapter-card ch-dive">
-      <div class="chapter-card-img" style="background-image: url('dive-bg.png');"></div>
-      <div class="chapter-card-text">
-        <div class="chapter-card-num">Chapter Two</div>
-        <h3>They dove deeper — and the learning adapted</h3>
-        <p>939 exercises built on proven methods — Montessori, Singapore Math, bar models. Real pedagogy, not AI worksheets.</p>
-        <ul class="feature-list">
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Smart difficulty that grows with them</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Cheat cards your child builds themselves</li>
-        </ul>
+      <!-- Page 1 (front: ch1 text, back: ch2 illustration) -->
+      <div class="book-page" data-page="0" onclick="flipPage(this)">
+        <div class="page-front">
+          <div class="page-content bg-mountains">
+            <div class="chapter-num">Chapter One</div>
+            <h3>Once upon a mountaintop, two kids set out to learn</h3>
+            <p>They weren't in a classroom. They were on the road — moving between countries and time zones. But they never stopped being curious.</p>
+            <ul class="feature-list">
+              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Exercises that adapt to your child's level</li>
+              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>15 minutes of focused practice per day</li>
+            </ul>
+            <div class="page-corner">
+              <span>flip</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="page-back">
+          <div style="width:100%;height:100%;background:url('dive-bg.png') center/cover no-repeat;"></div>
+        </div>
       </div>
-    </div>
 
-    <!-- Chapter 3 — Horizon (warm sand) -->
-    <div class="chapter-card ch-horizon">
-      <div class="chapter-card-img" style="background-image: url('horizon-bg.png');"></div>
-      <div class="chapter-card-text">
-        <div class="chapter-card-num">Chapter Three</div>
-        <h3>Beyond the horizon — parents see everything</h3>
-        <p>Real insight into what your child practised, where they excelled, and what needs attention.</p>
-        <ul class="feature-list">
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Parent dashboard with per-subject progress</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Tutor connection — shared visibility</li>
-        </ul>
+      <!-- Page 2 (front: ch2 text, back: ch3 illustration) -->
+      <div class="book-page" data-page="1" onclick="flipPage(this)" style="z-index:0;">
+        <div class="page-front">
+          <div class="page-content bg-dive">
+            <div class="chapter-num">Chapter Two</div>
+            <h3>They dove deeper — and the learning adapted</h3>
+            <p>939 exercises built on proven methods — Montessori, Singapore Math, bar models. Real pedagogy, not AI worksheets.</p>
+            <ul class="feature-list">
+              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Smart difficulty that grows with them</li>
+              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Cheat cards your child builds themselves</li>
+            </ul>
+            <div class="page-corner">
+              <span>flip</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="page-back">
+          <div style="width:100%;height:100%;background:url('horizon-bg.png') center/cover no-repeat;"></div>
+        </div>
       </div>
-    </div>
 
-    <!-- Chapter 4 — Night (dark navy) -->
-    <div class="chapter-card ch-night">
-      <div class="chapter-card-img" style="background-image: url('night-bg.png');"></div>
-      <div class="chapter-card-text">
-        <div class="chapter-card-num">Chapter Four</div>
-        <h3>Under the stars, they rested — and celebrated</h3>
-        <p>Streaks were built. Trophies collected. And every night, their parents could see how far they'd come.</p>
-        <ul class="feature-list">
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Daily streaks and trophy rewards</li>
-          <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Motivation that comes from within</li>
-        </ul>
+      <!-- Page 3 (front: ch3 text, back: ch4 illustration) -->
+      <div class="book-page" data-page="2" onclick="flipPage(this)" style="z-index:0;">
+        <div class="page-front">
+          <div class="page-content bg-horizon">
+            <div class="chapter-num">Chapter Three</div>
+            <h3>Beyond the horizon — parents see everything</h3>
+            <p>Real insight into what your child practised, where they excelled, and what needs attention.</p>
+            <ul class="feature-list">
+              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Parent dashboard with per-subject progress</li>
+              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Tutor connection — shared visibility</li>
+            </ul>
+            <div class="page-corner">
+              <span>flip</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="page-back">
+          <div style="width:100%;height:100%;background:url('night-bg.png') center/cover no-repeat;"></div>
+        </div>
+      </div>
+
+      <!-- Page 4 (front: ch4 text, back: end) -->
+      <div class="book-page" data-page="3" onclick="flipPage(this)" style="z-index:0;">
+        <div class="page-front">
+          <div class="page-content bg-night">
+            <div class="chapter-num">Chapter Four</div>
+            <h3>Under the stars, they rested — and celebrated</h3>
+            <p>Streaks were built. Trophies collected. And every night, their parents could see how far they'd come.</p>
+            <ul class="feature-list">
+              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Daily streaks and trophy rewards</li>
+              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Motivation that comes from within</li>
+            </ul>
+            <div class="page-corner">
+              <span>restart</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="page-back">
+          <div class="page-content bg-mountains" style="display:flex;align-items:center;justify-content:center;text-align:center;">
+            <h3>The story continues...</h3>
+            <p style="margin-top:8px;">Start your child's chapter today</p>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="book-dots" id="book-dots">
+    <button class="book-dot active" onclick="goToPage(0)"></button>
+    <button class="book-dot" onclick="goToPage(1)"></button>
+    <button class="book-dot" onclick="goToPage(2)"></button>
+    <button class="book-dot" onclick="goToPage(3)"></button>
   </div>
 </section>
 
@@ -780,10 +875,75 @@
 
 <!-- ═══ NAV SCROLL EFFECT ═══ -->
 <script>
+  // Nav scroll effect
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 20);
   });
+
+  // Book flip logic
+  const pages = document.querySelectorAll('.book-page');
+  const dots = document.querySelectorAll('.book-dot');
+  const leftImg = document.getElementById('book-left-img');
+  const images = ['hero-bg.png', 'dive-bg.png', 'horizon-bg.png', 'night-bg.png'];
+  let currentPage = 0;
+
+  function updateDots() {
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentPage));
+  }
+
+  function updateZIndex() {
+    pages.forEach((p, i) => {
+      if (i < currentPage) {
+        p.style.zIndex = i;
+      } else {
+        p.style.zIndex = pages.length - i;
+      }
+    });
+  }
+
+  function flipPage(el) {
+    const idx = parseInt(el.dataset.page);
+
+    if (el.classList.contains('flipped')) {
+      // Unflip — go back
+      el.classList.remove('flipped');
+      currentPage = idx;
+      leftImg.style.backgroundImage = `url('${images[idx]}')`;
+    } else {
+      // Flip forward
+      if (idx === pages.length - 1) {
+        // Last page — restart
+        pages.forEach(p => p.classList.remove('flipped'));
+        currentPage = 0;
+        leftImg.style.backgroundImage = `url('${images[0]}')`;
+      } else {
+        el.classList.add('flipped');
+        currentPage = idx + 1;
+        leftImg.style.backgroundImage = `url('${images[Math.min(idx + 1, images.length - 1)]}')`;
+      }
+    }
+    updateZIndex();
+    updateDots();
+  }
+
+  function goToPage(target) {
+    if (target > currentPage) {
+      for (let i = currentPage; i < target; i++) {
+        pages[i].classList.add('flipped');
+      }
+    } else {
+      for (let i = target; i < currentPage; i++) {
+        pages[i].classList.remove('flipped');
+      }
+    }
+    currentPage = target;
+    leftImg.style.backgroundImage = `url('${images[target]}')`;
+    updateZIndex();
+    updateDots();
+  }
+
+  updateZIndex();
 </script>
 
 </body>
