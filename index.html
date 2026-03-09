@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boundless Learning — What if school could travel with you?</title>
+<title>NoBox Education — What if school could travel with you?</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -57,16 +57,19 @@
   /* Twinkling stars in the bottom portion */
   .stars {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 1;
+    pointer-events: none; z-index: 5;
     opacity: 0;
     transition: opacity 0.3s;
   }
   .star {
     position: absolute; width: 2px; height: 2px;
     background: #fff; border-radius: 50%;
+    box-shadow: 0 0 3px 1px rgba(255,255,255,0.4);
     animation: twinkle 3s ease-in-out infinite;
   }
-  .star.big { width: 3px; height: 3px; }
+  .star.big { width: 3px; height: 3px; box-shadow: 0 0 5px 2px rgba(255,255,255,0.6); }
+  .star.warm { background: #ffe8a0; box-shadow: 0 0 4px 1px rgba(255,220,120,0.5); }
+  .star.warm.big { box-shadow: 0 0 6px 2px rgba(255,220,120,0.6); }
   /* Meteor / shooting star */
   .meteor {
     position: absolute; pointer-events: none;
@@ -92,24 +95,61 @@
     0%, 100% { opacity: 0.3; }
     50% { opacity: 1; }
   }
+  /* Suitcase cursor */
+  html, body, * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='32' viewBox='0 0 28 32'%3E%3Cpath d='M14 1 C12 1 10 4 9 8 L8 14 L4 18 C3 19 3 21 4 21 L8 20 L8 24 L6 28 C5 30 6 31 8 31 L11 30 L12 31 L16 31 L17 30 L20 31 C22 31 23 30 22 28 L20 24 L20 20 L24 21 C25 21 25 19 24 18 L20 14 L19 8 C18 4 16 1 14 1 Z' fill='%23e8e8ec' stroke='%23999' stroke-width='0.8'/%3E%3Cellipse cx='14' cy='10' rx='2.5' ry='3' fill='%2388c8f0' stroke='%23668' stroke-width='0.5'/%3E%3Cpath d='M8 24 L6 28 C5 30 6 31 8 31 L10 30 L8 24Z' fill='%23f44' stroke='%23c33' stroke-width='0.5'/%3E%3Cpath d='M20 24 L22 28 C23 30 22 31 20 31 L18 30 L20 24Z' fill='%23f44' stroke='%23c33' stroke-width='0.5'/%3E%3Crect x='12' y='26' width='4' height='5' rx='1' fill='%23f80' stroke='%23c60' stroke-width='0.5'/%3E%3C/svg%3E") 14 2, auto; }
+  /* Click star burst */
+  .click-star {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 8px; height: 8px;
+    animation: starBurst 0.7s ease-out forwards;
+  }
+  .click-star svg { width: 100%; height: 100%; }
+  @keyframes starBurst {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.2); }
+    30% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx2), var(--dy2)) scale(0.4); }
+  }
+
+  /* Mystery flying silhouette */
+  .flyer {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    animation: flyAcross 12s linear forwards;
+  }
+  .flyer svg { width: 100%; height: auto; }
+  .flyer .cabin-light {
+    animation: cabinBlink 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes flyAcross {
+    0% { opacity: 0; transform: translateX(0) scaleX(-1); }
+    5% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(calc(-100vw - 160px)) scaleX(-1); }
+  }
+  @keyframes cabinBlink {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+  }
   html { scroll-behavior: smooth; }
 
   /* ── Buttons ── */
   .btn {
     display: inline-block; padding: 14px 32px; border-radius: 28px;
-    background: #7c9070; color: #fff; font-weight: 600; font-size: 0.95rem;
+    background: #f5c542; color: #1a1a2a; font-weight: 600; font-size: 0.95rem;
+    text-decoration: none; border: none; cursor: pointer; font-family: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(245,197,66,0.3);
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(245,197,66,0.4); }
+  .btn-outline {
+    display: inline-block; padding: 14px 32px; border-radius: 28px;
+    background: #7c9070; color: #fff; font-weight: 600; font-size: 0.9rem;
     text-decoration: none; border: none; cursor: pointer; font-family: inherit;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 2px 8px rgba(124,144,112,0.3);
   }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(124,144,112,0.4); }
-  .btn-outline {
-    display: inline-block; padding: 12px 28px; border-radius: 28px;
-    background: transparent; color: #1a1a2a; font-weight: 600; font-size: 0.9rem;
-    text-decoration: none; border: 2px solid #ddd; cursor: pointer; font-family: inherit;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .btn-outline:hover { border-color: #7c9070; background: rgba(124,144,112,0.06); }
+  .btn-outline:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(124,144,112,0.4); }
   .btn-dark {
     display: inline-block; padding: 14px 32px; border-radius: 28px;
     background: #1a1a2a; color: #fff; font-weight: 600; font-size: 0.95rem;
@@ -152,7 +192,10 @@
   .nav-logo {
     font-size: 1.2rem; font-weight: 800; color: #1a1a2a;
     text-decoration: none; letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 10px;
   }
+  .nav-logo svg { height: 32px; width: auto; }
+  .nav-logo span { line-height: 1; }
   .nav-links { display: flex; gap: 28px; align-items: center; }
   .nav-links a {
     font-size: 0.85rem; font-weight: 600; color: #5a5a6a;
@@ -168,7 +211,8 @@
      HERO
      ═══════════════════════════════════════════ */
   .hero {
-    padding: 140px 40px 80px; text-align: center;
+    min-height: 100vh; padding: 160px 40px 120px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     background: transparent;
   }
   .hero-tagline {
@@ -203,22 +247,31 @@
     font-size: 1rem; color: rgba(26,26,42,0.6);
     max-width: 480px; margin: 0 auto; line-height: 1.6;
   }
-  /* Book */
+  /* Book — Logo shape via clip-path */
   .book-wrapper {
-    display: flex; justify-content: center; align-items: center;
-    padding: 0 40px 20px;
+    position: relative;
+    height: calc(min(28vw, 440px) * 1.67 + 60px);
+    padding: 0 0 20px;
+    overflow: visible;
   }
   .book {
-    width: 1100px; height: 600px;
-    position: relative; perspective: 1800px;
+    --page: min(28vw, 440px);
+    --clip-right: polygon(0% 23.2%, 57.7% 0.1%, 100% 25.5%, 100% 65.8%, 0% 99.7%);
+    --clip-left: polygon(100% 23.2%, 42.3% 0.1%, 0% 25.5%, 0% 65.8%, 100% 99.7%);
+    --clip-full: polygon(21.4% 0%, 49.6% 23.2%, 78.4% 0.1%, 99.7% 25.5%, 99.7% 65.7%, 49.6% 99.7%, 0.1% 65.7%, 0.1% 25.5%);
+    width: calc(var(--page) * 2); height: calc(var(--page) * 1.67);
+    position: absolute; perspective: 2400px;
+    right: calc(50% - var(--page));
   }
+  /* Inside pages — sit on the right half when book is open */
   .book-page {
     position: absolute; top: 0; right: 0;
-    width: 50%; height: 100%;
+    width: var(--page); height: 100%;
     transform-origin: left center;
     transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
     transform-style: preserve-3d;
     z-index: 1; cursor: pointer;
+    visibility: hidden;
   }
   .book-page.flipped {
     transform: rotateY(-180deg);
@@ -227,27 +280,83 @@
   .page-front, .page-back {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     backface-visibility: hidden;
-    border-radius: 0 15px 15px 0; overflow: hidden;
+    overflow: hidden;
+  }
+  .page-front .page-content {
+    clip-path: var(--clip-right);
   }
   .page-back {
     transform: rotateY(180deg);
-    border-radius: 15px 0 0 15px;
   }
-  /* Left static side */
+  .page-back .page-content {
+    clip-path: var(--clip-left);
+  }
+  /* Left static side — shows illustration for current chapter */
   .book-left {
     position: absolute; top: 0; left: 0;
-    width: 50%; height: 100%;
-    border-radius: 15px 0 0 15px; overflow: hidden;
+    width: var(--page); height: 100%;
+    overflow: hidden;
+    visibility: hidden;
   }
   .book-left-img {
     width: 100%; height: 100%;
     background-size: cover; background-position: center bottom;
+    clip-path: var(--clip-left);
+  }
+  /* Left half of the logo (static, behind left panel) */
+  .book-cover-left {
+    position: absolute; top: 0; left: 0;
+    width: var(--page); height: 100%;
+    overflow: hidden;
+    clip-path: var(--clip-left);
+    background: #f0ece4;
+    z-index: 5;
+    transition: opacity 0.4s ease 0.3s;
+  }
+  .book-cover-left svg {
+    position: absolute; top: 0; left: 0;
+    width: 200%; height: 100%;
+  }
+  .book.open .book-cover-left {
+    opacity: 0; pointer-events: none;
+  }
+  /* Right half of the logo — flips like a book cover */
+  .book-cover-front {
+    position: absolute; top: 0; right: 0;
+    width: var(--page); height: 100%;
+    overflow: hidden;
+    z-index: 10; cursor: pointer;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+    clip-path: var(--clip-right);
+    background: #f0ece4;
+  }
+  .book-cover-front svg {
+    position: absolute; top: 0; left: -100%;
+    width: 200%; height: 100%;
+  }
+  .book-cover-front.opened {
+    transform: rotateY(-180deg);
+    pointer-events: none;
+  }
+  .book-cover-front.hidden { visibility: hidden; }
+  /* Purple spine line when book is open */
+  .book.open::after {
+    content: '';
+    position: absolute;
+    left: var(--page); top: 23.2%; bottom: 0.3%;
+    width: 3px; margin-left: -1.5px;
+    background: #B49AF7;
+    z-index: 20;
+    border-radius: 2px;
   }
 
   /* Page content */
   .page-content {
     width: 100%; height: 100%;
-    padding: 48px 44px; display: flex; flex-direction: column;
+    padding: 28% 24px 20% 24px; display: flex; flex-direction: column;
     justify-content: center; position: relative;
   }
   .page-content .chapter-num {
@@ -255,17 +364,17 @@
     letter-spacing: 3px; margin-bottom: 10px;
   }
   .page-content h3 {
-    font-size: 1.6rem; font-weight: 800; line-height: 1.2;
-    margin-bottom: 12px; letter-spacing: -0.3px;
+    font-size: 1.3rem; font-weight: 800; line-height: 1.2;
+    margin-bottom: 10px; letter-spacing: -0.3px;
   }
   .page-content p {
-    font-size: 0.88rem; line-height: 1.65; margin-bottom: 6px;
+    font-size: 0.8rem; line-height: 1.55; margin-bottom: 4px;
   }
   .page-content .feature-list {
     list-style: none; margin-top: 14px;
   }
   .page-content .feature-list li {
-    font-size: 0.82rem; padding: 4px 0;
+    font-size: 0.75rem; padding: 3px 0;
     display: flex; align-items: center; gap: 8px;
   }
   .check-icon {
@@ -276,7 +385,7 @@
 
   /* Page flip corner hint */
   .page-corner {
-    position: absolute; bottom: 16px; right: 16px;
+    position: absolute; bottom: 35%; right: 16px;
     font-size: 0.7rem; font-weight: 600; color: rgba(0,0,0,0.3);
     display: flex; align-items: center; gap: 4px;
     transition: color 0.2s;
@@ -289,8 +398,16 @@
   /* Page dot indicators */
   .book-dots {
     display: flex; justify-content: center; gap: 8px;
-    margin-top: 24px;
+    margin-top: 24px; align-items: center;
   }
+  .book-dot-cover {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(26,26,42,0.1); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(26,26,42,0.4); transition: all 0.2s;
+    padding: 0; margin-right: 4px;
+  }
+  .book-dot-cover:hover { background: rgba(26,26,42,0.2); color: #1a1a2a; }
   .book-dot {
     width: 16px; height: 16px; border-radius: 50%;
     background: rgba(26,26,42,0.2); border: none; cursor: pointer;
@@ -319,126 +436,248 @@
   .bg-night p { color: #90a0b8; }
   .bg-night .check-icon { background: #7c9070; }
 
+  .bg-quote { background: linear-gradient(160deg, #f8f0e4 0%, #e8e0d4 100%); color: #2a1a0a; }
+  .bg-quote .chapter-num { color: #B49AF7; }
+  .bg-quote p { color: #5a4a3a; font-style: italic; }
+  .bg-quote h3 { font-size: 1.4rem; line-height: 1.4; }
+
   /* ═══════════════════════════════════════════
      APP DEMO — Mini mockup
      ═══════════════════════════════════════════ */
   .demo-section {
-    padding: 100px 40px;
+    min-height: 100vh;
+    padding: 80px 40px;
     background: transparent;
   }
   .demo-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-    align-items: center;
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    background: rgba(255,255,255,0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 28px;
+    padding: 48px 44px;
+    border: 1px solid rgba(255,255,255,0.3);
   }
-  .demo-text h2 {
-    font-size: 2.4rem; font-weight: 800; margin-bottom: 16px;
+  .demo-header {
+    margin-bottom: 32px;
+  }
+  .demo-header h2 {
+    font-size: 2.2rem; font-weight: 800;
     line-height: 1.15; letter-spacing: -0.5px;
   }
-  .demo-text p {
-    font-size: 0.95rem; color: #5a5a6a; line-height: 1.7; margin-bottom: 24px;
+  /* Top area: mockup left, explanation right */
+  .demo-top {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 44px;
+    align-items: stretch;
+    margin-bottom: 44px;
   }
-
-  /* Mockup browser frame */
-  .mockup-browser {
-    background: #fff; border-radius: 16px;
+  /* Explanation text */
+  .demo-explain {
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  .demo-view-text { display: none; }
+  .demo-view-text.active { display: block; }
+  .demo-view-text h3 {
+    font-size: 1.5rem; font-weight: 700; color: #4a6a40;
+    margin-bottom: 14px;
+  }
+  .demo-view-text p {
+    font-size: 1.02rem; color: #5a5a6a; line-height: 1.7; margin-bottom: 18px;
+  }
+  .demo-view-text ul {
+    list-style: none; padding: 0; margin-bottom: 20px;
+  }
+  .demo-view-text ul li {
+    font-size: 0.95rem; color: #4a5a4a; padding: 6px 0;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .demo-view-text ul li::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: #7c9070; flex-shrink: 0;
+  }
+  .demo-explain .btn { margin-top: auto; align-self: flex-start; }
+  /* Mockup image */
+  .demo-mockup-img {
+    border-radius: 16px;
     box-shadow: 0 8px 40px rgba(0,0,0,0.1);
     overflow: hidden;
+    background: #fff;
+    position: relative;
   }
-  .mockup-bar {
-    height: 36px; background: #f0ede8;
-    display: flex; align-items: center; padding: 0 14px; gap: 7px;
+  .demo-mockup-img img {
+    width: 100%; height: auto; display: block;
+    transition: opacity 0.4s ease;
   }
-  .mockup-dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; }
-  .mockup-dot:first-child { background: #f87171; }
-  .mockup-dot:nth-child(2) { background: #fbbf24; }
-  .mockup-dot:nth-child(3) { background: #34d399; }
-  .mockup-url {
-    flex: 1; margin-left: 12px; height: 22px; background: #e8e5e0;
-    border-radius: 6px; display: flex; align-items: center;
-    padding: 0 10px; font-size: 0.65rem; color: #8a8a8a;
+  .demo-mockup-img img.hidden { display: none; }
+  .demo-mockup-img img.active { display: block; }
+  /* Bottom view selector cards */
+  .demo-views {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
   }
-  .mockup-body { padding: 20px; }
-
-  /* Child dashboard mockup */
-  .mock-greeting {
-    font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; color: #1a1a2a;
+  .demo-view-card {
+    background: rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px; padding: 24px 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
   }
-  .mock-stats {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-    margin-bottom: 16px;
+  .demo-view-card:hover {
+    background: rgba(255,255,255,0.45);
+    transform: translateY(-3px);
   }
-  .mock-stat {
-    background: #f8f6f3; border-radius: 10px; padding: 12px; text-align: center;
+  .demo-view-card.active {
+    border-color: #7c9070;
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 4px 20px rgba(124,144,112,0.15);
   }
-  .mock-stat-num { font-size: 1.4rem; font-weight: 800; }
-  .mock-stat-label { font-size: 0.6rem; color: #7a7a8a; }
-  .mock-subjects {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  .demo-view-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+    transition: background 0.3s;
   }
-  .mock-subject {
-    border-radius: 10px; padding: 14px; position: relative;
+  .demo-view-icon svg { width: 22px; height: 22px; fill: none; stroke-width: 2; }
+  .demo-view-card h4 {
+    font-size: 0.95rem; font-weight: 700; margin-bottom: 4px;
   }
-  .mock-subject h4 { font-size: 0.75rem; font-weight: 700; margin-bottom: 4px; }
-  .mock-subject p { font-size: 0.6rem; color: #5a5a6a; }
-  .mock-progress {
-    height: 4px; background: rgba(0,0,0,0.08); border-radius: 2px;
-    margin-top: 8px; overflow: hidden;
+  .demo-view-card p {
+    font-size: 0.75rem; color: #6a6a7a; line-height: 1.45;
   }
-  .mock-progress-fill { height: 100%; border-radius: 2px; }
-
-  /* Exercise mockup */
-  .mock-exercise {
-    background: #fff; border-radius: 12px; padding: 16px;
-    border: 1px solid #eee; margin-top: 12px;
-  }
-  .mock-q {
-    font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; color: #1a1a2a;
-  }
-  .mock-options { display: flex; gap: 8px; flex-wrap: wrap; }
-  .mock-opt {
-    padding: 6px 14px; border-radius: 8px; font-size: 0.7rem;
-    font-weight: 600; border: 1.5px solid #e0ddd8; color: #5a5a6a;
-  }
-  .mock-opt.correct {
-    border-color: #7c9070; background: #e8f0e4; color: #4a6a40;
-  }
+  .demo-view-card.active h4 { color: #4a6a40; }
 
   /* ═══════════════════════════════════════════
-     BENEFITS
+     TRUST SECTION — Carousel + Metrics
      ═══════════════════════════════════════════ */
-  .benefits {
+  .trust-section {
     padding: 100px 40px;
-    max-width: 1100px; margin: 0 auto;
+    max-width: 1200px; margin: 0 auto;
   }
-  .benefits-header {
-    text-align: center; margin-bottom: 60px;
+  /* Outer layout: card left, metrics right */
+  .trust-layout {
+    display: grid; grid-template-columns: 1fr 220px; gap: 24px;
+    align-items: stretch;
   }
-  .benefits-header h2 {
+  .trust-card {
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 28px;
+    padding: 48px 44px;
+    border: 1px solid rgba(255,255,255,0.3);
+    position: relative;
+  }
+  .trust-header {
+    margin-bottom: 36px;
+  }
+  .trust-header h2 {
     font-size: 2.4rem; font-weight: 800; letter-spacing: -0.5px;
-    margin-bottom: 12px;
+    line-height: 1.15;
   }
-  .benefits-header p {
-    font-size: 1rem; color: #5a5a6a; max-width: 520px;
-    margin: 0 auto; line-height: 1.65;
+  .trust-header p {
+    font-size: 1rem; color: #4a4a5a; max-width: 580px;
+    line-height: 1.7; margin-top: 12px;
   }
-  .benefits-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  /* Carousel slides */
+  .trust-carousel {
+    position: relative; overflow: hidden;
   }
-  .benefit-card {
-    background: #f8f6f3; border-radius: 20px; padding: 36px 28px;
-    transition: transform 0.2s, box-shadow 0.2s;
+  .trust-slide {
+    display: none;
+    grid-template-columns: 1fr 1fr; gap: 44px;
+    align-items: start;
   }
-  .benefit-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  .trust-slide.active { display: grid; }
+  .trust-slide.reverse { direction: rtl; }
+  .trust-slide.reverse > * { direction: ltr; }
+  /* Features list side */
+  .trust-features {
+    display: flex; flex-direction: column; justify-content: center;
+    height: 100%;
   }
-  .benefit-card .icon { margin-bottom: 16px; }
-  .benefit-card h3 {
-    font-size: 1.15rem; font-weight: 700; margin-bottom: 8px;
+  .trust-features h3 {
+    font-size: 1.5rem; font-weight: 700; color: #4a6a40;
+    margin-bottom: 8px;
   }
-  .benefit-card p {
-    font-size: 0.88rem; color: #5a5a6a; line-height: 1.6;
+  .trust-features > p {
+    font-size: 0.95rem; color: #4a4a5a; line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .trust-feature-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .trust-feature-item:last-child { border-bottom: none; }
+  .trust-feature-icon {
+    width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .trust-feature-icon svg { width: 18px; height: 18px; fill: none; stroke-width: 2; }
+  .trust-feature-item h4 {
+    font-size: 1rem; font-weight: 700; margin-bottom: 2px; color: #1a1a2a;
+  }
+  .trust-feature-item p {
+    font-size: 0.85rem; color: #4a4a5a; line-height: 1.5;
+  }
+  /* Photo placeholder side */
+  .trust-photo {
+    border-radius: 20px; overflow: hidden;
+    background: #e8e5e0;
+    aspect-ratio: 4/3;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .trust-photo img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .trust-photo-placeholder {
+    color: rgba(0,0,0,0.2); font-size: 0.85rem; font-weight: 600;
+  }
+  /* Carousel arrows */
+  .trust-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.08);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    z-index: 5; padding: 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+  .trust-arrow:hover {
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+  .trust-arrow svg {
+    width: 22px; height: 22px; stroke: #1a1a2a; fill: none; stroke-width: 2.5;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .trust-arrow-left { left: -24px; }
+  .trust-arrow-right { right: -24px; }
+  /* Right side metric cards — stacked vertically */
+  .trust-metrics {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .trust-metric {
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px; padding: 22px 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-left: 4px solid #7c9070;
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .trust-metric h3 {
+    font-size: 1.8rem; font-weight: 800; color: #7c9070;
+    margin-bottom: 2px;
+  }
+  .trust-metric p {
+    font-size: 0.78rem; color: #4a4a5a; line-height: 1.4;
   }
 
   /* ═══════════════════════════════════════════
@@ -462,26 +701,61 @@
     font-size: 1rem; color: #5a5a6a; max-width: 480px;
     margin: 0 auto; line-height: 1.65;
   }
-  .steps-list {
-    display: flex; flex-direction: column; gap: 0;
+  .steps-path {
+    display: flex; flex-direction: row; gap: 40px;
+    justify-content: center; align-items: center;
+    max-width: 1100px; margin: 0 auto;
   }
-  .step {
-    display: flex; gap: 28px; align-items: flex-start;
-    padding: 32px 0;
-    border-bottom: 1px solid #e8e5e0;
+  .stone {
+    position: relative;
+    flex: 1 1 0; max-width: 320px;
+    padding: 40px 32px 36px;
+    background:
+      radial-gradient(ellipse 18px 12px at 25% 30%, rgba(90,110,75,0.25) 0%, transparent 100%),
+      radial-gradient(ellipse 14px 10px at 70% 20%, rgba(60,80,50,0.2) 0%, transparent 100%),
+      radial-gradient(ellipse 20px 8px at 50% 65%, rgba(80,100,65,0.18) 0%, transparent 100%),
+      radial-gradient(ellipse 12px 14px at 15% 75%, rgba(100,120,85,0.15) 0%, transparent 100%),
+      radial-gradient(ellipse 16px 10px at 80% 55%, rgba(70,95,55,0.2) 0%, transparent 100%),
+      radial-gradient(ellipse 10px 16px at 40% 85%, rgba(85,105,70,0.15) 0%, transparent 100%),
+      radial-gradient(ellipse 22px 10px at 60% 40%, rgba(95,115,80,0.12) 0%, transparent 100%),
+      linear-gradient(145deg, #7c9070 0%, #6b8560 40%, #5a7550 100%);
+    border-radius: 55% 45% 50% 50% / 50% 55% 45% 50%;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2), inset 0 2px 6px rgba(255,255,255,0.15), inset 0 -3px 8px rgba(0,0,0,0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
   }
-  .step:last-child { border-bottom: none; }
-  .step-number {
-    width: 48px; height: 48px; border-radius: 50%;
-    background: #7c9070; color: #fff; font-weight: 800; font-size: 1.1rem;
+  .stone:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.25), inset 0 2px 6px rgba(255,255,255,0.15), inset 0 -3px 8px rgba(0,0,0,0.15);
+  }
+  .stone:nth-child(1) { border-radius: 55% 45% 50% 50% / 50% 55% 45% 50%; }
+  .stone:nth-child(2) { border-radius: 45% 55% 45% 55% / 55% 45% 55% 45%; background:
+      radial-gradient(ellipse 16px 14px at 30% 25%, rgba(100,125,85,0.25) 0%, transparent 100%),
+      radial-gradient(ellipse 20px 10px at 65% 45%, rgba(75,100,60,0.2) 0%, transparent 100%),
+      radial-gradient(ellipse 12px 18px at 45% 70%, rgba(85,110,70,0.18) 0%, transparent 100%),
+      radial-gradient(ellipse 14px 10px at 80% 80%, rgba(70,95,55,0.15) 0%, transparent 100%),
+      radial-gradient(ellipse 18px 12px at 20% 60%, rgba(90,115,75,0.15) 0%, transparent 100%),
+      linear-gradient(155deg, #8fa882 0%, #7c9070 40%, #6b8560 100%); }
+  .stone:nth-child(3) { border-radius: 50% 50% 55% 45% / 45% 50% 50% 55%; background:
+      radial-gradient(ellipse 14px 16px at 35% 35%, rgba(80,105,65,0.25) 0%, transparent 100%),
+      radial-gradient(ellipse 18px 10px at 60% 25%, rgba(65,90,50,0.2) 0%, transparent 100%),
+      radial-gradient(ellipse 16px 12px at 75% 65%, rgba(90,115,75,0.18) 0%, transparent 100%),
+      radial-gradient(ellipse 12px 14px at 25% 80%, rgba(75,100,60,0.15) 0%, transparent 100%),
+      radial-gradient(ellipse 20px 8px at 50% 50%, rgba(85,110,70,0.12) 0%, transparent 100%),
+      linear-gradient(140deg, #6b8560 0%, #5a7550 40%, #4a6540 100%); }
+  .stone-number {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.2); color: #fff; font-weight: 800; font-size: 1.1rem;
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+    margin: 0 auto 14px;
+    border: 2px solid rgba(255,255,255,0.3);
   }
-  .step-content h3 {
-    font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;
+  .stone-text h3 {
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: #fff;
   }
-  .step-content p {
-    font-size: 0.9rem; color: #5a5a6a; line-height: 1.6;
+  .stone-text p {
+    font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.55;
   }
 
   /* ═══════════════════════════════════════════
@@ -497,52 +771,28 @@
   /* ═══════════════════════════════════════════
      VALUES / TRUST
      ═══════════════════════════════════════════ */
-  .values-section {
-    padding: 100px 40px;
-    background: transparent;
-  }
-  .values-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-    align-items: center;
-  }
-  .values-text h2 {
-    font-size: 2.2rem; font-weight: 800; margin-bottom: 16px;
-    line-height: 1.15; letter-spacing: -0.5px;
-  }
-  .values-text p {
-    font-size: 0.95rem; color: #5a5a6a; line-height: 1.7;
-    margin-bottom: 16px;
-  }
-  .values-list {
-    list-style: none; margin-top: 20px;
-  }
-  .values-list li {
-    padding: 10px 0; font-size: 0.92rem; color: #3a3a4a;
-    display: flex; align-items: center; gap: 12px;
-    border-bottom: 1px solid #e8e5e0;
-  }
-  .values-list li:last-child { border-bottom: none; }
-  .values-card-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-  }
-  .value-card {
-    background: #fff; border-radius: 16px; padding: 24px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-  .value-card h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; }
-  .value-card p { font-size: 0.78rem; color: #5a5a6a; line-height: 1.5; }
 
   /* ═══════════════════════════════════════════
      FOOTER — Full-width night sky
      ═══════════════════════════════════════════ */
   .footer-night {
     position: relative; overflow: hidden;
-    background: url('night-mountains.png') center bottom / 100% auto no-repeat;
+    background: transparent;
     width: 100%; min-height: 100vh;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center; padding: 80px 40px 120px;
+  }
+  /* Mountains layer — in front of everything */
+  .footer-night::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 100%; z-index: 20;
+    background: url('night-mountains.png') center bottom / 100% auto no-repeat;
+    pointer-events: none;
+  }
+  /* Text sits between mountains and stars */
+  .footer-night h2, .footer-night p, .footer-night .footer-actions {
+    position: relative; z-index: 15;
   }
   .footer-night h2 {
     font-size: 2.8rem; color: #e8eef4; font-weight: 800;
@@ -553,7 +803,7 @@
     margin: 0 auto 32px; line-height: 1.65;
   }
   .footer-bottom {
-    position: absolute; bottom: 0; left: 0; right: 0;
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 21;
     padding: 24px 40px;
     display: flex; justify-content: space-between; align-items: center;
   }
@@ -567,15 +817,22 @@
      ═══════════════════════════════════════════ */
   @media (max-width: 900px) {
     .hero h1 { font-size: 2.6rem; }
-    .book { width: 100%; height: 400px; }
-    .page-content { padding: 24px 20px; }
+    .book-wrapper { height: calc(45vw * 1.67 + 60px); }
+    .book { --page: 45vw; height: calc(45vw * 1.67); }
+    .page-content { padding: 28% 16px 20% 16px; }
     .page-content h3 { font-size: 1.2rem; }
     .page-content p { font-size: 0.78rem; }
     .storybook { padding: 60px 0; }
     .book-wrapper { padding: 0 20px 20px; }
-    .demo-inner { grid-template-columns: 1fr; gap: 40px; }
-    .benefits-grid { grid-template-columns: 1fr; }
-    .values-inner { grid-template-columns: 1fr; }
+    .demo-section { min-height: auto; }
+    .demo-top { grid-template-columns: 1fr; gap: 24px; }
+    .demo-views { grid-template-columns: 1fr 1fr; }
+    .trust-layout { grid-template-columns: 1fr; }
+    .trust-slide, .trust-slide.reverse { grid-template-columns: 1fr; }
+    .trust-metrics { flex-direction: row; flex-wrap: wrap; }
+    .trust-metric { flex: 1 1 45%; }
+    .trust-arrow-left { left: 8px; }
+    .trust-arrow-right { right: 8px; }
     .footer-night h2 { font-size: 2rem; }
     .footer-night { min-height: 70vh; }
     .stats-row { flex-direction: column; gap: 24px; }
@@ -592,7 +849,22 @@
 
 <!-- ═══ NAV ═══ -->
 <nav id="nav">
-  <a href="#" class="nav-logo">Boundless Learning</a>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 714 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+      <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+      <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+      <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+      <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <span>NoBox <span style="font-weight:500;opacity:0.7;">Education</span></span>
+  </a>
   <div class="nav-links">
     <a href="#story">Our Story</a>
     <a href="#demo">The App</a>
@@ -605,7 +877,7 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div class="hero-tagline">Boundless Learning</div>
+  <div class="hero-tagline">NoBox Education</div>
   <h1>What if school could<br>travel with you?</h1>
   <p>Structured learning without walls. Help your child get ahead of the curve — without traditional school. Tailored, personalised learning programs designed around how your child actually learns.</p>
   <div class="hero-actions">
@@ -618,23 +890,55 @@
 <!-- ═══ STORYBOOK — Horizontal scroll ═══ -->
 <section id="story" class="storybook">
   <div class="storybook-header">
-    <h2>The Boundless story</h2>
+    <h2>The NoBox story</h2>
     <p>Scroll through the chapters that built this platform — from a family's need to a tool that grows with every child.</p>
   </div>
 
   <div class="book-wrapper">
     <div class="book" id="storybook">
-      <!-- Left side — shows current chapter illustration -->
+      <!-- Left half of logo cover -->
+      <div class="book-cover-left" id="book-cover-left">
+        <svg viewBox="0 0 714 595" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+          <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+          <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+          <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+          <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <!-- Right half of logo cover (flips open like a book) -->
+      <div class="book-cover-front" id="book-cover">
+        <svg viewBox="0 0 714 595" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+          <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+          <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+          <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+          <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+          <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <!-- Left side — shows illustration for current chapter -->
       <div class="book-left" id="book-left">
         <div class="book-left-img" id="book-left-img" style="background-image: url('hero-bg.png');"></div>
       </div>
 
-      <!-- Page 1 (front: ch1 text, back: ch2 illustration) -->
+      <!-- Page 1: Chapter One -->
       <div class="book-page" data-page="0" onclick="flipPage(this)">
         <div class="page-front">
           <div class="page-content bg-mountains">
             <div class="chapter-num">Chapter One</div>
-            <h3>Once upon a mountaintop, two kids set out to learn</h3>
+            <h3>Two kids set out to learn</h3>
             <p>They weren't in a classroom. They were on the road — moving between countries and time zones. But they never stopped being curious.</p>
             <ul class="feature-list">
               <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Exercises that adapt to your child's level</li>
@@ -646,17 +950,15 @@
             </div>
           </div>
         </div>
-        <div class="page-back">
-          <div style="width:100%;height:100%;background:url('dive-bg.png') center/cover no-repeat;"></div>
-        </div>
+        <div class="page-back"><div class="page-content bg-mountains"></div></div>
       </div>
 
-      <!-- Page 2 (front: ch2 text, back: ch3 illustration) -->
-      <div class="book-page" data-page="1" onclick="flipPage(this)" style="z-index:0;">
+      <!-- Page 2: Chapter Two -->
+      <div class="book-page" data-page="1" onclick="flipPage(this)">
         <div class="page-front">
           <div class="page-content bg-dive">
             <div class="chapter-num">Chapter Two</div>
-            <h3>They dove deeper — and the learning adapted</h3>
+            <h3>They dove deeper</h3>
             <p>939 exercises built on proven methods — Montessori, Singapore Math, bar models. Real pedagogy, not AI worksheets.</p>
             <ul class="feature-list">
               <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Smart difficulty that grows with them</li>
@@ -668,17 +970,15 @@
             </div>
           </div>
         </div>
-        <div class="page-back">
-          <div style="width:100%;height:100%;background:url('horizon-bg.png') center/cover no-repeat;"></div>
-        </div>
+        <div class="page-back"><div class="page-content bg-dive"></div></div>
       </div>
 
-      <!-- Page 3 (front: ch3 text, back: ch4 illustration) -->
-      <div class="book-page" data-page="2" onclick="flipPage(this)" style="z-index:0;">
+      <!-- Page 3: Chapter Three -->
+      <div class="book-page" data-page="2" onclick="flipPage(this)">
         <div class="page-front">
           <div class="page-content bg-horizon">
             <div class="chapter-num">Chapter Three</div>
-            <h3>Beyond the horizon — parents see everything</h3>
+            <h3>Beyond the horizon</h3>
             <p>Real insight into what your child practised, where they excelled, and what needs attention.</p>
             <ul class="feature-list">
               <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Parent dashboard with per-subject progress</li>
@@ -690,178 +990,208 @@
             </div>
           </div>
         </div>
-        <div class="page-back">
-          <div style="width:100%;height:100%;background:url('night-bg.png') center/cover no-repeat;"></div>
-        </div>
+        <div class="page-back"><div class="page-content bg-horizon"></div></div>
       </div>
 
-      <!-- Page 4 (front: ch4 text, back: end) -->
-      <div class="book-page" data-page="3" onclick="flipPage(this)" style="z-index:0;">
+      <!-- Page 4: Chapter Four -->
+      <div class="book-page" data-page="3" onclick="flipPage(this)">
         <div class="page-front">
           <div class="page-content bg-night">
             <div class="chapter-num">Chapter Four</div>
-            <h3>Under the stars, they rested — and celebrated</h3>
+            <h3>Under the stars</h3>
             <p>Streaks were built. Trophies collected. And every night, their parents could see how far they'd come.</p>
             <ul class="feature-list">
               <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Daily streaks and trophy rewards</li>
               <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Motivation that comes from within</li>
             </ul>
-            <div class="page-corner">
-              <span>restart</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
-            </div>
           </div>
         </div>
-        <div class="page-back">
-          <div class="page-content bg-mountains" style="display:flex;align-items:center;justify-content:center;text-align:center;">
-            <h3>The story continues...</h3>
-            <p style="margin-top:8px;">Start your child's chapter today</p>
+        <div class="page-back"><div class="page-content bg-night"></div></div>
+      </div>
+
+      <!-- Page 5: Quote -->
+      <div class="book-page" data-page="4" onclick="flipPage(this)">
+        <div class="page-front">
+          <div class="page-content bg-quote">
+            <div class="chapter-num">NoBox Education</div>
+            <h3>Learning is a journey,<br>not a destination.</h3>
+            <p>Every child learns differently. We built this so yours can keep exploring — wherever you are in the world.</p>
           </div>
         </div>
+        <div class="page-back"><div class="page-content bg-quote"></div></div>
       </div>
     </div>
   </div>
 
   <div class="book-dots" id="book-dots">
+    <button class="book-dot-cover" onclick="closeCover()" title="Back to cover">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>
+    </button>
     <button class="book-dot active" onclick="goToPage(0)"></button>
     <button class="book-dot" onclick="goToPage(1)"></button>
     <button class="book-dot" onclick="goToPage(2)"></button>
     <button class="book-dot" onclick="goToPage(3)"></button>
+    <button class="book-dot" onclick="goToPage(4)"></button>
   </div>
 </section>
 
 
-<!-- ═══ STATS ═══ -->
-<div class="stats-row">
-  <div class="stat">
-    <h3>939</h3>
-    <p>Exercise templates</p>
-  </div>
-  <div class="stat">
-    <h3>5+</h3>
-    <p>Teaching methodologies</p>
-  </div>
-  <div class="stat">
-    <h3>3</h3>
-    <p>Roles — child, parent, tutor</p>
-  </div>
-  <div class="stat">
-    <h3>0</h3>
-    <p>Ads. Ever.</p>
-  </div>
-</div>
-
-
-<!-- ═══ APP DEMO ═══ -->
-<section id="demo" class="demo-section">
-  <div class="demo-inner">
-    <div class="demo-text">
-      <h2>See it in action</h2>
-      <p>A clean, focused dashboard designed for children. No clutter, no distractions — just their subjects, their progress, and their next challenge.</p>
-      <p>Parents see the same data from their own dashboard. Tutors can be invited for shared visibility. Everyone stays on the same page.</p>
-      <a href="#start" class="btn">Start Your Intake</a>
+<!-- ═══ BUILT DIFFERENT — Carousel + Metrics ═══ -->
+<section id="benefits" class="trust-section">
+  <div class="trust-layout">
+  <div class="trust-card">
+    <div class="trust-header">
+      <h2>Built different,<br>on purpose.</h2>
+      <p>Every exercise is based on established teaching methods — not generated by AI. See exactly how your child progresses with data that matters.</p>
     </div>
-    <div class="mockup-browser">
-      <div class="mockup-bar">
-        <div class="mockup-dot"></div>
-        <div class="mockup-dot"></div>
-        <div class="mockup-dot"></div>
-        <div class="mockup-url">boundlesslearning.app/child-dashboard</div>
-      </div>
-      <div class="mockup-body">
-        <div class="mock-greeting">Good morning, Emma</div>
-        <div class="mock-stats">
-          <div class="mock-stat">
-            <div class="mock-stat-num" style="color: #c4704b;">12</div>
-            <div class="mock-stat-label">Day Streak</div>
+
+    <!-- Arrows -->
+    <button class="trust-arrow trust-arrow-left" onclick="goTrust((trustCurrent + 2) % 3)">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="trust-arrow trust-arrow-right" onclick="goTrust((trustCurrent + 1) % 3)">
+      <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+
+    <!-- Carousel: 3 slides -->
+    <div class="trust-carousel" id="trust-carousel">
+      <!-- Slide 1: Parents — features left, photo right -->
+      <div class="trust-slide active" data-slide="0">
+        <div class="trust-features">
+          <h3>For parents</h3>
+          <p>Full control and visibility over your child's learning journey.</p>
+          <div class="trust-feature-item">
+            <div class="trust-feature-icon" style="background:#e4f0f0;">
+              <svg viewBox="0 0 24 24" stroke="#3a6a6a"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <div>
+              <h4>Full visibility</h4>
+              <p>Real progress per subject, per child. See what was practised, mastery levels, and trends.</p>
+            </div>
           </div>
-          <div class="mock-stat">
-            <div class="mock-stat-num" style="color: #7c9070;">8</div>
-            <div class="mock-stat-label">Trophies</div>
+          <div class="trust-feature-item">
+            <div class="trust-feature-icon" style="background:#f8ece4;">
+              <svg viewBox="0 0 24 24" stroke="#8a5a4a"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h4>No ads. No data selling.</h4>
+              <p>Small team, no investors. Your data stays yours — always.</p>
+            </div>
           </div>
-          <div class="mock-stat">
-            <div class="mock-stat-num" style="color: #5b8aaa;">78%</div>
-            <div class="mock-stat-label">This Week</div>
+          <div class="trust-feature-item">
+            <div class="trust-feature-icon" style="background:#e4e8f8;">
+              <svg viewBox="0 0 24 24" stroke="#4a5a8a"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+            </div>
+            <div>
+              <h4>Real pedagogy, supported by AI</h4>
+              <p>Montessori, Singapore Math, bar models — enhanced with smart adaptation.</p>
+            </div>
           </div>
         </div>
-        <div class="mock-subjects">
-          <div class="mock-subject" style="background: #e8f0e4;">
-            <h4>Maths</h4>
-            <p>Level 3 — Addition & Subtraction</p>
-            <div class="mock-progress"><div class="mock-progress-fill" style="width:78%; background:#7c9070;"></div></div>
-          </div>
-          <div class="mock-subject" style="background: #e0eef8;">
-            <h4>Reading</h4>
-            <p>Level 2 — Comprehension</p>
-            <div class="mock-progress"><div class="mock-progress-fill" style="width:65%; background:#5b8aaa;"></div></div>
-          </div>
-        </div>
-        <div class="mock-exercise">
-          <div class="mock-q">What is 24 + 17?</div>
-          <div class="mock-options">
-            <div class="mock-opt">39</div>
-            <div class="mock-opt correct">41</div>
-            <div class="mock-opt">43</div>
-            <div class="mock-opt">37</div>
-          </div>
+        <div class="trust-photo">
+          <span class="trust-photo-placeholder">Parent photo placeholder</span>
         </div>
       </div>
+
+      <!-- Slide 2: Kids — photo left, features right (reversed) -->
+      <div class="trust-slide reverse" data-slide="1">
+        <div class="trust-features">
+          <h3>For kids</h3>
+          <p>Learning that feels like play, but builds real skills.</p>
+          <div class="trust-feature-item">
+            <div class="trust-feature-icon" style="background:#e8f0e4;">
+              <svg viewBox="0 0 24 24" stroke="#4a6a40"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <h4>Ahead of the curve</h4>
+              <p>Progress at your own pace — often faster than traditional school.</p>
+            </div>
+          </div>
+          <div class="trust-feature-item">
+            <div class="trust-feature-icon" style="background:#f0e4f0;">
+              <svg viewBox="0 0 24 24" stroke="#6a4a7a"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <div>
+              <h4>Personal program, own speed</h4>
+              <p>Designed around your strengths and gaps. No waiting for the class.</p>
+            </div>
+          </div>
+          <div class="trust-feature-item">
+            <div class="trust-feature-icon" style="background:#f8f0e4;">
+              <svg viewBox="0 0 24 24" stroke="#6a5a3a"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+            </div>
+            <div>
+              <h4>Streaks, trophies, and rewards</h4>
+              <p>Built-in motivation that comes from within — daily streaks and collectable trophies.</p>
+            </div>
+          </div>
+        </div>
+        <div class="trust-photo">
+          <span class="trust-photo-placeholder">Kids photo placeholder</span>
+        </div>
+      </div>
+
+      <!-- Slide 3: Tutor — features left, photo right -->
+      <div class="trust-slide" data-slide="2">
+        <div class="trust-features">
+          <h3>For tutors</h3>
+          <p>Everything you need to guide a student — no paperwork, no guessing.</p>
+          <div class="trust-feature-item">
+            <div class="trust-feature-icon" style="background:#e0eef8;">
+              <svg viewBox="0 0 24 24" stroke="#3a5a8a"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>
+            </div>
+            <div>
+              <h4>See where they left off</h4>
+              <p>Know exactly which exercise a student stopped at and what's still pending.</p>
+            </div>
+          </div>
+          <div class="trust-feature-item">
+            <div class="trust-feature-icon" style="background:#e8f0e4;">
+              <svg viewBox="0 0 24 24" stroke="#4a6a40"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <div>
+              <h4>Shared visibility with parents</h4>
+              <p>Same progress data, zero friction. Parents and tutors always on the same page.</p>
+            </div>
+          </div>
+          <div class="trust-feature-item">
+            <div class="trust-feature-icon" style="background:#f0e4d0;">
+              <svg viewBox="0 0 24 24" stroke="#8a5a3a"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </div>
+            <div>
+              <h4>Optional personal coaching</h4>
+              <p>Track progress and help students stay on track — available when families need it.</p>
+            </div>
+          </div>
+        </div>
+        <div class="trust-photo">
+          <span class="trust-photo-placeholder">Tutor photo placeholder</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Key metrics — right side, stacked vertically -->
+  <div class="trust-metrics">
+    <div class="trust-metric">
+      <h3>939</h3>
+      <p>Exercise templates</p>
+    </div>
+    <div class="trust-metric">
+      <h3>5+</h3>
+      <p>Smart learning methods, tailored and personal</p>
+    </div>
+    <div class="trust-metric">
+      <h3>3</h3>
+      <p>Personal coaching for children, parents, and tutors</p>
+    </div>
+    <div class="trust-metric">
+      <h3>0</h3>
+      <p>Ads. Ever. That's a promise.</p>
     </div>
   </div>
-</section>
-
-
-<!-- ═══ BENEFITS ═══ -->
-<section id="benefits" class="benefits">
-  <div class="benefits-header">
-    <h2>Why parents choose Boundless</h2>
-    <p>Built by a family that needed this for their own children. Every feature exists because a real parent needed it.</p>
-  </div>
-
-  <div class="benefits-grid">
-    <div class="benefit-card">
-      <div class="icon" style="background:#e8f0e4;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#4a6a40" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
-      <h3>Ahead of the curve</h3>
-      <p>Your child progresses at their own pace — often faster than traditional school, because every exercise targets their exact level.</p>
-    </div>
-    <div class="benefit-card">
-      <div class="icon" style="background:#e4e8f8;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#4a5a8a" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-      </div>
-      <h3>Real pedagogy</h3>
-      <p>939 exercises built on proven methods — Montessori, Singapore Math, bar models, number lines. Not AI-generated worksheets.</p>
-    </div>
-    <div class="benefit-card">
-      <div class="icon" style="background:#f8ece4;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#8a5a4a" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <h3>No ads. No data selling.</h3>
-      <p>Small team, no investors, no pressure to monetise your child's attention. Your data stays yours.</p>
-    </div>
-    <div class="benefit-card">
-      <div class="icon" style="background:#f0e4f0;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#6a4a7a" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-      </div>
-      <h3>Personalised programs</h3>
-      <p>After your intake survey, we design a learning program tailored to your child's strengths, gaps, and goals.</p>
-    </div>
-    <div class="benefit-card">
-      <div class="icon" style="background:#e4f0f0;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#3a6a6a" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-      </div>
-      <h3>Full visibility</h3>
-      <p>Parent dashboard shows real progress — per subject, per child. You see what was practised, mastery levels, and trends over time.</p>
-    </div>
-    <div class="benefit-card">
-      <div class="icon" style="background:#f8f0e4;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#6a5a3a" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-      </div>
-      <h3>Personal coaching</h3>
-      <p>After intake, you get a personal chat with a student coach to align on goals, expectations, and your child's unique learning style.</p>
-    </div>
-  </div>
+  </div><!-- /trust-layout -->
 </section>
 
 
@@ -873,24 +1203,24 @@
       <p>Three steps to a personalised learning journey designed around your child.</p>
     </div>
 
-    <div class="steps-list">
-      <div class="step">
-        <div class="step-number">1</div>
-        <div class="step-content">
+    <div class="steps-path">
+      <div class="stone">
+        <div class="stone-number">1</div>
+        <div class="stone-text">
           <h3>Complete your intake survey</h3>
           <p>Tell us about your child — their age, grade, strengths, and what they find challenging. This helps us understand where they are and where they want to go.</p>
         </div>
       </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <div class="step-content">
+      <div class="stone">
+        <div class="stone-number">2</div>
+        <div class="stone-text">
           <h3>Personal chat with your student coach</h3>
           <p>After intake, you'll have a one-on-one conversation to align on learning goals, expectations, and your child's unique needs. No chatbots — a real person.</p>
         </div>
       </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <div class="step-content">
+      <div class="stone">
+        <div class="stone-number">3</div>
+        <div class="stone-text">
           <h3>Your child starts their journey</h3>
           <p>We set up a personalised learning program. Your child logs in, starts practising, and the adaptive engine takes it from there — adjusting difficulty in real time.</p>
         </div>
@@ -904,45 +1234,98 @@
 </section>
 
 
-<!-- ═══ VALUES ═══ -->
-<section class="values-section">
-  <div class="values-inner">
-    <div class="values-text">
-      <h2>Built different,<br>on purpose</h2>
-      <p>We started Boundless because our own children weren't in formal school — but they never stopped being curious. We needed structure without killing the spark.</p>
-      <p>This isn't big EdTech. There's no investor pressure to add features you don't need. It's a small tool built carefully, by people who use it with their own kids.</p>
-      <ul class="values-list">
-        <li>
-          <div class="check-icon" style="background:#7c9070;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-          Psychology and technology, inseparable
-        </li>
-        <li>
-          <div class="check-icon" style="background:#7c9070;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-          Made by parents, for parents
-        </li>
-        <li>
-          <div class="check-icon" style="background:#7c9070;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>
-          Small team, big care
-        </li>
-      </ul>
+<!-- ═══ APP DEMO ═══ -->
+<section id="demo" class="demo-section">
+  <div class="demo-inner">
+    <div class="demo-header">
+      <h2>See it in action</h2>
     </div>
-    <div class="values-card-grid">
-      <div class="value-card">
-        <h4>No AI-generated content</h4>
-        <p>Every exercise is handcrafted using proven teaching methods. Quality over quantity.</p>
+
+    <div class="demo-top">
+      <!-- Mockup image (left) -->
+      <div class="demo-mockup-img" id="demo-mockup">
+        <img src="mockup-app.png" class="active" data-view="0" alt="Child dashboard view">
+        <img src="mockup-app.png" class="hidden" data-view="1" alt="Exercise view">
+        <img src="mockup-app.png" class="hidden" data-view="2" alt="Parent dashboard view">
+        <img src="mockup-app.png" class="hidden" data-view="3" alt="Tutor dashboard view">
       </div>
-      <div class="value-card">
-        <h4>No gamification traps</h4>
-        <p>Rewards motivate, they don't manipulate. No loot boxes, no artificial urgency.</p>
+
+      <!-- Explanation text (right) -->
+      <div class="demo-explain">
+        <div class="demo-view-text active" data-view="0">
+          <h3>Child dashboard</h3>
+          <p>Your child's personal learning space. Everything they need in one clean view — no clutter, no distractions.</p>
+          <ul>
+            <li>Subjects with real-time progress tracking</li>
+            <li>Daily streaks and trophy rewards for motivation</li>
+            <li>One-click access to exercises and practice</li>
+            <li>Personal avatar and customisable themes</li>
+          </ul>
+        </div>
+        <div class="demo-view-text" data-view="1">
+          <h3>Adaptive exercises</h3>
+          <p>939 exercises built on proven methods — Montessori, Singapore Math, bar models. Real pedagogy, not random worksheets.</p>
+          <ul>
+            <li>Difficulty adapts to your child's demonstrated level</li>
+            <li>Multiple choice, word problems, and translations</li>
+            <li>Cheat cards your child builds themselves</li>
+            <li>Progress bars show exactly where they stand</li>
+          </ul>
+        </div>
+        <div class="demo-view-text" data-view="2">
+          <h3>Parent dashboard</h3>
+          <p>Full visibility into what your child practised, where they excel, and what needs attention. No guessing — real data, per subject, per child.</p>
+          <ul>
+            <li>Per-subject progress and mastery levels</li>
+            <li>See completed vs. pending exercises</li>
+            <li>Weekly trends and streak history</li>
+            <li>Invite a tutor for shared visibility</li>
+          </ul>
+        </div>
+        <div class="demo-view-text" data-view="3">
+          <h3>Tutor dashboard</h3>
+          <p>Tutors see all assigned students, exactly where each child left off, and which exercises still need completing. Coordinate with parents seamlessly.</p>
+          <ul>
+            <li>See where each child left off in their exercises</li>
+            <li>Track which topics are completed, in progress, or not started</li>
+            <li>Shared visibility with parents — same data, zero friction</li>
+            <li>Status indicators: on track or needs attention</li>
+          </ul>
+        </div>
+        <a href="#start" class="btn">Start Your Intake</a>
       </div>
-      <div class="value-card">
-        <h4>No data selling</h4>
-        <p>Your child's data is never sold, shared, or used for advertising. Period.</p>
-      </div>
-      <div class="value-card">
-        <h4>No investor pressure</h4>
-        <p>We grow at the pace of our families, not a fundraising timeline.</p>
-      </div>
+    </div>
+
+    <!-- Bottom: 4 view selector cards -->
+    <div class="demo-views">
+      <button class="demo-view-card active" onclick="showView(0)">
+        <div class="demo-view-icon" style="background:#e8f0e4;">
+          <svg viewBox="0 0 24 24" stroke="#4a6a40"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+        </div>
+        <h4>Child view</h4>
+        <p>Dashboard, streaks, and subjects</p>
+      </button>
+      <button class="demo-view-card" onclick="showView(1)">
+        <div class="demo-view-icon" style="background:#e0eef8;">
+          <svg viewBox="0 0 24 24" stroke="#3a5a8a"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h4>Exercises</h4>
+        <p>Adaptive practice and cheat cards</p>
+      </button>
+      <button class="demo-view-card" onclick="showView(2)">
+        <div class="demo-view-icon" style="background:#f0e4d0;">
+          <svg viewBox="0 0 24 24" stroke="#8a5a3a"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h4>Parent view</h4>
+        <p>Progress, trends, and tutor connection</p>
+      </button>
+      <button class="demo-view-card" onclick="showView(3)">
+        <div class="demo-view-icon" style="background:#f0e4f0;">
+          <svg viewBox="0 0 24 24" stroke="#6a4a7a"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        </div>
+        <h4>Tutor view</h4>
+        <p>Student tracking and shared visibility</p>
+      </button>
     </div>
   </div>
 </section>
@@ -952,10 +1335,10 @@
 <section class="footer-night">
   <h2>Ready to start your<br>next chapter?</h2>
   <p>Begin with a short intake survey. Then we'll personally design a learning program around your child's strengths, gaps, and curiosity.</p>
-  <a href="#" class="btn-white" style="font-size: 1.05rem; padding: 16px 40px;">Start Intake Survey</a>
+  <a href="#" class="btn" style="font-size: 1.05rem; padding: 16px 40px;">Start Intake Survey</a>
 
   <div class="footer-bottom">
-    <p>&copy; 2026 Boundless Learning &middot; NoBoxDev</p>
+    <p>&copy; 2026 NoBox Education &middot; NoBoxDev</p>
     <div class="footer-links">
       <a href="#">About</a>
       <a href="#">Contact</a>
@@ -970,15 +1353,15 @@
   // Generate clouds using custom image
   const cloudsEl = document.getElementById('clouds');
   const cloudConfigs = [
-    { size: 'large',  top: 4,  dur: 55 },
-    { size: 'medium', top: 10, dur: 40 },
-    { size: 'small',  top: 2,  dur: 30 },
-    { size: 'large',  top: 16, dur: 65 },
-    { size: 'medium', top: 7,  dur: 45 },
-    { size: 'small',  top: 20, dur: 35 },
-    { size: 'medium', top: 13, dur: 50 },
-    { size: 'small',  top: 5,  dur: 28 },
-    { size: 'large',  top: 22, dur: 60 },
+    { size: 'small',  top: 2,  dur: 32 },
+    { size: 'large',  top: 10, dur: 58 },
+    { size: 'medium', top: 20, dur: 44 },
+    { size: 'small',  top: 30, dur: 36 },
+    { size: 'large',  top: 5,  dur: 62 },
+    { size: 'medium', top: 38, dur: 48 },
+    { size: 'small',  top: 15, dur: 30 },
+    { size: 'medium', top: 26, dur: 52 },
+    { size: 'large',  top: 42, dur: 66 },
   ];
   cloudConfigs.forEach(c => {
     const cloud = document.createElement('div');
@@ -1017,11 +1400,15 @@
 
   // Generate stars
   const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 140; i++) {
     const star = document.createElement('div');
-    star.className = 'star' + (Math.random() > 0.85 ? ' big' : '');
+    const r = Math.random();
+    let cls = 'star';
+    if (r > 0.88) cls += ' big';
+    if (Math.random() > 0.65) cls += ' warm';
+    star.className = cls;
     star.style.left = Math.random() * 100 + '%';
-    star.style.top = (40 + Math.random() * 60) + '%';
+    star.style.top = (35 + Math.random() * 65) + '%';
     star.style.animationDelay = (Math.random() * 4).toFixed(1) + 's';
     star.style.animationDuration = (2 + Math.random() * 3).toFixed(1) + 's';
     starsEl.appendChild(star);
@@ -1036,15 +1423,60 @@
     starsEl.style.opacity = Math.max(0, (starPct - 0.4) / 0.3).toFixed(2);
   });
 
+  // Book cover → flip open
+  const bookCover = document.getElementById('book-cover');
+  const bookCoverLeft = document.getElementById('book-cover-left');
+  const bookEl = document.getElementById('storybook');
+  const bookLeft = document.getElementById('book-left');
+
+  function openCover() {
+    bookEl.classList.add('open');
+    bookLeft.style.visibility = 'visible';
+    requestAnimationFrame(() => {
+      bookCover.classList.add('opened');
+    });
+    // After flip completes, hide cover and show pages
+    setTimeout(() => {
+      bookCover.style.visibility = 'hidden';
+      pages.forEach(p => p.style.visibility = 'visible');
+    }, 1100);
+  }
+
+  function closeCover() {
+    // Hide pages
+    pages.forEach(p => {
+      p.classList.remove('flipped');
+      p.style.visibility = 'hidden';
+    });
+    // Show cover, flip back
+    bookCover.style.visibility = 'visible';
+    bookCover.classList.remove('opened');
+    bookEl.classList.remove('open');
+    // After animation, hide left side
+    setTimeout(() => {
+      bookLeft.style.visibility = 'hidden';
+    }, 1100);
+    currentPage = 0;
+    updateLeftImg();
+    updateZIndex();
+    updateDots();
+  }
+
+  bookCover.addEventListener('click', openCover);
+
   // Book flip logic
   const pages = document.querySelectorAll('.book-page');
   const dots = document.querySelectorAll('.book-dot');
   const leftImg = document.getElementById('book-left-img');
-  const images = ['hero-bg.png', 'dive-bg.png', 'horizon-bg.png', 'night-bg.png'];
+  const images = ['hero-bg.png', 'dive-bg.png', 'horizon-bg.png', 'night-mountains.png', 'night-mountains.png'];
   let currentPage = 0;
 
   function updateDots() {
     dots.forEach((d, i) => d.classList.toggle('active', i === currentPage));
+  }
+
+  function updateLeftImg() {
+    leftImg.style.backgroundImage = `url('${images[currentPage]}')`;
   }
 
   function updateZIndex() {
@@ -1064,20 +1496,17 @@
       // Unflip — go back
       el.classList.remove('flipped');
       currentPage = idx;
-      leftImg.style.backgroundImage = `url('${images[idx]}')`;
     } else {
-      // Flip forward
       if (idx === pages.length - 1) {
-        // Last page — restart
+        // Last page — go back to first
         pages.forEach(p => p.classList.remove('flipped'));
         currentPage = 0;
-        leftImg.style.backgroundImage = `url('${images[0]}')`;
       } else {
         el.classList.add('flipped');
         currentPage = idx + 1;
-        leftImg.style.backgroundImage = `url('${images[Math.min(idx + 1, images.length - 1)]}')`;
       }
     }
+    updateLeftImg();
     updateZIndex();
     updateDots();
   }
@@ -1093,7 +1522,7 @@
       }
     }
     currentPage = target;
-    leftImg.style.backgroundImage = `url('${images[target]}')`;
+    updateLeftImg();
     updateZIndex();
     updateDots();
   }
@@ -1119,6 +1548,116 @@
     }, delay);
   }
   scheduleMeteor();
+
+  // Mystery flying silhouette — dark shape with cabin lights
+  const flyerShapes = [
+    // Shape 1: could be a plane... or something else
+    `<svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 22 C8 18 15 14 30 13 L50 12 C55 8 60 5 68 4 L75 4 C78 4 80 6 78 9 L72 12 L95 11 C100 8 105 6 110 7 C115 8 118 12 115 15 L105 16 L112 18 C114 19 114 22 112 23 L100 24 L72 24 L78 28 C80 30 78 33 75 33 L68 33 C60 32 55 29 50 25 L30 24 C15 23 8 26 5 22 Z" fill="rgba(15,15,30,0.85)"/>
+      <circle cx="62" cy="14" r="1.5" fill="#ffd" class="cabin-light"/>
+      <circle cx="68" cy="14" r="1.5" fill="#ffd" class="cabin-light" style="animation-delay:0.2s"/>
+      <circle cx="74" cy="13" r="1.5" fill="#ffd" class="cabin-light" style="animation-delay:0.4s"/>
+      <circle cx="56" cy="15" r="1.2" fill="#ffd" class="cabin-light" style="animation-delay:0.3s"/>
+      <circle cx="50" cy="16" r="1.2" fill="#ffd" class="cabin-light" style="animation-delay:0.5s"/>
+      <circle cx="80" cy="13" r="1" fill="#f44" opacity="0.9"/>
+    </svg>`,
+    // Shape 2: rounder, more mysterious — is it a blimp? a UFO?
+    `<svg viewBox="0 0 100 45" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="18" rx="40" ry="14" fill="rgba(15,15,30,0.85)"/>
+      <path d="M30 30 C35 35 45 38 50 38 C55 38 65 35 70 30 L68 30 C63 33 55 35 50 35 C45 35 37 33 32 30 Z" fill="rgba(15,15,30,0.7)"/>
+      <circle cx="35" cy="18" r="1.5" fill="#aef" class="cabin-light"/>
+      <circle cx="42" cy="17" r="1.5" fill="#aef" class="cabin-light" style="animation-delay:0.15s"/>
+      <circle cx="50" cy="17" r="1.8" fill="#aef" class="cabin-light" style="animation-delay:0.3s"/>
+      <circle cx="58" cy="17" r="1.5" fill="#aef" class="cabin-light" style="animation-delay:0.45s"/>
+      <circle cx="65" cy="18" r="1.5" fill="#aef" class="cabin-light" style="animation-delay:0.6s"/>
+      <circle cx="50" cy="32" r="2" fill="#ffa" class="cabin-light" style="animation-delay:0.1s"/>
+      <circle cx="10" cy="17" r="1" fill="#f44" opacity="0.8"/>
+      <circle cx="90" cy="17" r="1" fill="#0f0" opacity="0.8"/>
+    </svg>`
+  ];
+
+  function spawnFlyer() {
+    const scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    if (scrollPct < 0.45) return; // only in twilight/night
+    const flyer = document.createElement('div');
+    flyer.className = 'flyer';
+    const size = 40 + Math.random() * 30; // small so it's far away & mysterious
+    flyer.style.width = size + 'px';
+    flyer.style.top = (5 + Math.random() * 25) + '%';
+    flyer.style.right = '-80px';
+    flyer.innerHTML = flyerShapes[Math.floor(Math.random() * flyerShapes.length)];
+    starsEl.appendChild(flyer);
+    setTimeout(() => flyer.remove(), 13000);
+  }
+  function scheduleFlyer() {
+    const delay = 25000 + Math.random() * 35000; // every 25-60 seconds
+    setTimeout(() => {
+      spawnFlyer();
+      scheduleFlyer();
+    }, delay);
+  }
+  // First flyer after 10 seconds
+  setTimeout(() => { spawnFlyer(); scheduleFlyer(); }, 10000);
+
+  // Trust carousel — auto-rotate every 8s
+  let trustCurrent = 0;
+  let trustTimer;
+  function goTrust(idx) {
+    trustCurrent = idx;
+    document.querySelectorAll('.trust-slide').forEach(s => {
+      s.classList.toggle('active', parseInt(s.dataset.slide) === idx);
+    });
+    document.querySelectorAll('.trust-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+    clearInterval(trustTimer);
+    trustTimer = setInterval(() => goTrust((trustCurrent + 1) % 3), 8000);
+  }
+  trustTimer = setInterval(() => goTrust((trustCurrent + 1) % 3), 8000);
+
+  // Demo view switching
+  function showView(idx) {
+    document.querySelectorAll('.demo-view-card').forEach((b, i) => b.classList.toggle('active', i === idx));
+    document.querySelectorAll('.demo-view-text').forEach(t => {
+      t.classList.toggle('active', parseInt(t.dataset.view) === idx);
+    });
+    document.querySelectorAll('#demo-mockup img').forEach(img => {
+      const isTarget = parseInt(img.dataset.view) === idx;
+      img.classList.toggle('active', isTarget);
+      img.classList.toggle('hidden', !isTarget);
+    });
+  }
+
+  // Click → star burst
+  const starColors = ['#ffe8a0', '#fff', '#ffd', '#aef', '#f9e076'];
+  const starSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><polygon points="10,1 12.5,7.5 19,8 14,12.5 15.5,19 10,15.5 4.5,19 6,12.5 1,8 7.5,7.5" fill="currentColor"/></svg>`;
+
+  document.addEventListener('click', (e) => {
+    const count = 5 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'click-star';
+      const angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.5;
+      const dist = 20 + Math.random() * 30;
+      const dist2 = dist + 15 + Math.random() * 20;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      const dx2 = Math.cos(angle) * dist2;
+      const dy2 = Math.sin(angle) * dist2 - 10;
+      el.style.left = e.clientX + 'px';
+      el.style.top = e.clientY + 'px';
+      el.style.setProperty('--dx', dx + 'px');
+      el.style.setProperty('--dy', dy + 'px');
+      el.style.setProperty('--dx2', dx2 + 'px');
+      el.style.setProperty('--dy2', dy2 + 'px');
+      el.style.color = starColors[Math.floor(Math.random() * starColors.length)];
+      el.style.width = (6 + Math.random() * 6) + 'px';
+      el.style.height = el.style.width;
+      el.innerHTML = starSvg;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 750);
+    }
+  });
 </script>
 
 </body>

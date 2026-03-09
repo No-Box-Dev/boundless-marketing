@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NoBox Education — Logo Animation</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Baloo 2', sans-serif;
+    margin: 0; min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 48px;
+    background: #f5f0ea;
+    color: #1a1a2a;
+  }
+  .container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  .replay-btn {
+    background: none; border: 2px solid rgba(0,0,0,0.12);
+    border-radius: 12px; padding: 10px 28px;
+    font-family: inherit; font-size: 0.9rem; font-weight: 600;
+    color: #1a1a2a; cursor: pointer; opacity: 0.4;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+  .replay-btn:hover { opacity: 0.8; border-color: rgba(0,0,0,0.25); }
+</style>
+</head>
+<body>
+
+<div class="container" id="anim-container">
+  <svg id="logo" width="360" viewBox="0 0 714 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    <!--
+      SEQUENCE:
+      0–0.8s   : Purple spine line draws in (top to bottom)
+      0.8–1.8s : Two boxes grow out from spine (left=gold, right=green)
+      1.8–3.5s : Boxes morph into book/heart, flaps unfold
+      3–4s     : Text lines fade in
+    -->
+
+    <!-- ══ SPINE — appears first ══ -->
+    <line x1="354" y1="295" x2="354" y2="295" stroke="#B49AF7" stroke-width="3" stroke-linecap="round">
+      <!-- Draw in: dot → full line -->
+      <animate attributeName="y1" dur="4s" fill="freeze"
+        values="295;170;170;138.647"
+        keyTimes="0;0.18;0.45;1"
+        calcMode="spline"
+        keySplines="0.25 0 0.25 1;0.4 0 0.6 1;0.25 0.1 0.25 1"
+      />
+      <animate attributeName="y2" dur="4s" fill="freeze"
+        values="295;420;420;592.647"
+        keyTimes="0;0.18;0.45;1"
+        calcMode="spline"
+        keySplines="0.25 0 0.25 1;0.4 0 0.6 1;0.25 0.1 0.25 1"
+      />
+    </line>
+
+    <!-- ══ LEFT PAGE BODY — grows from spine ══ -->
+    <path fill="#F4AD50" stroke="#F4AD50" opacity="0">
+      <!-- Opacity: hidden → appear with boxes -->
+      <animate attributeName="opacity" dur="4s" fill="freeze"
+        values="0;0;1;1"
+        keyTimes="0;0.18;0.35;1"
+      />
+      <!-- Shape: thin sliver at spine → full box → book shape -->
+      <animate attributeName="d" dur="4s" fill="freeze"
+        values="
+          M354 420V170L354 170V420L354 420Z;
+          M0 420V170L338 170V420L0 420Z;
+          M0 420V170L338 170V420L0 420Z;
+          M0.565 391.246V152.246L353.565 138.378V593.246L0.565 391.246Z
+        "
+        keyTimes="0;0.38;0.45;1"
+        calcMode="spline"
+        keySplines="0.2 0 0.25 1;0.4 0 0.6 1;0.25 0.1 0.25 1"
+      />
+    </path>
+
+    <!-- ══ RIGHT PAGE BODY — grows from spine ══ -->
+    <path fill="#6CA373" stroke="#6CA373" opacity="0">
+      <animate attributeName="opacity" dur="4s" fill="freeze"
+        values="0;0;1;1"
+        keyTimes="0;0.18;0.35;1"
+      />
+      <animate attributeName="d" dur="4s" fill="freeze"
+        values="
+          M354 420L354 420V170L354 170V420Z;
+          M714 420L376 420V170L714 170V420Z;
+          M714 420L376 420V170L714 170V420Z;
+          M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z
+        "
+        keyTimes="0;0.38;0.45;1"
+        calcMode="spline"
+        keySplines="0.2 0 0.25 1;0.4 0 0.6 1;0.25 0.1 0.25 1"
+      />
+    </path>
+
+    <!-- ══ LEFT TOP FLAP — unfolds during book morph ══ -->
+    <path fill="#F8BE4B" stroke="#F8BE4B">
+      <animate attributeName="d" dur="4s" fill="freeze"
+        values="
+          M0 170L177 170L354 170Z;
+          M0 170L177 170L338 170Z;
+          M0 170L169 170L338 170Z;
+          M1.265 151.646L153.265 0.646L352.565 137.446Z
+        "
+        keyTimes="0;0.45;0.5;1"
+        calcMode="spline"
+        keySplines="0.4 0 0.6 1;0.4 0 0.2 1;0.2 0 0.25 1"
+      />
+      <animate attributeName="opacity" dur="4s" fill="freeze"
+        values="0;0;0.3;1"
+        keyTimes="0;0.45;0.6;1"
+      />
+    </path>
+
+    <!-- ══ RIGHT TOP FLAP ══ -->
+    <path fill="#79BD84" stroke="#79BD84">
+      <animate attributeName="d" dur="4s" fill="freeze"
+        values="
+          M537 170L714 170L354 170Z;
+          M545 170L714 170L376 170Z;
+          M545 170L714 170L376 170Z;
+          M559.788 0.835L711.457 151.664L355.564 137.446Z
+        "
+        keyTimes="0;0.45;0.5;1"
+        calcMode="spline"
+        keySplines="0.4 0 0.6 1;0.4 0 0.2 1;0.2 0 0.25 1"
+      />
+      <animate attributeName="opacity" dur="4s" fill="freeze"
+        values="0;0;0.3;1"
+        keyTimes="0;0.45;0.6;1"
+      />
+    </path>
+
+    <!-- ══ TEXT LINES — LEFT ══ -->
+    <g opacity="0">
+      <animate attributeName="opacity" dur="4s" fill="freeze"
+        values="0;0;0;1"
+        keyTimes="0;0.7;0.88;1"
+      />
+      <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="91.441" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="74.45" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+    </g>
+
+    <!-- ══ TEXT LINES — RIGHT ══ -->
+    <g opacity="0">
+      <animate attributeName="opacity" dur="4s" fill="freeze"
+        values="0;0;0;1"
+        keyTimes="0;0.7;0.88;1"
+      />
+      <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="409.678" y1="378.363" x2="646.681" y2="386.133" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+    </g>
+
+    <!-- ══ SPINE — on top of pages so it stays visible ══ -->
+    <line x1="354" y1="295" x2="354" y2="295" stroke="#B49AF7" stroke-width="3" stroke-linecap="round">
+      <animate attributeName="y1" dur="4s" fill="freeze"
+        values="295;170;170;138.647"
+        keyTimes="0;0.18;0.45;1"
+        calcMode="spline"
+        keySplines="0.25 0 0.25 1;0.4 0 0.6 1;0.25 0.1 0.25 1"
+      />
+      <animate attributeName="y2" dur="4s" fill="freeze"
+        values="295;420;420;592.647"
+        keyTimes="0;0.18;0.45;1"
+        calcMode="spline"
+        keySplines="0.25 0 0.25 1;0.4 0 0.6 1;0.25 0.1 0.25 1"
+      />
+    </line>
+
+    <!-- ══ WORDMARK — NoBox left, Education right ══ -->
+    <text x="348" y="660" text-anchor="end" font-family="'Baloo 2', sans-serif" font-size="62" font-weight="800" fill="#1a1a2a" opacity="0">
+      NoBox
+      <animate attributeName="opacity" dur="4s" fill="freeze"
+        values="0;0;0;1"
+        keyTimes="0;0.82;0.95;1"
+      />
+    </text>
+    <!-- Purple dot separator -->
+    <circle cx="354" cy="656" r="5" fill="#8B6CE0" opacity="0">
+      <animate attributeName="opacity" dur="4s" fill="freeze"
+        values="0;0;0;1"
+        keyTimes="0;0.82;0.95;1"
+      />
+    </circle>
+
+    <text x="360" y="660" text-anchor="start" font-family="'Baloo 2', sans-serif" font-size="62" font-weight="500" fill="#1a1a2a" opacity="0">
+      Education
+      <animate attributeName="opacity" dur="4s" fill="freeze"
+        values="0;0;0;0.65"
+        keyTimes="0;0.82;0.95;1"
+      />
+    </text>
+
+  </svg>
+</div>
+
+<button class="replay-btn" onclick="replay()">Replay</button>
+
+<script>
+function replay() {
+  const container = document.getElementById('anim-container');
+  const html = container.innerHTML;
+  container.innerHTML = '';
+  void container.offsetWidth;
+  container.innerHTML = html;
+}
+</script>
+
+</body>
+</html>
