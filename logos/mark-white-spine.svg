@@ -1,0 +1,19 @@
+<svg width="714" height="595" viewBox="0 0 714 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Mark variant for dark backgrounds — white spine -->
+<path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+<line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<line x1="101.912" y1="251.6" x2="304.917" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<line x1="81.9409" y1="318.627" x2="304.945" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<line x1="64.9496" y1="385.635" x2="304.953" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+<line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+<line x1="409.678" y1="378.363" x2="646.681" y2="386.133" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<line x1="67.4496" y1="386.135" x2="307.453" y2="378.361" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+<path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+<path d="M354.055 138.647L354.055 592.647" stroke="white" stroke-width="3" stroke-linecap="round"/>
+</svg>
