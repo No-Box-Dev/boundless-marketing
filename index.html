@@ -395,6 +395,14 @@
   .page-back .page-corner { right: auto; left: 16px; }
   .page-back .page-corner svg { transform: scaleX(-1); }
 
+  .page-quote-highlight {
+    border-left: 3px solid #5a7a4a; padding-left: 14px; margin: 14px 0;
+  }
+  .page-quote-highlight span {
+    font-size: 1.4rem; font-style: italic; font-weight: 600; color: #1a2a1a;
+  }
+  .btn-outline-sm { font-size: 0.85rem; padding: 10px 24px; }
+
   /* Page dot indicators */
   .book-dots {
     display: flex; justify-content: center; gap: 8px;
@@ -940,7 +948,7 @@
             <div class="chapter-num">Chapter One</div>
             <h3>The walls around our plans</h3>
             <p>Every time we imagined a place where we would live for a while, there were walls that enclosed our plans.</p>
-            <div style="border-left: 3px solid #5a7a4a; padding-left: 14px; margin: 14px 0;"><span style="font-size: 1.4rem; font-style: italic; font-weight: 600; color: #1a2a1a;">School.</span></div>
+            <div class="page-quote-highlight"><span>School.</span></div>
             <p>Every time the same worries: what if they fall behind, what if we damage their future? And so we always ended up in places that were compromises — and never our first choice.</p>
           </div>
         </div>
@@ -1016,7 +1024,7 @@
   </div>
 
   <div style="text-align: center; margin-top: 20px;">
-    <a href="story.html" class="btn-outline" style="font-size: 0.85rem; padding: 10px 24px;">Read the full story</a>
+    <a href="story.html" class="btn-outline btn-outline-sm">Read the full story</a>
   </div>
 
   <div class="book-dots" id="book-dots">
