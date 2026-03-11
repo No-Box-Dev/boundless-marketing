@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="How two parents turned the biggest obstacle to freedom into an education platform — the story behind NoBox Education.">
+<title>Our Story — NoBox Education</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Baloo 2', sans-serif; color: #1a1a2a;
+    background: #f8f6f0;
+  }
+  html { scroll-behavior: smooth; }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(248,246,240,0.85); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .nav-logo {
+    font-size: 1.2rem; font-weight: 800; color: #1a1a2a;
+    text-decoration: none; letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo svg { height: 32px; width: auto; }
+  .nav-logo span { line-height: 1; }
+  .nav-back {
+    font-size: 0.9rem; color: rgba(26,26,42,0.5); text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: #1a1a2a; }
+  .nav-back svg { width: 18px; height: 18px; stroke: currentColor; }
+
+  /* Hero */
+  .story-hero {
+    padding: 140px 40px 80px;
+    max-width: 720px; margin: 0 auto;
+    text-align: center;
+  }
+  .story-hero h1 {
+    font-size: 2.8rem; font-weight: 800; letter-spacing: -1px;
+    line-height: 1.15; margin-bottom: 16px;
+  }
+  .story-hero p {
+    font-size: 1.05rem; color: rgba(26,26,42,0.55); line-height: 1.7;
+  }
+
+  /* Blog posts */
+  .posts {
+    max-width: 680px; margin: 0 auto;
+    padding: 0 40px 100px;
+    display: flex; flex-direction: column; gap: 48px;
+  }
+  .post {
+    border-bottom: 1px solid rgba(26,26,42,0.08);
+    padding-bottom: 48px;
+  }
+  .post:last-child { border-bottom: none; }
+  .post-meta {
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 2px; color: rgba(26,26,42,0.35);
+    margin-bottom: 12px;
+  }
+  .post h2 {
+    font-size: 1.6rem; font-weight: 800; line-height: 1.25;
+    letter-spacing: -0.3px; margin-bottom: 14px;
+  }
+  .post p {
+    font-size: 0.95rem; line-height: 1.75; color: rgba(26,26,42,0.7);
+    margin-bottom: 10px;
+  }
+  .post blockquote {
+    border-left: 3px solid #B49AF7;
+    padding-left: 16px; margin: 20px 0;
+    font-size: 1.15rem; font-style: italic; font-weight: 600;
+    color: #1a1a2a;
+  }
+  .post-tag {
+    display: inline-block; padding: 4px 12px; border-radius: 12px;
+    font-size: 0.7rem; font-weight: 600; margin-right: 6px;
+    margin-top: 12px;
+  }
+  .tag-green { background: #e4f0e4; color: #4a6a4a; }
+  .tag-blue { background: #d8eaf4; color: #3a5a7a; }
+  .tag-gold { background: #f4ead0; color: #7a5a2a; }
+
+  /* Coming soon placeholder */
+  .coming-soon {
+    text-align: center; padding: 60px 40px;
+    color: rgba(26,26,42,0.3); font-size: 0.9rem;
+  }
+
+  @media (max-width: 600px) {
+    .story-hero h1 { font-size: 2rem; }
+    .story-hero { padding: 120px 24px 60px; }
+    .posts { padding: 0 24px 80px; }
+    nav { padding: 14px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 714 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+      <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+      <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+      <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+      <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <span>NoBox <span style="font-weight:500;opacity:0.7;">Education</span></span>
+  </a>
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    Back
+  </a>
+</nav>
+
+<div class="story-hero">
+  <h1>Our Story</h1>
+  <p>How two parents turned the biggest obstacle to freedom into an education platform — and what we learned along the way.</p>
+</div>
+
+<div class="posts">
+
+  <article class="post">
+    <div class="post-meta">Our Story</div>
+    <h2>What if education could travel with your children?</h2>
+    <p>We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world. Not as tourists passing through, but as a family putting down temporary roots. Experiencing different cultures, languages, landscapes, and people. Watching our children grow up understanding that the world is wide and full of possibility.</p>
+    <p>But every time we imagined a new place, the same walls enclosed our plans. What if they fall behind? What if we damage their future? And so we always ended up in places that were compromises — never our first choice. Education had quietly become the invisible fence around our lives.</p>
+    <blockquote>So we started asking a different question. Not where can we go without disrupting school? But something bigger: what if high-quality education could evolve around our children, wherever we go?</blockquote>
+    <p>We searched. Thoroughly, and for a long time. What we found disappointed us — not because the platforms were poorly made, but because they misunderstood what learning actually is. Most were static and linear. Many were not built for families moving across different national curricula. And a striking number were so focused on keeping children engaged — bright colours, games, constant rewards — that they had forgotten the deeper goal: to make children genuinely curious. To challenge them at exactly the right level. To build the kind of intrinsic motivation that sustains a learner for life.</p>
+    <p>My background is in psychology. I understand how different people learn, remember, and stay motivated. I know what good developmental scaffolding looks like and what it feels like when it is missing. And for a while, I tried to fill the gap myself — teaching our children directly, tracking curricula, adapting material to their individual levels. It worked, in the way that an enormous amount of personal effort sometimes works. But when our oldest reached Year 8 and the subjects deepened, keeping pace with the academic detail became almost a full-time job. For one child. The thought of sustaining that for two or three made it clear: this was not a scalable answer.</p>
+    <p>What we wanted was something grounded in the science of learning. Something that understood child development — not just age-appropriate content, but how curiosity is sparked and protected, how challenge should stretch without overwhelming, how a child builds confidence through the right kind of difficulty. We wanted a platform built on those foundations, one that adapted smartly to each child rather than delivering the same experience to everyone.</p>
+    <blockquote>We could not find it. So we did what we teach our children to do: if you cannot find what you are looking for, build it yourself.</blockquote>
+    <p>We gathered everything — our research into learning science, developmental psychology, smart adaptive learning, international school curricula, and the hard-won knowledge from years of working alongside our own children. We designed, built, tested, and rebuilt. We worked with our children on the platform directly, watching what worked and what didn't, iterating until all of us — parents and children alike — were genuinely satisfied with what it had become.</p>
+    <p>The result is No Box Education. A platform where tutors, parents, and children work together. Where structure meets flexibility. Where curiosity is treated not as a nice extra but as the entire point. And where a family no longer has to choose between the life they want and the education their children deserve.</p>
+    <blockquote>Because the world is too big to only see it during school holidays.</blockquote>
+    <span class="post-tag tag-green">Family</span>
+    <span class="post-tag tag-gold">Freedom</span>
+    <span class="post-tag tag-blue">Psychology</span>
+  </article>
+
+</div>
+
+<div class="coming-soon">
+  More chapters coming as our journey continues.
+</div>
+
+</body>
+</html>

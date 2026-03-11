@@ -300,7 +300,7 @@
   }
   .book-left-img {
     width: 100%; height: 100%;
-    background-size: cover; background-position: center bottom;
+    background-size: 115%; background-position: center 60%;
     clip-path: var(--clip-left);
   }
   /* Left half of the logo (static, behind left panel) */
@@ -394,6 +394,14 @@
   .book-page:hover .page-corner { color: rgba(0,0,0,0.6); }
   .page-back .page-corner { right: auto; left: 16px; }
   .page-back .page-corner svg { transform: scaleX(-1); }
+
+  .page-quote-highlight {
+    border-left: 3px solid #5a7a4a; padding-left: 14px; margin: 14px 0;
+  }
+  .page-quote-highlight span {
+    font-size: 1.4rem; font-style: italic; font-weight: 600; color: #1a2a1a;
+  }
+  .btn-outline-sm { font-size: 0.85rem; padding: 10px 24px; }
 
   /* Page dot indicators */
   .book-dots {
@@ -930,87 +938,79 @@
       </div>
       <!-- Left side — shows illustration for current chapter -->
       <div class="book-left" id="book-left">
-        <div class="book-left-img" id="book-left-img" style="background-image: url('hero-bg.png');"></div>
+        <div class="book-left-img" id="book-left-img" style="background-image: url('family-window.png');"></div>
       </div>
 
-      <!-- Page 1: Chapter One -->
+      <!-- Page 1: Chapter One (front = right side, shows first) -->
       <div class="book-page" data-page="0" onclick="flipPage(this)">
         <div class="page-front">
           <div class="page-content bg-mountains">
             <div class="chapter-num">Chapter One</div>
-            <h3>Two kids set out to learn</h3>
-            <p>They weren't in a classroom. They were on the road — moving between countries and time zones. But they never stopped being curious.</p>
-            <ul class="feature-list">
-              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Exercises that adapt to your child's level</li>
-              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>15 minutes of focused practice per day</li>
-            </ul>
-            <div class="page-corner">
-              <span>flip</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-            </div>
+            <h3>The walls around our plans</h3>
+            <p>Every time we imagined a place where we would live for a while, there were walls that enclosed our plans.</p>
+            <div class="page-quote-highlight"><span>School.</span></div>
+            <p>Every time the same worries: what if they fall behind, what if we damage their future? And so we always ended up in places that were compromises — and never our first choice.</p>
           </div>
         </div>
         <div class="page-back"><div class="page-content bg-mountains"></div></div>
       </div>
 
-      <!-- Page 2: Chapter Two -->
+      <!-- Page 2: Chapter Two part 1 (right side after first flip) -->
       <div class="book-page" data-page="1" onclick="flipPage(this)">
         <div class="page-front">
           <div class="page-content bg-dive">
             <div class="chapter-num">Chapter Two</div>
-            <h3>They dove deeper</h3>
-            <p>939 exercises built on proven methods — Montessori, Singapore Math, bar models. Real pedagogy, not AI worksheets.</p>
-            <ul class="feature-list">
-              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Smart difficulty that grows with them</li>
-              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Cheat cards your child builds themselves</li>
-            </ul>
-            <div class="page-corner">
-              <span>flip</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-            </div>
+            <h3>We searched</h3>
+            <p>We searched for a platform that could travel with us. Something grounded in real learning science — that would challenge our children at exactly the right level and protect their curiosity rather than replace it with noise.</p>
+            <p>We found nothing that came close.</p>
+          </div>
+        </div>
+        <div class="page-back"><div class="page-content bg-dive"></div></div>
+      </div>
+
+      <!-- Page 3: Chapter Two part 2 (right side after second flip) -->
+      <div class="book-page" data-page="2" onclick="flipPage(this)">
+        <div class="page-front">
+          <div class="page-content bg-dive">
+            <div class="chapter-num">Chapter Two</div>
+            <h3>If you cannot find it, build it</h3>
+            <p>As a psychologist, I researched how people learn, remember, and stay motivated. For a while I taught them myself — until our oldest reached Year 8 and it became almost a full-time job. For one child.</p>
+            <p>We compiled our research — learning science, child development, international curricula — built the platform, and worked on it with our children until we were all satisfied. That is No Box Education.</p>
           </div>
         </div>
         <div class="page-back"><div class="page-content bg-dive"></div></div>
       </div>
 
       <!-- Page 3: Chapter Three -->
-      <div class="book-page" data-page="2" onclick="flipPage(this)">
+      <div class="book-page" data-page="3" onclick="flipPage(this)">
         <div class="page-front">
           <div class="page-content bg-horizon">
             <div class="chapter-num">Chapter Three</div>
-            <h3>Beyond the horizon</h3>
-            <p>Real insight into what your child practised, where they excelled, and what needs attention.</p>
-            <ul class="feature-list">
-              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Parent dashboard with per-subject progress</li>
-              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Tutor connection — shared visibility</li>
-            </ul>
-            <div class="page-corner">
-              <span>flip</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-            </div>
+            <h3>Our children became curious again</h3>
+            <p>Not the performed curiosity of a classroom. Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
+            <p>Academically strong. Often ahead. And the world became the lesson.</p>
           </div>
         </div>
         <div class="page-back"><div class="page-content bg-horizon"></div></div>
       </div>
 
       <!-- Page 4: Chapter Four -->
-      <div class="book-page" data-page="3" onclick="flipPage(this)">
+      <div class="book-page" data-page="4" onclick="flipPage(this)">
         <div class="page-front">
           <div class="page-content bg-night">
             <div class="chapter-num">Chapter Four</div>
-            <h3>Under the stars</h3>
-            <p>Streaks were built. Trophies collected. And every night, their parents could see how far they'd come.</p>
-            <ul class="feature-list">
-              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Daily streaks and trophy rewards</li>
-              <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>Motivation that comes from within</li>
-            </ul>
+            <h3>The platform that builds itself</h3>
+            <p>No Box Education is not finished. It never will be. Our children use it every day — and when something could be better, they tell us. The ones worth building, we build.</p>
+            <p>Our daughter was eight when she programmed her first game for the platform. Then a second. Then a third.</p>
+            <p>She did not do it because we asked her to. She did it because she had learned to believe: if you see something missing, you fill it.</p>
+            <p>That is what No Box Education is trying to do. Not just teach children what is already known — but grow children who build what does not yet exist.</p>
           </div>
         </div>
         <div class="page-back"><div class="page-content bg-night"></div></div>
       </div>
 
       <!-- Page 5: Quote -->
-      <div class="book-page" data-page="4" onclick="flipPage(this)">
+      <div class="book-page" data-page="5" onclick="flipPage(this)">
         <div class="page-front">
           <div class="page-content bg-quote">
             <div class="chapter-num">NoBox Education</div>
@@ -1023,6 +1023,10 @@
     </div>
   </div>
 
+  <div style="text-align: center; margin-top: 20px;">
+    <a href="story.html" class="btn-outline btn-outline-sm">Read the full story</a>
+  </div>
+
   <div class="book-dots" id="book-dots">
     <button class="book-dot-cover" onclick="closeCover()" title="Back to cover">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>
@@ -1032,6 +1036,7 @@
     <button class="book-dot" onclick="goToPage(2)"></button>
     <button class="book-dot" onclick="goToPage(3)"></button>
     <button class="book-dot" onclick="goToPage(4)"></button>
+    <button class="book-dot" onclick="goToPage(5)"></button>
   </div>
 </section>
 
@@ -1468,7 +1473,7 @@
   const pages = document.querySelectorAll('.book-page');
   const dots = document.querySelectorAll('.book-dot');
   const leftImg = document.getElementById('book-left-img');
-  const images = ['hero-bg.png', 'dive-bg.png', 'horizon-bg.png', 'night-mountains.png', 'night-mountains.png'];
+  const images = ['family-window.png', 'search.png', 'dive-bg.png', 'horizon-bg.png', 'night-mountains.png', 'night-mountains.png'];
   let currentPage = 0;
 
   function updateDots() {
