@@ -266,7 +266,7 @@
       msgEl.className = 'waitlist-msg';
 
       try {
-        const res = await fetch('https://marketing.noboxdev.com/api/leads', {
+        const res = await fetch('https://leads.noboxdev.com/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
