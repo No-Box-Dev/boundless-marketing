@@ -9,7 +9,7 @@
 <meta property="og:description" content="Personalised education for expat and travelling families.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nobox.education/">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<link rel="icon" href="logos/mark.svg">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,18 +20,13 @@
     overflow-x: hidden;
     background: linear-gradient(to bottom,
       #c0daf0 0%,
-      #a8d4f0 5%,
-      #8ec8ee 10%,
-      #7abce8 18%,
-      #90cce8 26%,
-      #e8e0c8 42%,
-      #f0d8a0 52%,
-      #e8a060 62%,
-      #a04848 72%,
-      #703050 80%,
-      #402848 88%,
-      #1a1a3a 94%,
-      #0a0a1a 100%
+      #a8d4f0 10%,
+      #8ec8ee 25%,
+      #7abce8 40%,
+      #90cce8 55%,
+      #b8dce8 70%,
+      #d4e8e0 85%,
+      #e8e0c8 100%
     );
     min-height: 100vh;
   }
@@ -50,29 +45,11 @@
   }
   .cloud svg { width: 100%; height: auto; }
   .cloud.c1 { width: 280px; top: 8%; animation-duration: 45s; }
-  .cloud.c2 { width: 180px; top: 18%; animation-duration: 60s; animation-delay: -15s; }
+  .cloud.c2 { width: 180px; top: 22%; animation-duration: 60s; animation-delay: -15s; }
   .cloud.c3 { width: 340px; top: 4%; animation-duration: 55s; animation-delay: -30s; }
   @keyframes drift {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(calc(100vw + 100%)); }
-  }
-
-  /* ── Stars ── */
-  .stars {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 0; opacity: 0;
-    transition: opacity 0.5s;
-  }
-  .star {
-    position: absolute; width: 2px; height: 2px;
-    background: #fff; border-radius: 50%;
-    box-shadow: 0 0 3px 1px rgba(255,255,255,0.4);
-    animation: twinkle 3s ease-in-out infinite;
-  }
-  .star.big { width: 3px; height: 3px; box-shadow: 0 0 5px 2px rgba(255,255,255,0.6); }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
   }
 
   /* ── Nav ── */
@@ -92,9 +69,9 @@
   .nav-logo {
     font-size: 1.15rem; font-weight: 800; color: #1a1a2a;
     text-decoration: none; letter-spacing: -0.5px;
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: center; gap: 10px;
   }
-  .nav-logo span { font-size: 1.4rem; }
+  .nav-logo svg { height: 30px; width: auto; }
   .nav-right { display: flex; align-items: center; gap: 16px; }
   .nav-link {
     font-size: 0.85rem; font-weight: 600; color: #5a5a6a;
@@ -184,132 +161,21 @@
     color: rgba(26,26,42,0.4);
   }
 
-  /* ── Features ── */
-  .features {
-    padding: 80px 40px;
-    position: relative; z-index: 1;
-  }
-  .features-inner {
-    max-width: 900px; margin: 0 auto;
-  }
-  .features h2 {
-    text-align: center;
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-    font-weight: 800; letter-spacing: -0.5px;
-    margin-bottom: 12px;
-    color: #1a1a2a;
-  }
-  .features > .features-inner > p {
-    text-align: center;
-    font-size: 1rem; color: rgba(26,26,42,0.6);
-    max-width: 480px; margin: 0 auto 48px; line-height: 1.6;
-  }
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  .feature-card {
-    background: rgba(255,255,255,0.55);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,0.6);
-    border-radius: 20px;
-    padding: 28px;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .feature-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-  }
-  .feature-icon {
-    width: 44px; height: 44px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 16px; font-size: 1.4rem;
-  }
-  .feature-card h3 {
-    font-size: 1.05rem; font-weight: 700; margin-bottom: 6px;
-  }
-  .feature-card p {
-    font-size: 0.88rem; color: #5a5a6a; line-height: 1.55;
-  }
-
-  /* ── Who section (darker part of gradient) ── */
-  .who {
-    padding: 100px 40px;
-    position: relative; z-index: 1;
-  }
-  .who-inner {
-    max-width: 680px; margin: 0 auto; text-align: center;
-  }
-  .who h2 {
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-    font-weight: 800; letter-spacing: -0.5px;
-    color: #f0e8d8;
-    margin-bottom: 24px;
-  }
-  .who-cards {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-    text-align: left;
-  }
-  .who-card {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 16px; padding: 24px;
-  }
-  .who-card h3 {
-    font-size: 0.95rem; font-weight: 700; color: #f0e8d8;
-    margin-bottom: 6px;
-  }
-  .who-card p {
-    font-size: 0.82rem; color: rgba(240,232,216,0.6); line-height: 1.5;
-  }
-
-  /* ── CTA (night section) ── */
-  .cta {
-    padding: 100px 40px 80px;
-    text-align: center;
-    position: relative; z-index: 1;
-  }
-  .cta h2 {
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-    font-weight: 800; color: #f0e8d8;
-    letter-spacing: -0.5px; margin-bottom: 12px;
-  }
-  .cta p {
-    font-size: 1rem; color: rgba(240,232,216,0.5);
-    max-width: 440px; margin: 0 auto 32px; line-height: 1.6;
-  }
-  .cta .waitlist input {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.15);
-    color: #f0e8d8;
-  }
-  .cta .waitlist input::placeholder { color: rgba(240,232,216,0.4); }
-  .cta .waitlist input:focus {
-    border-color: #f5c542;
-    box-shadow: 0 0 0 3px rgba(245,197,66,0.15);
-  }
-
   /* ── Footer ── */
   footer {
-    padding: 32px 40px;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    padding: 16px 40px;
     text-align: center;
-    position: relative; z-index: 1;
-    color: rgba(240,232,216,0.3);
-    font-size: 0.78rem;
+    z-index: 1;
+    color: rgba(26,26,42,0.3);
+    font-size: 0.75rem;
   }
   footer a {
-    color: rgba(240,232,216,0.4);
+    color: rgba(26,26,42,0.4);
     text-decoration: none;
     transition: color 0.2s;
   }
-  footer a:hover { color: rgba(240,232,216,0.7); }
-  .footer-links {
-    display: flex; gap: 20px; justify-content: center;
-    margin-bottom: 12px;
-  }
+  footer a:hover { color: rgba(26,26,42,0.7); }
 
   /* ── Responsive ── */
   @media (max-width: 640px) {
@@ -317,11 +183,7 @@
     .hero { padding: 120px 24px 80px; }
     .waitlist { flex-direction: column; }
     .waitlist button { width: 100%; }
-    .features { padding: 60px 24px; }
-    .who { padding: 60px 24px; }
-    .who-cards { grid-template-columns: 1fr; }
-    .cta { padding: 60px 24px; }
-    footer { padding: 24px 20px; }
+    footer { padding: 12px 20px; }
   }
 </style>
 </head>
@@ -340,13 +202,23 @@
     </div>
   </div>
 
-  <!-- Stars (visible in the night portion on scroll) -->
-  <div class="stars" id="stars"></div>
-
   <!-- Nav -->
   <nav id="nav">
     <a href="/" class="nav-logo">
-      <span>📚</span> NoBox Education
+      <svg viewBox="0 0 714 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+        <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+        <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+        <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+        <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      NoBox Education
     </a>
     <div class="nav-right">
       <a href="https://noboxdev.com" class="nav-link">By NoBoxDev</a>
@@ -366,89 +238,9 @@
     <p class="waitlist-note">We'll let you know when we launch. No spam.</p>
   </section>
 
-  <!-- Features -->
-  <section class="features">
-    <div class="features-inner">
-      <h2>Education without borders</h2>
-      <p>Built for families who move. Designed around how children actually learn.</p>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon" style="background: #e8f0e4;">🌍</div>
-          <h3>Learn from anywhere</h3>
-          <p>Your child's classroom follows them. Whether you're in Bali or Berlin, learning continues without interruption.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background: #e4e8f0;">🎯</div>
-          <h3>Personalised pace</h3>
-          <p>No more fitting into a class average. The curriculum adapts to your child's strengths, gaps, and interests.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background: #f0e8e4;">🧠</div>
-          <h3>Psychology-driven</h3>
-          <p>Lessons are designed around how children actually think and learn — not how textbooks assume they do.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background: #f0f0e4;">👨‍👩‍👧</div>
-          <h3>Parent dashboard</h3>
-          <p>See exactly where your child is, what they're learning, and what comes next. Full visibility, zero guesswork.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background: #e4f0f0;">📊</div>
-          <h3>Real curriculum</h3>
-          <p>Covers maths, language, science, and life skills. Aligned with international standards but adapted for each child.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background: #f0e4f0;">✨</div>
-          <h3>AI-assisted tutoring</h3>
-          <p>Intelligent hints, adaptive difficulty, and instant feedback. Like having a patient tutor available 24/7.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Who is it for -->
-  <section class="who">
-    <div class="who-inner">
-      <h2>Built for families like yours</h2>
-      <div class="who-cards">
-        <div class="who-card">
-          <h3>🌏 Expat families</h3>
-          <p>Moving countries shouldn't mean starting over. Continuity across borders, in one place.</p>
-        </div>
-        <div class="who-card">
-          <h3>✈️ Digital nomads</h3>
-          <p>Your lifestyle doesn't fit a school schedule. Your child's education shouldn't have to either.</p>
-        </div>
-        <div class="who-card">
-          <h3>🏠 Homeschool parents</h3>
-          <p>Structure without rigidity. A curriculum you can trust, with the flexibility you need.</p>
-        </div>
-        <div class="who-card">
-          <h3>🧩 Children who learn differently</h3>
-          <p>Adaptive pacing means no child is left behind — or held back. Every learner gets what they need.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta">
-    <h2>Be the first to know</h2>
-    <p>We're building something different. Join the waitlist and we'll let you know when it's ready.</p>
-    <form class="waitlist" id="waitlist-cta" style="margin: 0 auto;" onsubmit="return submitWaitlist(event, this)">
-      <input type="email" placeholder="your@email.com" required aria-label="Email address">
-      <button type="submit">Join the waitlist</button>
-    </form>
-    <div class="waitlist-msg" id="msg-cta"></div>
-  </section>
-
   <!-- Footer -->
   <footer>
-    <div class="footer-links">
-      <a href="https://noboxdev.com">NoBoxDev</a>
-      <a href="https://noboxdev.com/blog">Blog</a>
-    </div>
-    <p>&copy; 2026 NoBox Education — A NoBoxDev project</p>
+    <a href="https://noboxdev.com">NoBoxDev</a> &middot; &copy; 2026
   </footer>
 
   <!-- Analytics -->
@@ -461,28 +253,12 @@
       nav.classList.toggle('scrolled', window.scrollY > 50);
     }, { passive: true });
 
-    // Stars — generate and show based on scroll
-    const starsEl = document.getElementById('stars');
-    for (let i = 0; i < 80; i++) {
-      const star = document.createElement('div');
-      star.className = 'star' + (Math.random() > 0.85 ? ' big' : '');
-      star.style.left = Math.random() * 100 + '%';
-      star.style.top = (40 + Math.random() * 60) + '%';
-      star.style.animationDelay = (Math.random() * 3) + 's';
-      starsEl.appendChild(star);
-    }
-    window.addEventListener('scroll', () => {
-      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-      starsEl.style.opacity = Math.max(0, (pct - 0.4) * 2.5);
-    }, { passive: true });
-
     // Waitlist form
     async function submitWaitlist(e, form) {
       e.preventDefault();
       const input = form.querySelector('input');
       const btn = form.querySelector('button');
-      const msgId = form.id === 'waitlist-hero' ? 'msg-hero' : 'msg-cta';
-      const msgEl = document.getElementById(msgId);
+      const msgEl = document.getElementById('msg-hero');
 
       btn.disabled = true;
       btn.textContent = 'Joining...';
