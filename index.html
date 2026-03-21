@@ -8,6 +8,7 @@
 <meta property="og:title" content="NoBox Education — School that travels with your family">
 <meta property="og:description" content="Personalised education for expat and travelling families.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://nobox.education/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -504,10 +505,11 @@
           msgEl.className = 'waitlist-msg success';
           input.value = '';
         } else {
-          throw new Error();
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || 'Request failed');
         }
-      } catch {
-        msgEl.textContent = 'Something went wrong. Please try again.';
+      } catch (err) {
+        msgEl.textContent = err.message || 'Something went wrong. Please try again.';
         msgEl.className = 'waitlist-msg error';
       }
 
