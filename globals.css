@@ -1,0 +1,64 @@
+/* ═══════════════════════════════════════════════════════════════
+   NoBox Education — Global Styling Guide
+   Shared brand tokens, logo assets, and reusable variables.
+   Import this file in any page: <link rel="stylesheet" href="globals.css">
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand Colours ── */
+  --nbe-gold:        #F4AD50;   /* accent / left book panel */
+  --nbe-gold-light:  #F8BE4B;   /* top-left triangle */
+  --nbe-gold-btn:    #f5c542;   /* button gold */
+  --nbe-sage:        #6CA373;   /* green / right book panel */
+  --nbe-sage-light:  #79BD84;   /* top-right triangle */
+  --nbe-sage-btn:    #7c9070;   /* button olive green */
+  --nbe-purple:      #B49AF7;   /* spine / accent */
+  --nbe-dark:        #1a1a2a;   /* body text / dark bg */
+  --nbe-text:        #1a1a2a;
+  --nbe-text-muted:  #5a5a6a;
+  --nbe-white-line:  #FDF8F8;   /* book page lines */
+
+  /* ── Typography ── */
+  --nbe-font-body:   'Baloo 2', sans-serif;
+  --nbe-font-import: url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
+
+  /* ── Logo — inline SVG as data URI ──
+     Usage:  background-image: var(--nbe-logo);
+             content: var(--nbe-logo);
+             Or use the file directly: logos/mark.svg                    */
+  --nbe-logo: url("data:image/svg+xml,%3Csvg width='714' height='595' viewBox='0 0 714 595' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z' fill='%236CA373' stroke='%236CA373'/%3E%3Cline x1='407.212' y1='242.9' x2='610.217' y2='251.642' stroke='%23FDF8F8' stroke-width='7' stroke-linecap='round'/%3E%3Cline x1='407.187' y1='310.873' x2='626.19' y2='318.659' stroke='%23FDF8F8' stroke-width='7' stroke-linecap='round'/%3E%3Cline x1='407.178' y1='377.863' x2='644.181' y2='385.633' stroke='%23FDF8F8' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z' fill='%23F4AD50' stroke='%23F4AD50'/%3E%3Cline x1='111.412' y1='251.6' x2='314.417' y2='242.941' stroke='%23FDF8F8' stroke-width='7' stroke-linecap='round'/%3E%3Cline x1='91.4409' y1='318.627' x2='314.445' y2='310.87' stroke='%23FDF8F8' stroke-width='7' stroke-linecap='round'/%3E%3Cline x1='74.4496' y1='385.635' x2='314.453' y2='377.861' stroke='%23FDF8F8' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z' fill='%23F8BE4B' stroke='%23F8BE4B'/%3E%3Cpath d='M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z' fill='%2379BD84' stroke='%2379BD84'/%3E%3Cpath d='M354.055 138.647L354.055 592.647' stroke='%23B49AF7' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+
+  /* ── Logo — raw inline SVG for embedding ──
+     Copy this block when you need the logo as inline HTML.
+     Source: logos/mark.svg
+
+     <svg viewBox="0 0 714 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+       <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+       <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+       <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+       <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+       <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+       <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+       <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+       <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+       <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+       <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+       <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
+     </svg>
+  */
+
+  /* ── Spacing ── */
+  --nbe-section-pad: 80px 40px;
+  --nbe-card-radius: 28px;
+  --nbe-btn-radius:  28px;
+
+  /* ── Shadows ── */
+  --nbe-shadow-sm:   0 2px 8px rgba(0,0,0,0.1);
+  --nbe-shadow-md:   0 4px 20px rgba(0,0,0,0.12);
+  --nbe-shadow-lg:   0 8px 40px rgba(0,0,0,0.15);
+
+  /* ── Glass ── */
+  --nbe-glass-bg:    rgba(255,255,255,0.3);
+  --nbe-glass-blur:  blur(12px);
+  --nbe-glass-border: 1px solid rgba(255,255,255,0.3);
+}

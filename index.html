@@ -231,10 +231,11 @@
   .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
   /* ═══════════════════════════════════════════
-     STORYBOOK — Horizontal scroll on olive green
+     STORYBOOK — Logo-shaped book
      ═══════════════════════════════════════════ */
   .storybook {
-    background: transparent; padding: 80px 0;
+    background: transparent; padding: 80px 0 40px;
+    display: flex; flex-direction: column; align-items: center;
   }
   .storybook-header {
     text-align: center; margin-bottom: 48px; padding: 0 40px;
@@ -247,207 +248,123 @@
     font-size: 1rem; color: rgba(26,26,42,0.6);
     max-width: 480px; margin: 0 auto; line-height: 1.6;
   }
-  /* Book — Logo shape via clip-path */
-  .book-wrapper {
-    position: relative;
-    height: calc(min(28vw, 440px) * 1.67 + 60px);
-    padding: 0 0 20px;
-    overflow: visible;
-  }
-  .book {
-    --page: min(28vw, 440px);
-    --clip-right: polygon(0% 23.2%, 57.7% 0.1%, 100% 25.5%, 100% 65.8%, 0% 99.7%);
-    --clip-left: polygon(100% 23.2%, 42.3% 0.1%, 0% 25.5%, 0% 65.8%, 100% 99.7%);
-    --clip-full: polygon(21.4% 0%, 49.6% 23.2%, 78.4% 0.1%, 99.7% 25.5%, 99.7% 65.7%, 49.6% 99.7%, 0.1% 65.7%, 0.1% 25.5%);
-    width: calc(var(--page) * 2); height: calc(var(--page) * 1.67);
-    position: absolute; perspective: 2400px;
-    right: calc(50% - var(--page));
-  }
-  /* Inside pages — sit on the right half when book is open */
-  .book-page {
-    position: absolute; top: 0; right: 0;
-    width: var(--page); height: 100%;
-    transform-origin: left center;
-    transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-    transform-style: preserve-3d;
-    z-index: 1; cursor: pointer;
-    visibility: hidden;
-  }
-  .book-page.flipped {
-    transform: rotateY(-180deg);
-    z-index: 0;
-  }
-  .page-front, .page-back {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    backface-visibility: hidden;
-    overflow: hidden;
-  }
-  .page-front .page-content {
-    clip-path: var(--clip-right);
-  }
-  .page-back {
-    transform: rotateY(180deg);
-  }
-  .page-back .page-content {
-    clip-path: var(--clip-left);
-  }
-  /* Left static side — shows illustration for current chapter */
-  .book-left {
-    position: absolute; top: 0; left: 0;
-    width: var(--page); height: 100%;
-    overflow: hidden;
-    visibility: hidden;
-  }
-  .book-left-img {
-    width: 100%; height: 100%;
-    background-size: 115%; background-position: center 60%;
-    clip-path: var(--clip-left);
-  }
-  /* Left half of the logo (static, behind left panel) */
-  .book-cover-left {
-    position: absolute; top: 0; left: 0;
-    width: var(--page); height: 100%;
-    overflow: hidden;
-    clip-path: var(--clip-left);
-    background: #f0ece4;
-    z-index: 5;
-    transition: opacity 0.4s ease 0.3s;
-  }
-  .book-cover-left svg {
-    position: absolute; top: 0; left: 0;
-    width: 200%; height: 100%;
-  }
-  .book.open .book-cover-left {
-    opacity: 0; pointer-events: none;
-  }
-  /* Right half of the logo — flips like a book cover */
-  .book-cover-front {
-    position: absolute; top: 0; right: 0;
-    width: var(--page); height: 100%;
-    overflow: hidden;
-    z-index: 10; cursor: pointer;
-    transform-origin: left center;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
-    clip-path: var(--clip-right);
-    background: #f0ece4;
-  }
-  .book-cover-front svg {
-    position: absolute; top: 0; left: -100%;
-    width: 200%; height: 100%;
-  }
-  .book-cover-front.opened {
-    transform: rotateY(-180deg);
-    pointer-events: none;
-  }
-  .book-cover-front.hidden { visibility: hidden; }
-  /* Purple spine line when book is open */
-  .book.open::after {
-    content: '';
-    position: absolute;
-    left: var(--page); top: 23.2%; bottom: 0.3%;
-    width: 3px; margin-left: -1.5px;
-    background: #B49AF7;
-    z-index: 20;
-    border-radius: 2px;
-  }
-
-  /* Page content */
-  .page-content {
-    width: 100%; height: 100%;
-    padding: 28% 24px 20% 24px; display: flex; flex-direction: column;
-    justify-content: center; position: relative;
-  }
-  .page-content .chapter-num {
-    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 3px; margin-bottom: 10px;
-  }
-  .page-content h3 {
-    font-size: 1.3rem; font-weight: 800; line-height: 1.2;
-    margin-bottom: 10px; letter-spacing: -0.3px;
-  }
-  .page-content p {
-    font-size: 0.8rem; line-height: 1.55; margin-bottom: 4px;
-  }
-  .page-content .feature-list {
-    list-style: none; margin-top: 14px;
-  }
-  .page-content .feature-list li {
-    font-size: 0.75rem; padding: 3px 0;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .check-icon {
-    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .check-icon svg { width: 10px; height: 10px; stroke: #fff; }
-
-  /* Page flip corner hint */
-  .page-corner {
-    position: absolute; bottom: 35%; right: 16px;
-    font-size: 0.7rem; font-weight: 600; color: rgba(0,0,0,0.3);
-    display: flex; align-items: center; gap: 4px;
-    transition: color 0.2s;
-  }
-  .page-corner svg { width: 14px; height: 14px; stroke: currentColor; }
-  .book-page:hover .page-corner { color: rgba(0,0,0,0.6); }
-  .page-back .page-corner { right: auto; left: 16px; }
-  .page-back .page-corner svg { transform: scaleX(-1); }
-
-  .page-quote-highlight {
-    border-left: 3px solid #5a7a4a; padding-left: 14px; margin: 14px 0;
-  }
-  .page-quote-highlight span {
-    font-size: 1.4rem; font-style: italic; font-weight: 600; color: #1a2a1a;
-  }
   .btn-outline-sm { font-size: 0.85rem; padding: 10px 24px; }
 
-  /* Page dot indicators */
-  .book-dots {
-    display: flex; justify-content: center; gap: 8px;
-    margin-top: 24px; align-items: center;
+  /* Logo-shaped book container */
+  .logo-book {
+    position: relative;
+    width: min(68vw, 780px);
+    aspect-ratio: 714 / 595;
+    clip-path: polygon(
+      21.4% 0%, 49.6% 23.2%, 78.4% 0.1%,
+      99.7% 25.5%, 99.7% 65.8%,
+      49.6% 99.7%,
+      0.1% 65.8%, 0.1% 25.5%
+    );
   }
-  .book-dot-cover {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: rgba(26,26,42,0.1); border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(26,26,42,0.4); transition: all 0.2s;
-    padding: 0; margin-right: 4px;
+  .logo-book-half {
+    position: absolute; top: 0; bottom: 0;
+    backdrop-filter: blur(30px) saturate(1.5);
+    -webkit-backdrop-filter: blur(30px) saturate(1.5);
+    transition: background 0.6s;
   }
-  .book-dot-cover:hover { background: rgba(26,26,42,0.2); color: #1a1a2a; }
-  .book-dot {
-    width: 16px; height: 16px; border-radius: 50%;
-    background: rgba(26,26,42,0.2); border: none; cursor: pointer;
-    transition: background 0.3s, transform 0.2s; padding: 0;
+  .logo-book-half-left {
+    left: 0; right: 50%;
+    background: rgba(244,173,80,0.72);
   }
-  .book-dot.active { background: #1a1a2a; transform: scale(1.2); }
+  .logo-book-half-right {
+    left: 50%; right: 0;
+    background: rgba(108,163,115,0.72);
+  }
+  .logo-book-spine {
+    position: absolute;
+    left: 50%; top: 23.2%; bottom: 0.3%;
+    width: 3px; margin-left: -1.5px;
+    background: #B49AF7; z-index: 10;
+    border-radius: 2px;
+  }
+  .logo-book-text {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 5; display: flex;
+  }
+  .logo-book-text-left, .logo-book-text-right {
+    width: 50%; overflow: hidden;
+  }
+  .logo-book-text-left { padding: 30% 20px 34% 12%; }
+  .logo-book-text-right { padding: 30% 12% 34% 20px; }
 
-  /* Chapter colors */
-  .bg-mountains { background: #e8f0e4; color: #1a2a1a; }
-  .bg-mountains .chapter-num { color: #5a7a4a; }
-  .bg-mountains p { color: #4a5a44; }
-  .bg-mountains .check-icon { background: #7c9070; }
+  /* Story text inside book */
+  .lb-story, .lb-story-right { display: none; }
+  .lb-story.active, .lb-story-right.active {
+    display: block;
+    animation: lbFade 0.5s ease;
+  }
+  @keyframes lbFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .lb-story .lb-label {
+    font-size: 0.55rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 8px;
+    color: rgba(255,255,255,0.8);
+  }
+  .lb-story h3 {
+    font-size: 1.1rem; font-weight: 800; letter-spacing: -0.3px;
+    line-height: 1.2; margin-bottom: 10px; color: #fff;
+  }
+  .lb-story p, .lb-story-right p {
+    font-size: 0.72rem; line-height: 1.7; margin-bottom: 7px;
+    color: #fff;
+  }
+  .lb-story blockquote, .lb-story-right blockquote {
+    border-left: 3px solid rgba(255,255,255,0.6);
+    padding: 2px 0 2px 12px; margin: 12px 0;
+    font-size: 0.82rem; font-style: italic; font-weight: 600;
+    line-height: 1.45; color: #fff;
+  }
+  .lb-closing {
+    font-size: 0.85rem; color: #F4AD50; font-weight: 700;
+    font-style: italic; margin-top: 14px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
 
-  .bg-dive { background: #d0e8f4; color: #1a2a3a; }
-  .bg-dive .chapter-num { color: #4a7a9a; }
-  .bg-dive p { color: #3a5a6a; }
-  .bg-dive .check-icon { background: #5b8aaa; }
+  /* Click arrow hint on the right page */
+  .lb-page-arrow {
+    position: absolute; bottom: 35%; right: 18%;
+    z-index: 15;
+    display: flex; align-items: center; gap: 5px;
+    color: #fff;
+    font-size: 0.9rem; font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: color 0.3s;
+    animation: arrowPulse 2.5s ease-in-out infinite;
+  }
+  .lb-page-arrow:hover { color: #fff; opacity: 0.7; }
+  .lb-page-arrow svg {
+    width: 26px; height: 26px; stroke: currentColor;
+    fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  @keyframes arrowPulse {
+    0%, 100% { transform: translateX(0); opacity: 0.6; }
+    50% { transform: translateX(4px); opacity: 1; }
+  }
 
-  .bg-horizon { background: #f0e4d0; color: #2a1a0a; }
-  .bg-horizon .chapter-num { color: #9a6a3a; }
-  .bg-horizon p { color: #6a5040; }
-  .bg-horizon .check-icon { background: #c4704b; }
-
-  .bg-night { background: #1a1a2a; color: #e8eef4; }
-  .bg-night .chapter-num { color: #7c9070; }
-  .bg-night p { color: #90a0b8; }
-  .bg-night .check-icon { background: #7c9070; }
-
-  .bg-quote { background: linear-gradient(160deg, #f8f0e4 0%, #e8e0d4 100%); color: #2a1a0a; }
-  .bg-quote .chapter-num { color: #B49AF7; }
-  .bg-quote p { color: #5a4a3a; font-style: italic; }
-  .bg-quote h3 { font-size: 1.4rem; line-height: 1.4; }
+  /* Logo-shaped chapter dots */
+  .logo-dots {
+    display: flex; justify-content: center; gap: 10px;
+    margin-bottom: 12px; position: relative; z-index: 10;
+    align-items: center;
+  }
+  .logo-dot {
+    width: 24px; height: 20px; border: none; cursor: pointer;
+    background: none; padding: 0;
+    opacity: 0.3; transition: all 0.3s;
+    filter: grayscale(1);
+  }
+  .logo-dot:hover { opacity: 0.6; filter: grayscale(0.3); transform: scale(1.15); }
+  .logo-dot.active { opacity: 1; filter: grayscale(0); transform: scale(1.25); }
+  .logo-dot svg { width: 100%; height: auto; }
 
   /* ═══════════════════════════════════════════
      APP DEMO — Mini mockup
@@ -605,7 +522,7 @@
   .trust-slide.reverse > * { direction: ltr; }
   /* Features list side */
   .trust-features {
-    display: flex; flex-direction: column; justify-content: center;
+    display: flex; flex-direction: column; justify-content: flex-start;
     height: 100%;
   }
   .trust-features h3 {
@@ -825,13 +742,13 @@
      ═══════════════════════════════════════════ */
   @media (max-width: 900px) {
     .hero h1 { font-size: 2.6rem; }
-    .book-wrapper { height: calc(45vw * 1.67 + 60px); }
-    .book { --page: 45vw; height: calc(45vw * 1.67); }
-    .page-content { padding: 28% 16px 20% 16px; }
-    .page-content h3 { font-size: 1.2rem; }
-    .page-content p { font-size: 0.78rem; }
-    .storybook { padding: 60px 0; }
-    .book-wrapper { padding: 0 20px 20px; }
+    .logo-book { width: 90vw; }
+    .logo-book-text-left { padding: 30% 14px 34% 8%; }
+    .logo-book-text-right { padding: 30% 8% 34% 14px; }
+    .lb-story h3 { font-size: 0.95rem; }
+    .lb-story p, .lb-story-right p { font-size: 0.65rem; }
+    .lb-story blockquote, .lb-story-right blockquote { font-size: 0.72rem; }
+    .storybook { padding: 60px 0 20px; }
     .demo-section { min-height: auto; }
     .demo-top { grid-template-columns: 1fr; gap: 24px; }
     .demo-views { grid-template-columns: 1fr 1fr; }
@@ -845,7 +762,400 @@
     .footer-night { min-height: 70vh; }
     .stats-row { flex-direction: column; gap: 24px; }
     .nav-links a:not(.nav-cta) { display: none; }
+    .intake-split { flex-direction: column; }
+    .intake-left {
+      width: 100%; min-width: auto;
+      padding: 24px 20px;
+      flex-direction: row; align-items: center; gap: 16px;
+    }
+    .intake-left h2, .intake-left > p { display: none; }
+    .intake-left svg { margin-bottom: 0; }
+    .intake-stones { flex-direction: row; gap: 4px; margin-top: 0; }
+    .intake-connector { width: 16px; height: 3px; margin-left: 0; }
+    .intake-stone-info { display: none; }
+    .intake-right { padding: 28px 20px; }
+    .intake-q h3 { font-size: 1.3rem; }
   }
+
+  /* ═══════════════════════════════════════════
+     INTAKE POPUP
+     ═══════════════════════════════════════════ */
+  .intake-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .intake-overlay.open {
+    opacity: 1; pointer-events: all;
+  }
+  .intake-split {
+    display: flex;
+    width: 900px; max-width: 94vw;
+    max-height: 85vh;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.15);
+    transform: scale(0.95) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .intake-overlay.open .intake-split {
+    transform: scale(1) translateY(0);
+  }
+
+  /* Left — green panel */
+  .intake-left {
+    width: 300px; min-width: 300px;
+    background: linear-gradient(160deg, #6CA373 0%, #4a8a55 60%, #3d7548 100%);
+    padding: 44px 28px;
+    display: flex; flex-direction: column;
+    color: #fff;
+  }
+  .intake-left svg { width: 56px; height: auto; margin-bottom: 20px; }
+  .intake-left h2 {
+    font-size: 1.4rem; font-weight: 800; line-height: 1.2;
+    margin-bottom: 10px; color: #fff;
+  }
+  .intake-left > p {
+    font-size: 0.8rem; color: rgba(255,255,255,0.7);
+    line-height: 1.6; margin-bottom: 32px;
+  }
+
+  /* Stepping stones */
+  .intake-stones {
+    display: flex; flex-direction: column; gap: 0;
+    margin-top: auto;
+  }
+  .intake-stone-row {
+    display: flex; align-items: center; gap: 14px; padding: 0 4px;
+  }
+  .intake-stone-circle {
+    width: 44px; height: 44px;
+    border-radius: 55% 45% 50% 50% / 50% 55% 45% 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 0.85rem; flex-shrink: 0;
+    transition: all 0.4s;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.35);
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+  .intake-stone-row.active .intake-stone-circle {
+    background: #F4AD50; color: #fff;
+    border-color: #F4AD50;
+    box-shadow: 0 4px 16px rgba(244,173,80,0.35);
+    transform: scale(1.1);
+  }
+  .intake-stone-row.done .intake-stone-circle {
+    background: rgba(244,173,80,0.6); color: #fff;
+    border-color: rgba(244,173,80,0.4);
+  }
+  .intake-stone-row:nth-child(odd) .intake-stone-circle {
+    border-radius: 45% 55% 50% 50% / 55% 45% 50% 50%;
+  }
+  .intake-stone-info h4 {
+    font-size: 0.82rem; font-weight: 700; color: #fff;
+    opacity: 0.4; transition: opacity 0.3s;
+  }
+  .intake-stone-info p {
+    font-size: 0.65rem; color: rgba(255,255,255,0.3);
+    transition: color 0.3s;
+  }
+  .intake-stone-row.active .intake-stone-info h4 { opacity: 1; }
+  .intake-stone-row.active .intake-stone-info p { color: rgba(255,255,255,0.6); }
+  .intake-stone-row.done .intake-stone-info h4 { opacity: 0.7; }
+  .intake-stone-row.done .intake-stone-info p { color: rgba(255,255,255,0.4); }
+  .intake-connector {
+    width: 3px; height: 20px;
+    background: rgba(255,255,255,0.08);
+    margin-left: 24px; border-radius: 2px;
+    transition: background 0.4s;
+  }
+  .intake-connector.done { background: rgba(244,173,80,0.4); }
+
+  /* Right — glass form */
+  .intake-right {
+    flex: 1;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(50px) saturate(1.8);
+    -webkit-backdrop-filter: blur(50px) saturate(1.8);
+    padding: 44px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .intake-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(26,26,42,0.06); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: rgba(26,26,42,0.4);
+    transition: all 0.2s;
+  }
+  .intake-close:hover { background: rgba(26,26,42,0.1); color: #1a1a2a; }
+
+  .intake-q { display: none; flex-direction: column; flex: 1; }
+  .intake-q.active {
+    display: flex;
+    animation: intakeSlide 0.4s ease;
+  }
+  @keyframes intakeSlide {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .intake-q .iq-step {
+    font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; color: #7c9070; margin-bottom: 8px;
+  }
+  .intake-q h3 {
+    font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;
+    line-height: 1.2; margin-bottom: 6px;
+  }
+  .intake-q .iq-hint {
+    font-size: 0.82rem; color: rgba(26,26,42,0.4);
+    margin-bottom: 24px; line-height: 1.5;
+  }
+  .iq-input {
+    width: 100%; padding: 16px 20px;
+    border: 2px solid rgba(26,26,42,0.08);
+    border-radius: 16px; font-family: inherit;
+    font-size: 1.05rem; background: #fff;
+    outline: none; transition: border-color 0.3s;
+  }
+  .iq-input:focus { border-color: #6CA373; }
+  .iq-input::placeholder { color: rgba(26,26,42,0.3); }
+  .iq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .iq-opt {
+    padding: 16px 18px; border-radius: 16px;
+    border: 2px solid rgba(26,26,42,0.06);
+    background: #fff; cursor: pointer; font-family: inherit;
+    font-size: 0.95rem; font-weight: 600; text-align: center;
+    transition: all 0.3s;
+  }
+  .iq-opt:hover {
+    border-color: rgba(124,144,112,0.4);
+    background: rgba(124,144,112,0.04);
+    transform: translateY(-2px);
+  }
+  .iq-opt.selected {
+    border-color: #6CA373;
+    background: rgba(108,163,115,0.1);
+  }
+  .intake-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: auto; padding-top: 28px;
+  }
+  .iq-btn {
+    padding: 14px 32px; border-radius: 24px;
+    font-family: inherit; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .iq-prev { background: rgba(26,26,42,0.06); color: #1a1a2a; }
+  .iq-prev:hover { background: rgba(26,26,42,0.1); }
+  .iq-next {
+    background: #f5c542; color: #1a1a2a;
+    box-shadow: 0 2px 10px rgba(245,197,66,0.3);
+  }
+  .iq-next:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(245,197,66,0.4); }
+  .iq-send {
+    background: linear-gradient(145deg, #6CA373, #4a8a55);
+    color: #fff; box-shadow: 0 2px 10px rgba(108,163,115,0.3);
+  }
+  .iq-send:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(108,163,115,0.4); }
+  .iq-enter-hint {
+    font-size: 0.65rem; color: rgba(26,26,42,0.25);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .iq-enter-hint kbd {
+    padding: 2px 7px; border-radius: 5px;
+    background: rgba(26,26,42,0.06); font-family: inherit;
+    font-size: 0.62rem; font-weight: 700;
+  }
+
+  /* ═══ WELCOME / WAITING LIST POPUP ═══ */
+  .welcome-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .welcome-overlay.open { opacity: 1; pointer-events: all; }
+
+  .welcome-card {
+    width: 620px; max-width: 92vw;
+    max-height: 85vh; overflow-y: auto;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(50px) saturate(1.8);
+    -webkit-backdrop-filter: blur(50px) saturate(1.8);
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.12);
+    padding: 48px 44px;
+    transform: scale(0.95) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    scrollbar-width: none;
+  }
+  .welcome-card::-webkit-scrollbar { display: none; }
+  .welcome-overlay.open .welcome-card { transform: scale(1) translateY(0); }
+
+  .welcome-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(26,26,42,0.06); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: rgba(26,26,42,0.4);
+  }
+  .welcome-close:hover { background: rgba(26,26,42,0.1); }
+
+  .welcome-card h2 {
+    font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;
+    margin-bottom: 8px; color: #1a1a2a;
+  }
+  .welcome-card .welcome-intro {
+    font-size: 0.92rem; color: rgba(26,26,42,0.6);
+    line-height: 1.7; margin-bottom: 28px;
+  }
+  .welcome-card h3 {
+    font-size: 1.2rem; font-weight: 800; margin-bottom: 8px;
+    color: #4a6a40;
+  }
+  .welcome-card .welcome-body {
+    font-size: 0.88rem; color: rgba(26,26,42,0.6);
+    line-height: 1.7; margin-bottom: 24px;
+  }
+  .welcome-card .welcome-body em {
+    font-style: normal; color: #1a1a2a; font-weight: 600;
+  }
+
+  /* Radio options */
+  .welcome-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .welcome-opt {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 18px 20px; border-radius: 16px;
+    border: 2px solid rgba(26,26,42,0.06);
+    background: rgba(255,255,255,0.6);
+    cursor: pointer; font-family: inherit;
+    text-align: left; transition: all 0.3s;
+    font-size: 0.92rem; font-weight: 600;
+    line-height: 1.4;
+  }
+  .welcome-opt:hover { border-color: rgba(108,163,115,0.3); background: rgba(255,255,255,0.8); }
+  .welcome-opt.selected { border-color: #6CA373; background: rgba(108,163,115,0.08); }
+  .welcome-opt-radio {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid rgba(26,26,42,0.15);
+    flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .welcome-opt.selected .welcome-opt-radio {
+    border-color: #6CA373;
+    background: #6CA373;
+  }
+  .welcome-opt.selected .welcome-opt-radio::after {
+    content: ''; width: 8px; height: 8px;
+    border-radius: 50%; background: #fff;
+  }
+
+  /* Open text field for "yes" option */
+  .welcome-textarea {
+    display: none; margin-top: 16px;
+  }
+  .welcome-textarea.visible { display: block; }
+  .welcome-textarea textarea {
+    width: 100%; padding: 16px 20px;
+    border: 2px solid rgba(26,26,42,0.08);
+    border-radius: 16px; font-family: inherit;
+    font-size: 0.92rem; background: #fff;
+    outline: none; transition: border-color 0.3s;
+    resize: vertical;
+  }
+  .welcome-textarea textarea:focus { border-color: #6CA373; }
+  .welcome-textarea label {
+    font-size: 0.82rem; font-weight: 600; color: rgba(26,26,42,0.5);
+    display: block; margin-bottom: 8px;
+  }
+
+  .welcome-actions {
+    display: flex; gap: 10px; margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .welcome-btn {
+    padding: 14px 32px; border-radius: 24px;
+    font-family: inherit; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .welcome-btn-primary {
+    background: #f5c542; color: #1a1a2a;
+    box-shadow: 0 2px 10px rgba(245,197,66,0.3);
+  }
+  .welcome-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(245,197,66,0.4); }
+  .welcome-btn-secondary {
+    background: rgba(26,26,42,0.06); color: #1a1a2a;
+  }
+  .welcome-btn-secondary:hover { background: rgba(26,26,42,0.1); }
+
+  /* ═══ EMAIL-ONLY POPUP ═══ */
+  .email-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .email-overlay.open { opacity: 1; pointer-events: all; }
+  .email-card {
+    width: 460px; max-width: 90vw;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(50px) saturate(1.8);
+    -webkit-backdrop-filter: blur(50px) saturate(1.8);
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.12);
+    padding: 40px 36px;
+    text-align: center;
+    position: relative;
+    transform: scale(0.95) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .email-overlay.open .email-card { transform: scale(1) translateY(0); }
+  .email-card .email-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(26,26,42,0.06); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: rgba(26,26,42,0.4);
+  }
+  .email-card svg { width: 48px; height: auto; margin-bottom: 16px; }
+  .email-card h3 {
+    font-size: 1.3rem; font-weight: 800; margin-bottom: 6px;
+  }
+  .email-card p {
+    font-size: 0.85rem; color: rgba(26,26,42,0.5);
+    line-height: 1.6; margin-bottom: 20px;
+  }
+  .email-card input {
+    width: 100%; padding: 14px 18px;
+    border: 2px solid rgba(26,26,42,0.08);
+    border-radius: 14px; font-family: inherit;
+    font-size: 1rem; background: #fff;
+    outline: none; text-align: center;
+    transition: border-color 0.3s;
+    margin-bottom: 16px;
+  }
+  .email-card input:focus { border-color: #6CA373; }
+  .email-card button.email-send {
+    padding: 14px 40px; border-radius: 24px;
+    background: #f5c542; color: #1a1a2a;
+    font-family: inherit; font-size: 0.95rem; font-weight: 600;
+    border: none; cursor: pointer;
+    box-shadow: 0 2px 10px rgba(245,197,66,0.3);
+    transition: all 0.2s;
+  }
+  .email-card button.email-send:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(245,197,66,0.4); }
 </style>
 </head>
 <body>
@@ -878,7 +1188,7 @@
     <a href="#demo">The App</a>
     <a href="#benefits">Benefits</a>
     <a href="#start">Get Started</a>
-    <a href="#start" class="btn nav-cta">Start Intake</a>
+    <a href="#start" class="btn nav-cta">Join the Waiting List</a>
   </div>
 </nav>
 
@@ -889,154 +1199,112 @@
   <h1>What if school could<br>travel with you?</h1>
   <p>Structured learning without walls. Help your child get ahead of the curve — without traditional school. Tailored, personalised learning programs designed around how your child actually learns.</p>
   <div class="hero-actions">
-    <a href="#start" class="btn">Start Your Intake</a>
+    <a href="#start" class="btn">Join the Waiting List</a>
     <a href="#story" class="btn-outline">Read Our Story</a>
   </div>
 </section>
 
 
-<!-- ═══ STORYBOOK — Horizontal scroll ═══ -->
+<!-- ═══ STORYBOOK — Logo-shaped book ═══ -->
 <section id="story" class="storybook">
   <div class="storybook-header">
     <h2>The NoBox story</h2>
-    <p>Scroll through the chapters that built this platform — from a family's need to a tool that grows with every child.</p>
+    <p>Click through the chapters that built this platform — from a family's need to a tool that grows with every child.</p>
   </div>
 
-  <div class="book-wrapper">
-    <div class="book" id="storybook">
-      <!-- Left half of logo cover -->
-      <div class="book-cover-left" id="book-cover-left">
-        <svg viewBox="0 0 714 595" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
-          <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
-          <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
-          <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
-          <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <!-- Right half of logo cover (flips open like a book) -->
-      <div class="book-cover-front" id="book-cover">
-        <svg viewBox="0 0 714 595" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
-          <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
-          <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
-          <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
-          <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
-          <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <!-- Left side — shows illustration for current chapter -->
-      <div class="book-left" id="book-left">
-        <div class="book-left-img" id="book-left-img" style="background-image: url('family-window.png');"></div>
+  <!-- Logo-shaped chapter dots -->
+  <div class="logo-dots" id="logo-dots">
+    <button class="logo-dot active" onclick="goChapter(0)" title="Chapter 1">
+      <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/><path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/></svg>
+    </button>
+    <button class="logo-dot" onclick="goChapter(1)" title="Chapter 2">
+      <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/><path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/></svg>
+    </button>
+    <button class="logo-dot" onclick="goChapter(2)" title="Chapter 3">
+      <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/><path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/></svg>
+    </button>
+    <button class="logo-dot" onclick="goChapter(3)" title="Chapter 4">
+      <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/><path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/></svg>
+    </button>
+    <button class="logo-dot" onclick="goChapter(4)" title="Chapter 5">
+      <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/><path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/></svg>
+    </button>
+  </div>
+
+  <div class="logo-book" id="logo-book">
+    <div class="logo-book-half logo-book-half-left" id="lb-half-left"></div>
+    <div class="logo-book-half logo-book-half-right" id="lb-half-right"></div>
+    <div class="logo-book-spine"></div>
+
+    <!-- Click arrow hint -->
+    <div class="lb-page-arrow" id="lb-arrow" onclick="goChapter(Math.min(4, lbCurrent+1))">
+      <span>next</span>
+      <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+
+    <div class="logo-book-text">
+      <div class="logo-book-text-left" id="lb-text-left">
+        <div class="lb-story active" data-ch="0">
+          <div class="lb-label">Chapter One</div>
+          <h3>The walls around our plans</h3>
+          <p>We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world.</p>
+          <p>But every time we imagined a new place, the same walls enclosed our plans.</p>
+          <blockquote>What if they fall behind? What if we damage their future?</blockquote>
+        </div>
+        <div class="lb-story" data-ch="1">
+          <div class="lb-label">Chapter Two</div>
+          <h3>We searched</h3>
+          <p>Thoroughly, and for a long time. What we found disappointed us — not because the platforms were poorly made, but because they misunderstood what learning actually is.</p>
+          <p>Most were static and linear. Many were not built for families moving across different national curricula.</p>
+        </div>
+        <div class="lb-story" data-ch="2">
+          <div class="lb-label">Chapter Three</div>
+          <h3>If you cannot find it, build it</h3>
+          <p>My background is in psychology. I understand how people learn, remember, and stay motivated.</p>
+          <p>For a while, I tried teaching our children directly. But when our oldest reached Year 8, keeping pace became almost a full-time job. For one child.</p>
+        </div>
+        <div class="lb-story" data-ch="3">
+          <div class="lb-label">Chapter Four</div>
+          <h3>Our children became curious again</h3>
+          <p>Not the performed curiosity of a classroom. Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
+          <p>Academically strong. Often ahead. And the world became the lesson.</p>
+        </div>
+        <div class="lb-story" data-ch="4">
+          <div class="lb-label">Chapter Five</div>
+          <h3>The platform that builds itself</h3>
+          <p>No Box Education is not finished. It never will be. Our children use it every day — and when something could be better, they tell us.</p>
+          <p>Our daughter was eight when she programmed her first game for the platform. Then a second. Then a third.</p>
+        </div>
       </div>
 
-      <!-- Page 1: Chapter One (front = right side, shows first) -->
-      <div class="book-page" data-page="0" onclick="flipPage(this)">
-        <div class="page-front">
-          <div class="page-content bg-mountains">
-            <div class="chapter-num">Chapter One</div>
-            <h3>The walls around our plans</h3>
-            <p>Every time we imagined a place where we would live for a while, there were walls that enclosed our plans.</p>
-            <div class="page-quote-highlight"><span>School.</span></div>
-            <p>Every time the same worries: what if they fall behind, what if we damage their future? And so we always ended up in places that were compromises — and never our first choice.</p>
-          </div>
+      <div class="logo-book-text-right" id="lb-text-right">
+        <div class="lb-story-right active" data-ch="0">
+          <p>And so we always ended up in places that were compromises — never our first choice. Education had quietly become the invisible fence around our lives.</p>
+          <blockquote>What if high-quality education could evolve around our children, wherever we go?</blockquote>
         </div>
-        <div class="page-back"><div class="page-content bg-mountains"></div></div>
-      </div>
-
-      <!-- Page 2: Chapter Two part 1 (right side after first flip) -->
-      <div class="book-page" data-page="1" onclick="flipPage(this)">
-        <div class="page-front">
-          <div class="page-content bg-dive">
-            <div class="chapter-num">Chapter Two</div>
-            <h3>We searched</h3>
-            <p>We searched for a platform that could travel with us. Something grounded in real learning science — that would challenge our children at exactly the right level and protect their curiosity rather than replace it with noise.</p>
-            <p>We found nothing that came close.</p>
-          </div>
+        <div class="lb-story-right" data-ch="1">
+          <p>A striking number had forgotten the deeper goal: to make children genuinely curious. To build the kind of intrinsic motivation that sustains a learner for life.</p>
+          <blockquote>We found nothing that came close.</blockquote>
         </div>
-        <div class="page-back"><div class="page-content bg-dive"></div></div>
-      </div>
-
-      <!-- Page 3: Chapter Two part 2 (right side after second flip) -->
-      <div class="book-page" data-page="2" onclick="flipPage(this)">
-        <div class="page-front">
-          <div class="page-content bg-dive">
-            <div class="chapter-num">Chapter Two</div>
-            <h3>If you cannot find it, build it</h3>
-            <p>As a psychologist, I researched how people learn, remember, and stay motivated. For a while I taught them myself — until our oldest reached Year 8 and it became almost a full-time job. For one child.</p>
-            <p>We compiled our research — learning science, child development, international curricula — built the platform, and worked on it with our children until we were all satisfied. That is No Box Education.</p>
-          </div>
+        <div class="lb-story-right" data-ch="2">
+          <blockquote>If you cannot find what you are looking for, build it yourself.</blockquote>
+          <p>We gathered everything — learning science, developmental psychology, international curricula — and built, tested, and rebuilt until we were all satisfied.</p>
         </div>
-        <div class="page-back"><div class="page-content bg-dive"></div></div>
-      </div>
-
-      <!-- Page 3: Chapter Three -->
-      <div class="book-page" data-page="3" onclick="flipPage(this)">
-        <div class="page-front">
-          <div class="page-content bg-horizon">
-            <div class="chapter-num">Chapter Three</div>
-            <h3>Our children became curious again</h3>
-            <p>Not the performed curiosity of a classroom. Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
-            <p>Academically strong. Often ahead. And the world became the lesson.</p>
-          </div>
+        <div class="lb-story-right" data-ch="3">
+          <p>The result is No Box Education. Where structure meets flexibility.</p>
+          <blockquote>Where curiosity is treated not as a nice extra but as the entire point.</blockquote>
         </div>
-        <div class="page-back"><div class="page-content bg-horizon"></div></div>
-      </div>
-
-      <!-- Page 4: Chapter Four -->
-      <div class="book-page" data-page="4" onclick="flipPage(this)">
-        <div class="page-front">
-          <div class="page-content bg-night">
-            <div class="chapter-num">Chapter Four</div>
-            <h3>The platform that builds itself</h3>
-            <p>No Box Education is not finished. It never will be. Our children use it every day — and when something could be better, they tell us. The ones worth building, we build.</p>
-            <p>Our daughter was eight when she programmed her first game for the platform. Then a second. Then a third.</p>
-            <p>She did not do it because we asked her to. She did it because she had learned to believe: if you see something missing, you fill it.</p>
-            <p>That is what No Box Education is trying to do. Not just teach children what is already known — but grow children who build what does not yet exist.</p>
-          </div>
+        <div class="lb-story-right" data-ch="4">
+          <blockquote>She did it because she had learned to believe: if you see something missing, you fill it.</blockquote>
+          <p>Not just teach children what is already known — but grow children who build what does not yet exist.</p>
+          <p class="lb-closing">The world is too big to only see it during school holidays.</p>
         </div>
-        <div class="page-back"><div class="page-content bg-night"></div></div>
-      </div>
-
-      <!-- Page 5: Quote -->
-      <div class="book-page" data-page="5" onclick="flipPage(this)">
-        <div class="page-front">
-          <div class="page-content bg-quote">
-            <div class="chapter-num">NoBox Education</div>
-            <h3>Learning is a journey,<br>not a destination.</h3>
-            <p>Every child learns differently. We built this so yours can keep exploring — wherever you are in the world.</p>
-          </div>
-        </div>
-        <div class="page-back"><div class="page-content bg-quote"></div></div>
       </div>
     </div>
   </div>
 
-  <div style="text-align: center; margin-top: 20px;">
+  <div style="text-align: center; margin-top: 24px;">
     <a href="story.html" class="btn-outline btn-outline-sm">Read the full story</a>
-  </div>
-
-  <div class="book-dots" id="book-dots">
-    <button class="book-dot-cover" onclick="closeCover()" title="Back to cover">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>
-    </button>
-    <button class="book-dot active" onclick="goToPage(0)"></button>
-    <button class="book-dot" onclick="goToPage(1)"></button>
-    <button class="book-dot" onclick="goToPage(2)"></button>
-    <button class="book-dot" onclick="goToPage(3)"></button>
-    <button class="book-dot" onclick="goToPage(4)"></button>
-    <button class="book-dot" onclick="goToPage(5)"></button>
   </div>
 </section>
 
@@ -1094,7 +1362,7 @@
           </div>
         </div>
         <div class="trust-photo">
-          <span class="trust-photo-placeholder">Parent photo placeholder</span>
+          <img src="parent-peace.png" alt="Parent relaxed with coffee checking child's progress">
         </div>
       </div>
 
@@ -1132,7 +1400,7 @@
           </div>
         </div>
         <div class="trust-photo">
-          <span class="trust-photo-placeholder">Kids photo placeholder</span>
+          <img src="child-freedom.png" alt="Child learning freely on a beach">
         </div>
       </div>
 
@@ -1170,7 +1438,7 @@
           </div>
         </div>
         <div class="trust-photo">
-          <span class="trust-photo-placeholder">Tutor photo placeholder</span>
+          <img src="tutor-photo.jpg" alt="Tutor teaching remotely from a bright home office">
         </div>
       </div>
     </div>
@@ -1233,7 +1501,7 @@
     </div>
 
     <div style="text-align: center; margin-top: 48px;">
-      <a href="#" class="btn" style="font-size: 1.05rem; padding: 16px 40px;">Start Your Intake Survey</a>
+      <a href="#" class="btn" style="font-size: 1.05rem; padding: 16px 40px;">Join the Waiting List</a>
     </div>
   </div>
 </section>
@@ -1249,10 +1517,10 @@
     <div class="demo-top">
       <!-- Mockup image (left) -->
       <div class="demo-mockup-img" id="demo-mockup">
-        <img src="mockup-app.png" class="active" data-view="0" alt="Child dashboard view">
-        <img src="mockup-app.png" class="hidden" data-view="1" alt="Exercise view">
-        <img src="mockup-app.png" class="hidden" data-view="2" alt="Parent dashboard view">
-        <img src="mockup-app.png" class="hidden" data-view="3" alt="Tutor dashboard view">
+        <img src="screenshot-child.png" class="active" data-view="0" alt="Child dashboard view">
+        <img src="screenshot-profile.png" class="hidden" data-view="1" alt="Profile and avatar builder">
+        <img src="screenshot-child.png" class="hidden" data-view="2" alt="Parent dashboard view">
+        <img src="screenshot-child.png" class="hidden" data-view="3" alt="Tutor dashboard view">
       </div>
 
       <!-- Explanation text (right) -->
@@ -1297,7 +1565,7 @@
             <li>Status indicators: on track or needs attention</li>
           </ul>
         </div>
-        <a href="#start" class="btn">Start Your Intake</a>
+        <a href="#start" class="btn">Join the Waiting List</a>
       </div>
     </div>
 
@@ -1340,7 +1608,7 @@
 <section class="footer-night">
   <h2>Ready to start your<br>next chapter?</h2>
   <p>Begin with a short intake survey. Then we'll personally design a learning program around your child's strengths, gaps, and curiosity.</p>
-  <a href="#" class="btn" style="font-size: 1.05rem; padding: 16px 40px;">Start Intake Survey</a>
+  <a href="#" class="btn" style="font-size: 1.05rem; padding: 16px 40px;">Join the Waiting List Survey</a>
 
   <div class="footer-bottom">
     <p>&copy; 2026 NoBox Education &middot; NoBoxDev</p>
@@ -1351,6 +1619,221 @@
     </div>
   </div>
 </section>
+
+
+<!-- ═══ WELCOME / WAITING LIST POPUP ═══ -->
+<div class="welcome-overlay" id="welcome-overlay">
+  <div class="welcome-card" style="position:relative;">
+    <button class="welcome-close" onclick="closeWelcome()">&times;</button>
+
+    <h2>Welcome.</h2>
+    <p class="welcome-intro">No Box Education isn't fully open yet.<br>We're being tested by a small, carefully chosen group of families — and they're helping us shape something we're genuinely proud of.</p>
+    <p class="welcome-body">You can join the waiting list and be among the first to know when we open.<br>Or complete your intake now, and we'll reach out when your spot is ready.</p>
+
+    <h3>Want to help us build it?</h3>
+    <p class="welcome-body">We're looking for a small number of families to use No Box Education <em>for free</em>.<br>In return: honest feedback. Real stories. A genuine say in what this becomes.</p>
+    <p class="welcome-body">No right answers. Just your situation — where you are in the world, your children's ages, what learning looks like for your family right now.</p>
+
+    <div class="welcome-options">
+      <button class="welcome-opt" id="opt-yes" onclick="selectWelcomeOpt('yes')">
+        <div class="welcome-opt-radio"></div>
+        <div>Yes — I'd love to be part of this.</div>
+      </button>
+      <button class="welcome-opt" id="opt-no" onclick="selectWelcomeOpt('no')">
+        <div class="welcome-opt-radio"></div>
+        <div>Not right now — just keep me posted.</div>
+      </button>
+    </div>
+
+    <div class="welcome-textarea" id="welcome-textarea">
+      <label>Tell us a little about your family and why you'd be a great fit.</label>
+      <textarea rows="4" placeholder="Your situation, where you live, your children's ages, what learning looks like for you..."></textarea>
+    </div>
+
+    <div class="welcome-actions">
+      <button class="welcome-btn welcome-btn-primary" onclick="proceedFromWelcome()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EMAIL-ONLY POPUP ═══ -->
+<div class="email-overlay" id="email-overlay">
+  <div class="email-card">
+    <button class="email-close" onclick="closeEmailOnly()">&times;</button>
+    <svg viewBox="0 0 714 595" fill="none">
+      <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/>
+      <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/>
+      <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/>
+      <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/>
+      <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3"/>
+    </svg>
+    <h3>We'll keep you posted.</h3>
+    <p>Leave your email and we'll let you know as soon as a spot opens up.</p>
+    <input type="email" placeholder="your@email.com">
+    <br>
+    <button class="email-send">Join the Waiting List</button>
+  </div>
+</div>
+
+<!-- ═══ INTAKE POPUP ═══ -->
+<div class="intake-overlay" id="intake-overlay">
+  <div class="intake-split">
+
+    <div class="intake-left">
+      <svg viewBox="0 0 714 595" fill="none">
+        <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="rgba(255,255,255,0.25)"/>
+        <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="rgba(255,255,255,0.45)"/>
+        <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="rgba(255,255,255,0.55)"/>
+        <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="rgba(255,255,255,0.3)"/>
+        <path d="M354.055 138.647L354.055 592.647" stroke="rgba(255,255,255,0.35)" stroke-width="3"/>
+      </svg>
+      <h2>Start your child's journey</h2>
+      <p>A few quick questions so we can design a personalised learning plan.</p>
+
+      <div class="intake-stones">
+        <div class="intake-stone-row active">
+          <div class="intake-stone-circle">1</div>
+          <div class="intake-stone-info"><h4>Child's name</h4><p>Who are we teaching?</p></div>
+        </div>
+        <div class="intake-connector"></div>
+        <div class="intake-stone-row">
+          <div class="intake-stone-circle">2</div>
+          <div class="intake-stone-info"><h4>Age</h4><p>How old are they?</p></div>
+        </div>
+        <div class="intake-connector"></div>
+        <div class="intake-stone-row">
+          <div class="intake-stone-circle">3</div>
+          <div class="intake-stone-info"><h4>Subjects</h4><p>What interests them</p></div>
+        </div>
+        <div class="intake-connector"></div>
+        <div class="intake-stone-row">
+          <div class="intake-stone-circle">4</div>
+          <div class="intake-stone-info"><h4>Why NoBox</h4><p>What drew you here</p></div>
+        </div>
+        <div class="intake-connector"></div>
+        <div class="intake-stone-row">
+          <div class="intake-stone-circle">5</div>
+          <div class="intake-stone-info"><h4>Goals</h4><p>What you hope to achieve</p></div>
+        </div>
+        <div class="intake-connector"></div>
+        <div class="intake-stone-row">
+          <div class="intake-stone-circle">6</div>
+          <div class="intake-stone-info"><h4>Other apps</h4><p>What you've tried</p></div>
+        </div>
+        <div class="intake-connector"></div>
+        <div class="intake-stone-row">
+          <div class="intake-stone-circle">7</div>
+          <div class="intake-stone-info"><h4>Location</h4><p>Where you're based</p></div>
+        </div>
+        <div class="intake-connector"></div>
+        <div class="intake-stone-row">
+          <div class="intake-stone-circle">8</div>
+          <div class="intake-stone-info"><h4>Email</h4><p>Where we send the plan</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intake-right">
+      <button class="intake-close" onclick="closeIntake()">&times;</button>
+
+      <div class="intake-q active" data-q="0">
+        <div class="iq-step">Step 1 of 8</div>
+        <h3>What's your child's first name?</h3>
+        <p class="iq-hint">We'll use this to personalise their learning journey.</p>
+        <input class="iq-input" placeholder="Their first name...">
+        <div class="intake-nav">
+          <div class="iq-enter-hint"><kbd>Enter</kbd> to continue</div>
+          <button class="iq-btn iq-next" onclick="intakeGoStep(1)">Next</button>
+        </div>
+      </div>
+
+      <div class="intake-q" data-q="1">
+        <div class="iq-step">Step 2 of 8</div>
+        <h3>How old is your child?</h3>
+        <p class="iq-hint">This helps us pick the right difficulty level.</p>
+        <input class="iq-input" type="number" placeholder="e.g. 8" min="3" max="18">
+        <div class="intake-nav">
+          <button class="iq-btn iq-prev" onclick="intakeGoStep(0)">Back</button>
+          <button class="iq-btn iq-next" onclick="intakeGoStep(2)">Next</button>
+        </div>
+      </div>
+
+      <div class="intake-q" data-q="2">
+        <div class="iq-step">Step 3 of 8</div>
+        <h3>Which subjects interest them?</h3>
+        <p class="iq-hint">Pick all that apply — we'll build around these.</p>
+        <div class="iq-grid">
+          <button class="iq-opt" onclick="this.classList.toggle('selected')">Mathematics</button>
+          <button class="iq-opt" onclick="this.classList.toggle('selected')">Languages</button>
+          <button class="iq-opt" onclick="this.classList.toggle('selected')">Science</button>
+          <button class="iq-opt" onclick="this.classList.toggle('selected')">Art &amp; Creativity</button>
+          <button class="iq-opt" onclick="this.classList.toggle('selected')">Life Skills</button>
+          <button class="iq-opt" onclick="this.classList.toggle('selected')">Music</button>
+        </div>
+        <div class="intake-nav">
+          <button class="iq-btn iq-prev" onclick="intakeGoStep(1)">Back</button>
+          <button class="iq-btn iq-next" onclick="intakeGoStep(3)">Next</button>
+        </div>
+      </div>
+
+      <div class="intake-q" data-q="3">
+        <div class="iq-step">Step 4 of 8</div>
+        <h3>Why are you interested in NoBox Education?</h3>
+        <p class="iq-hint">What drew you here? This helps us understand your situation.</p>
+        <textarea class="iq-input" rows="4" placeholder="e.g. We travel frequently and need flexible schooling..." style="resize:vertical;"></textarea>
+        <div class="intake-nav">
+          <button class="iq-btn iq-prev" onclick="intakeGoStep(2)">Back</button>
+          <button class="iq-btn iq-next" onclick="intakeGoStep(4)">Next</button>
+        </div>
+      </div>
+
+      <div class="intake-q" data-q="4">
+        <div class="iq-step">Step 5 of 8</div>
+        <h3>What do you hope to achieve?</h3>
+        <p class="iq-hint">What would you like us to help with?</p>
+        <textarea class="iq-input" rows="4" placeholder="e.g. Keep them on track academically while we live abroad..." style="resize:vertical;"></textarea>
+        <div class="intake-nav">
+          <button class="iq-btn iq-prev" onclick="intakeGoStep(3)">Back</button>
+          <button class="iq-btn iq-next" onclick="intakeGoStep(5)">Next</button>
+        </div>
+      </div>
+
+      <div class="intake-q" data-q="5">
+        <div class="iq-step">Step 6 of 8</div>
+        <h3>Which other apps or platforms have you tried?</h3>
+        <p class="iq-hint">No wrong answers — this helps us understand what worked and what didn't.</p>
+        <textarea class="iq-input" rows="4" placeholder="e.g. Khan Academy, IXL, none yet..." style="resize:vertical;"></textarea>
+        <div class="intake-nav">
+          <button class="iq-btn iq-prev" onclick="intakeGoStep(4)">Back</button>
+          <button class="iq-btn iq-next" onclick="intakeGoStep(6)">Next</button>
+        </div>
+      </div>
+
+      <div class="intake-q" data-q="6">
+        <div class="iq-step">Step 7 of 8</div>
+        <h3>Where are you currently based?</h3>
+        <p class="iq-hint">So we can align with your local curriculum if needed.</p>
+        <input class="iq-input" placeholder="City or country...">
+        <div class="intake-nav">
+          <button class="iq-btn iq-prev" onclick="intakeGoStep(5)">Back</button>
+          <button class="iq-btn iq-next" onclick="intakeGoStep(7)">Next</button>
+        </div>
+      </div>
+
+      <div class="intake-q" data-q="7">
+        <div class="iq-step">Final step</div>
+        <h3>Where should we send your plan?</h3>
+        <p class="iq-hint">We'll review your answers and get back within 24 hours with a tailored learning proposal.</p>
+        <input class="iq-input" type="email" placeholder="your@email.com">
+        <div class="intake-nav">
+          <button class="iq-btn iq-prev" onclick="intakeGoStep(6)">Back</button>
+          <button class="iq-btn iq-send">Send</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 <!-- ═══ NAV SCROLL EFFECT ═══ -->
@@ -1428,111 +1911,32 @@
     starsEl.style.opacity = Math.max(0, (starPct - 0.4) / 0.3).toFixed(2);
   });
 
-  // Book cover → flip open
-  const bookCover = document.getElementById('book-cover');
-  const bookCoverLeft = document.getElementById('book-cover-left');
-  const bookEl = document.getElementById('storybook');
-  const bookLeft = document.getElementById('book-left');
+  // Logo book chapter navigation
+  const lbDots = document.querySelectorAll('.logo-dot');
+  const lbLeft = document.querySelectorAll('.lb-story');
+  const lbRight = document.querySelectorAll('.lb-story-right');
+  const lbHalfLeft = document.getElementById('lb-half-left');
+  const lbHalfRight = document.getElementById('lb-half-right');
+  let lbCurrent = 0;
 
-  function openCover() {
-    bookEl.classList.add('open');
-    bookLeft.style.visibility = 'visible';
-    requestAnimationFrame(() => {
-      bookCover.classList.add('opened');
-    });
-    // After flip completes, hide cover and show pages
-    setTimeout(() => {
-      bookCover.style.visibility = 'hidden';
-      pages.forEach(p => p.style.visibility = 'visible');
-    }, 1100);
+  const lbThemes = [
+    { left: 'rgba(244,173,80,0.72)', right: 'rgba(108,163,115,0.72)' },
+    { left: 'rgba(91,138,170,0.72)', right: 'rgba(70,120,150,0.72)' },
+    { left: 'rgba(160,134,227,0.68)', right: 'rgba(140,114,207,0.68)' },
+    { left: 'rgba(108,163,115,0.72)', right: 'rgba(88,143,95,0.72)' },
+    { left: 'rgba(20,20,35,0.82)', right: 'rgba(15,15,28,0.82)' },
+  ];
+
+  function goChapter(idx) {
+    lbCurrent = idx;
+    lbDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    lbLeft.forEach(s => s.classList.toggle('active', parseInt(s.dataset.ch) === idx));
+    lbRight.forEach(s => s.classList.toggle('active', parseInt(s.dataset.ch) === idx));
+    lbHalfLeft.style.background = lbThemes[idx].left;
+    lbHalfRight.style.background = lbThemes[idx].right;
+    document.getElementById('lb-text-left').scrollTop = 0;
+    document.getElementById('lb-text-right').scrollTop = 0;
   }
-
-  function closeCover() {
-    // Hide pages
-    pages.forEach(p => {
-      p.classList.remove('flipped');
-      p.style.visibility = 'hidden';
-    });
-    // Show cover, flip back
-    bookCover.style.visibility = 'visible';
-    bookCover.classList.remove('opened');
-    bookEl.classList.remove('open');
-    // After animation, hide left side
-    setTimeout(() => {
-      bookLeft.style.visibility = 'hidden';
-    }, 1100);
-    currentPage = 0;
-    updateLeftImg();
-    updateZIndex();
-    updateDots();
-  }
-
-  bookCover.addEventListener('click', openCover);
-
-  // Book flip logic
-  const pages = document.querySelectorAll('.book-page');
-  const dots = document.querySelectorAll('.book-dot');
-  const leftImg = document.getElementById('book-left-img');
-  const images = ['family-window.png', 'search.png', 'dive-bg.png', 'horizon-bg.png', 'night-mountains.png', 'night-mountains.png'];
-  let currentPage = 0;
-
-  function updateDots() {
-    dots.forEach((d, i) => d.classList.toggle('active', i === currentPage));
-  }
-
-  function updateLeftImg() {
-    leftImg.style.backgroundImage = `url('${images[currentPage]}')`;
-  }
-
-  function updateZIndex() {
-    pages.forEach((p, i) => {
-      if (i < currentPage) {
-        p.style.zIndex = i;
-      } else {
-        p.style.zIndex = pages.length - i;
-      }
-    });
-  }
-
-  function flipPage(el) {
-    const idx = parseInt(el.dataset.page);
-
-    if (el.classList.contains('flipped')) {
-      // Unflip — go back
-      el.classList.remove('flipped');
-      currentPage = idx;
-    } else {
-      if (idx === pages.length - 1) {
-        // Last page — go back to first
-        pages.forEach(p => p.classList.remove('flipped'));
-        currentPage = 0;
-      } else {
-        el.classList.add('flipped');
-        currentPage = idx + 1;
-      }
-    }
-    updateLeftImg();
-    updateZIndex();
-    updateDots();
-  }
-
-  function goToPage(target) {
-    if (target > currentPage) {
-      for (let i = currentPage; i < target; i++) {
-        pages[i].classList.add('flipped');
-      }
-    } else {
-      for (let i = target; i < currentPage; i++) {
-        pages[i].classList.remove('flipped');
-      }
-    }
-    currentPage = target;
-    updateLeftImg();
-    updateZIndex();
-    updateDots();
-  }
-
-  updateZIndex();
 
   // Shooting star / meteor every 15-30 seconds
   function spawnMeteor() {
@@ -1661,6 +2065,107 @@
       el.innerHTML = starSvg;
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 750);
+    }
+  });
+
+  // ═══ WELCOME POPUP ═══
+  const welcomeOverlay = document.getElementById('welcome-overlay');
+  let welcomeChoice = null;
+
+  function openWelcome() {
+    welcomeOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeWelcome() {
+    welcomeOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function selectWelcomeOpt(choice) {
+    welcomeChoice = choice;
+    document.getElementById('opt-yes').classList.toggle('selected', choice === 'yes');
+    document.getElementById('opt-no').classList.toggle('selected', choice === 'no');
+    document.getElementById('welcome-textarea').classList.toggle('visible', choice === 'yes');
+  }
+  function proceedFromWelcome() {
+    closeWelcome();
+    if (welcomeChoice === 'no') {
+      // Just keep me posted — show email-only popup
+      openEmailOnly();
+    } else {
+      // Yes — open full intake
+      openIntake();
+    }
+  }
+  welcomeOverlay.addEventListener('click', e => {
+    if (e.target === welcomeOverlay) closeWelcome();
+  });
+
+  // ═══ EMAIL-ONLY POPUP ═══
+  const emailOverlay = document.getElementById('email-overlay');
+  function openEmailOnly() {
+    emailOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeEmailOnly() {
+    emailOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  emailOverlay.addEventListener('click', e => {
+    if (e.target === emailOverlay) closeEmailOnly();
+  });
+
+  // ═══ INTAKE POPUP ═══
+  const intakeOverlay = document.getElementById('intake-overlay');
+  const intakeRows = document.querySelectorAll('.intake-stone-row');
+  const intakeConns = document.querySelectorAll('.intake-connector');
+  const intakeQs = document.querySelectorAll('.intake-q');
+
+  function openIntake() {
+    intakeOverlay.classList.add('open');
+    intakeGoStep(0);
+    document.body.style.overflow = 'hidden';
+  }
+  function closeIntake() {
+    intakeOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function intakeGoStep(idx) {
+    intakeQs.forEach(q => q.classList.remove('active'));
+    intakeQs[idx].classList.add('active');
+    intakeRows.forEach((r, i) => {
+      r.className = 'intake-stone-row';
+      if (i === idx) r.classList.add('active');
+      else if (i < idx) r.classList.add('done');
+    });
+    intakeConns.forEach((c, i) => c.classList.toggle('done', i < idx));
+    const input = intakeQs[idx].querySelector('.iq-input');
+    if (input) setTimeout(() => input.focus(), 400);
+  }
+  function intakePickOne(el) {
+    el.parentElement.querySelectorAll('.iq-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // Wire all "Join the Waiting List" buttons → open welcome first
+  document.querySelectorAll('a[href="#start"], .nav-cta').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      openWelcome();
+    });
+  });
+
+  // Close on overlay click or Escape
+  intakeOverlay.addEventListener('click', e => {
+    if (e.target === intakeOverlay) closeIntake();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && emailOverlay.classList.contains('open')) { closeEmailOnly(); return; }
+    if (e.key === 'Escape' && welcomeOverlay.classList.contains('open')) { closeWelcome(); return; }
+    if (e.key === 'Escape' && intakeOverlay.classList.contains('open')) closeIntake();
+    if (e.key === 'Enter' && intakeOverlay.classList.contains('open')) {
+      const active = document.querySelector('.intake-q.active');
+      const idx = parseInt(active.dataset.q);
+      if (active && idx < intakeQs.length - 1) intakeGoStep(idx + 1);
     }
   });
 </script>
