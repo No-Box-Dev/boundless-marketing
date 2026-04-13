@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suggestion 5 — Logo Frame Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Baloo 2', sans-serif; color: #1a1a2a;
+    background: #f0ece4; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 40px;
+  }
+
+  .back-link {
+    position: fixed; top: 16px; left: 24px; z-index: 50;
+    font-size: 0.82rem; color: rgba(26,26,42,0.4); text-decoration: none;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .back-link:hover { color: #1a1a2a; }
+
+  /* ── Header ── */
+  .header {
+    text-align: center; margin-bottom: 32px;
+  }
+  .header-logo {
+    width: 80px; height: auto; margin-bottom: 16px;
+    transition: transform 0.6s;
+  }
+  .header h1 {
+    font-size: 2.2rem; font-weight: 800; letter-spacing: -1px;
+  }
+  .header p {
+    font-size: 0.9rem; color: rgba(26,26,42,0.45); margin-top: 4px;
+  }
+
+  /* ── Chapter selector (mini logos in a row) ── */
+  .chapter-row {
+    display: flex; gap: 12px; margin-bottom: 36px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .ch-btn {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; padding: 12px 16px; border-radius: 16px;
+    cursor: pointer; border: 2px solid transparent;
+    background: rgba(255,255,255,0.5); font-family: inherit;
+    transition: all 0.3s; min-width: 80px;
+  }
+  .ch-btn:hover { background: rgba(255,255,255,0.8); transform: translateY(-2px); }
+  .ch-btn.active {
+    border-color: #B49AF7; background: #fff;
+    box-shadow: 0 4px 16px rgba(180,154,247,0.15);
+    transform: translateY(-2px);
+  }
+  .ch-btn svg { width: 32px; height: 27px; }
+  .ch-btn span {
+    font-size: 0.68rem; font-weight: 700;
+    color: rgba(26,26,42,0.5); letter-spacing: 0.5px;
+  }
+  .ch-btn.active span { color: #B49AF7; }
+
+  /* ── Story frame — logo outline as border ── */
+  .story-frame {
+    width: 100%; max-width: 860px;
+    position: relative;
+    padding: 4px;
+    transition: all 0.5s;
+  }
+
+  /* Decorative border using the logo's colours */
+  .frame-border {
+    position: absolute; inset: 0;
+    border-radius: 24px;
+    transition: all 0.5s;
+    z-index: 0;
+  }
+
+  /* Different border treatments per chapter */
+  .frame-ch1 { border: 3px solid #F8BE4B; box-shadow: 0 8px 40px rgba(248,190,75,0.12); }
+  .frame-ch2 { border: 3px solid #5b8aaa; box-shadow: 0 8px 40px rgba(91,138,170,0.12); }
+  .frame-ch3 { border: 3px solid #F4AD50; box-shadow: 0 8px 40px rgba(244,173,80,0.12); }
+  .frame-ch4 { border: 3px solid #6CA373; box-shadow: 0 8px 40px rgba(108,163,115,0.12); }
+  .frame-ch5 { border: 3px solid #B49AF7; box-shadow: 0 8px 40px rgba(180,154,247,0.15); }
+
+  /* Logo accent marks at the top corners */
+  .frame-accent-left {
+    position: absolute; top: -14px; left: 32px;
+    width: 28px; height: 24px;
+    transition: all 0.4s;
+    z-index: 2;
+  }
+  .frame-accent-right {
+    position: absolute; top: -14px; right: 32px;
+    width: 28px; height: 24px;
+    transition: all 0.4s;
+    z-index: 2;
+  }
+
+  /* The content card */
+  .frame-content {
+    position: relative; z-index: 1;
+    border-radius: 20px;
+    padding: 56px 56px;
+    min-height: 50vh;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.5s;
+  }
+
+  .fc-1 { background: #faf8f4; }
+  .fc-2 { background: #eef4f8; }
+  .fc-3 { background: #f8f2e4; }
+  .fc-4 { background: #ecf4ec; }
+  .fc-5 { background: #1a1a2a; }
+
+  .page-text { display: none; max-width: 620px; width: 100%; }
+  .page-text.active { display: block; animation: fadeIn 0.5s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-text .ch-label {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 14px;
+  }
+  .page-text h2 {
+    font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px;
+    line-height: 1.15; margin-bottom: 24px;
+  }
+  .page-text p {
+    font-size: 1rem; line-height: 1.8; margin-bottom: 14px;
+  }
+  .page-text blockquote {
+    border-left: 3px solid #B49AF7;
+    padding: 4px 0 4px 20px; margin: 28px 0;
+    font-size: 1.2rem; font-style: italic; font-weight: 600;
+    line-height: 1.5;
+  }
+
+  /* Theme-specific text colours */
+  .pt-1 .ch-label { color: #7c9070; }
+  .pt-1 p { color: rgba(26,26,42,0.7); }
+
+  .pt-2 .ch-label { color: #4a7a9a; }
+  .pt-2 h2 { color: #1a2a3a; }
+  .pt-2 p { color: #3a5a6a; }
+  .pt-2 blockquote { border-color: #5b8aaa; color: #1a2a3a; }
+
+  .pt-3 .ch-label { color: #9a6a3a; }
+  .pt-3 h2 { color: #2a1a0a; }
+  .pt-3 p { color: #5a4a3a; }
+
+  .pt-4 .ch-label { color: #4a6a40; }
+  .pt-4 h2 { color: #1a2a1a; }
+  .pt-4 p { color: #3a4a38; }
+  .pt-4 blockquote { border-color: #6CA373; }
+
+  .pt-5 .ch-label { color: #6CA373; }
+  .pt-5 h2 { color: #e8eef4; }
+  .pt-5 p { color: #90a0b8; }
+  .pt-5 blockquote { color: #e8eef4; }
+
+  /* Page navigation */
+  .page-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 36px; padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+  .pt-5 .page-nav { border-color: rgba(255,255,255,0.08); }
+  .page-nav button {
+    padding: 10px 24px; border-radius: 22px; font-family: inherit;
+    font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    border: none; transition: all 0.2s;
+    background: rgba(26,26,42,0.06); color: #1a1a2a;
+  }
+  .page-nav button:hover { background: rgba(26,26,42,0.1); }
+  .pt-5 .page-nav button { background: rgba(255,255,255,0.08); color: #e8eef4; }
+  .page-dots { display: flex; gap: 6px; }
+  .page-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(26,26,42,0.15); border: none; padding: 0;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .page-dot.active { background: #B49AF7; transform: scale(1.3); }
+  .pt-5 .page-dot { background: rgba(255,255,255,0.15); }
+  .pt-5 .page-dot.active { background: #F4AD50; }
+
+  /* ── Closing ── */
+  .closing {
+    text-align: center; margin-top: 36px;
+    max-width: 460px;
+  }
+  .closing p {
+    font-size: 0.88rem; color: rgba(26,26,42,0.35); line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .btn {
+    display: inline-block; padding: 14px 32px; border-radius: 28px;
+    background: #f5c542; color: #1a1a2a; font-weight: 600; font-size: 0.95rem;
+    text-decoration: none; font-family: inherit;
+    transition: transform 0.2s; box-shadow: 0 2px 8px rgba(245,197,66,0.3);
+  }
+  .btn:hover { transform: translateY(-2px); }
+
+  @media (max-width: 700px) {
+    body { padding: 20px; }
+    .header h1 { font-size: 1.8rem; }
+    .frame-content { padding: 36px 24px; }
+    .page-text h2 { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+  Home
+</a>
+
+<div class="header">
+  <svg class="header-logo" viewBox="0 0 714 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+    <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+    <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+    <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+    <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+    <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+    <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+    <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+    <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+    <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+    <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+  <h1>Our Story</h1>
+  <p>Click a chapter to begin reading.</p>
+</div>
+
+<!-- Chapter selector -->
+<div class="chapter-row">
+  <button class="ch-btn active" onclick="goChapter(0)">
+    <svg viewBox="0 0 714 595" fill="none"><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/></svg>
+    <span>Ch. 1</span>
+  </button>
+  <button class="ch-btn" onclick="goChapter(1)">
+    <svg viewBox="0 0 714 595" fill="none"><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/></svg>
+    <span>Ch. 2</span>
+  </button>
+  <button class="ch-btn" onclick="goChapter(2)">
+    <svg viewBox="0 100 714 500" fill="none"><path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="8" stroke-linecap="round"/></svg>
+    <span>Ch. 3</span>
+  </button>
+  <button class="ch-btn" onclick="goChapter(3)">
+    <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/></svg>
+    <span>Ch. 4</span>
+  </button>
+  <button class="ch-btn" onclick="goChapter(4)">
+    <svg viewBox="0 0 714 595" fill="none"><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/></svg>
+    <span>Ch. 5</span>
+  </button>
+</div>
+
+<!-- Story frame with logo-coloured border -->
+<div class="story-frame">
+  <!-- Decorative accent triangles at top corners -->
+  <svg class="frame-accent-left" viewBox="0 0 714 595" fill="none">
+    <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/>
+  </svg>
+  <svg class="frame-accent-right" viewBox="0 0 714 595" fill="none">
+    <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/>
+  </svg>
+
+  <div class="frame-border frame-ch1" id="frame-border"></div>
+
+  <div class="frame-content fc-1" id="frame-content">
+
+    <div class="page-text pt-1 active" data-ch="0">
+      <div class="ch-label">Chapter One</div>
+      <h2>The walls around our plans</h2>
+      <p>We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world. Not as tourists passing through, but as a family putting down temporary roots.</p>
+      <p>But every time we imagined a new place, the same walls enclosed our plans.</p>
+      <blockquote>What if they fall behind? What if we damage their future?</blockquote>
+      <p>And so we always ended up in places that were compromises — never our first choice. Education had quietly become the invisible fence around our lives.</p>
+      <p>So we started asking a different question: what if high-quality education could evolve around our children, wherever we go?</p>
+      <div class="page-nav">
+        <div class="page-dots">
+          <span class="page-dot active" onclick="goChapter(0)"></span>
+          <span class="page-dot" onclick="goChapter(1)"></span>
+          <span class="page-dot" onclick="goChapter(2)"></span>
+          <span class="page-dot" onclick="goChapter(3)"></span>
+          <span class="page-dot" onclick="goChapter(4)"></span>
+        </div>
+        <button onclick="goChapter(1)">Next &rarr;</button>
+      </div>
+    </div>
+
+    <div class="page-text pt-2" data-ch="1">
+      <div class="ch-label">Chapter Two</div>
+      <h2>We searched</h2>
+      <p>Thoroughly, and for a long time. What we found disappointed us — not because the platforms were poorly made, but because they misunderstood what learning actually is.</p>
+      <p>Most were static and linear. Many were not built for families moving across different national curricula. And a striking number had forgotten the deeper goal: to make children genuinely curious.</p>
+      <blockquote>We found nothing that came close.</blockquote>
+      <p>To challenge them at exactly the right level. To build the kind of intrinsic motivation that sustains a learner for life.</p>
+      <div class="page-nav">
+        <div class="page-dots">
+          <span class="page-dot" onclick="goChapter(0)"></span>
+          <span class="page-dot active" onclick="goChapter(1)"></span>
+          <span class="page-dot" onclick="goChapter(2)"></span>
+          <span class="page-dot" onclick="goChapter(3)"></span>
+          <span class="page-dot" onclick="goChapter(4)"></span>
+        </div>
+        <button onclick="goChapter(2)">Next &rarr;</button>
+      </div>
+    </div>
+
+    <div class="page-text pt-3" data-ch="2">
+      <div class="ch-label">Chapter Three</div>
+      <h2>If you cannot find it, build it</h2>
+      <p>My background is in psychology. I understand how people learn, remember, and stay motivated. For a while, I tried teaching our children directly. But when our oldest reached Year 8, keeping pace became a full-time job. For one child.</p>
+      <blockquote>If you cannot find what you are looking for, build it yourself.</blockquote>
+      <p>We gathered everything — learning science, developmental psychology, international curricula — and built, tested, and rebuilt until we were all satisfied.</p>
+      <div class="page-nav">
+        <div class="page-dots">
+          <span class="page-dot" onclick="goChapter(0)"></span>
+          <span class="page-dot" onclick="goChapter(1)"></span>
+          <span class="page-dot active" onclick="goChapter(2)"></span>
+          <span class="page-dot" onclick="goChapter(3)"></span>
+          <span class="page-dot" onclick="goChapter(4)"></span>
+        </div>
+        <button onclick="goChapter(3)">Next &rarr;</button>
+      </div>
+    </div>
+
+    <div class="page-text pt-4" data-ch="3">
+      <div class="ch-label">Chapter Four</div>
+      <h2>Our children became curious again</h2>
+      <p>Not the performed curiosity of a classroom. Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
+      <p>Academically strong. Often ahead. And the world became the lesson.</p>
+      <blockquote>Where a family no longer has to choose between the life they want and the education their children deserve.</blockquote>
+      <div class="page-nav">
+        <div class="page-dots">
+          <span class="page-dot" onclick="goChapter(0)"></span>
+          <span class="page-dot" onclick="goChapter(1)"></span>
+          <span class="page-dot" onclick="goChapter(2)"></span>
+          <span class="page-dot active" onclick="goChapter(3)"></span>
+          <span class="page-dot" onclick="goChapter(4)"></span>
+        </div>
+        <button onclick="goChapter(4)">Next &rarr;</button>
+      </div>
+    </div>
+
+    <div class="page-text pt-5" data-ch="4">
+      <div class="ch-label">Chapter Five</div>
+      <h2>The platform that builds itself</h2>
+      <p>No Box Education is not finished. It never will be. Our children use it every day.</p>
+      <p>Our daughter was eight when she programmed her first game for the platform. Then a second. Then a third.</p>
+      <blockquote>She did it because she had learned to believe: if you see something missing, you fill it.</blockquote>
+      <p>Not just teach children what is already known — but grow children who build what does not yet exist.</p>
+      <p style="margin-top:24px;font-size:1.3rem;color:#F4AD50;font-weight:700;font-style:italic;">The world is too big to only see it during school holidays.</p>
+      <div class="page-nav">
+        <div class="page-dots">
+          <span class="page-dot" onclick="goChapter(0)"></span>
+          <span class="page-dot" onclick="goChapter(1)"></span>
+          <span class="page-dot" onclick="goChapter(2)"></span>
+          <span class="page-dot" onclick="goChapter(3)"></span>
+          <span class="page-dot active" onclick="goChapter(4)"></span>
+        </div>
+        <button onclick="window.location.href='index.html#start'">Start Intake &rarr;</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="closing">
+  <p>Every child learns differently. We built this so yours can keep exploring.</p>
+  <a href="index.html#start" class="btn">Start Your Intake</a>
+</div>
+
+<script>
+  const frameClasses = ['frame-ch1', 'frame-ch2', 'frame-ch3', 'frame-ch4', 'frame-ch5'];
+  const contentClasses = ['fc-1', 'fc-2', 'fc-3', 'fc-4', 'fc-5'];
+  const frameBorder = document.getElementById('frame-border');
+  const frameContent = document.getElementById('frame-content');
+  const texts = document.querySelectorAll('.page-text');
+  const chBtns = document.querySelectorAll('.ch-btn');
+
+  function goChapter(idx) {
+    // Update buttons
+    chBtns.forEach((b, i) => b.classList.toggle('active', i === idx));
+
+    // Update frame border
+    frameBorder.className = 'frame-border ' + frameClasses[idx];
+
+    // Update content bg
+    frameContent.className = 'frame-content ' + contentClasses[idx];
+
+    // Show text
+    texts.forEach(t => t.classList.toggle('active', parseInt(t.dataset.ch) === idx));
+  }
+</script>
+
+</body>
+</html>

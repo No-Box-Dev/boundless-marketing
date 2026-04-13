@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake 3 — Split Panel (Logo + Form)</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Baloo 2', sans-serif; color: #1a1a2a;
+    background: linear-gradient(to bottom, #c0daf0, #8ec8ee);
+    min-height: 100vh;
+  }
+  .page-behind {
+    position: fixed; inset: 0; z-index: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; color: rgba(26,26,42,0.2); font-weight: 700;
+  }
+  .overlay {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Split popup */
+  .split-popup {
+    display: flex;
+    width: 860px; max-width: 94vw;
+    max-height: 85vh;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.15);
+  }
+
+  /* Left — branded panel */
+  .split-left {
+    width: 280px; min-width: 280px;
+    background: linear-gradient(160deg, #6CA373, #4a8a55);
+    padding: 44px 32px;
+    display: flex; flex-direction: column;
+    color: #fff;
+  }
+  .split-left svg { width: 60px; height: auto; margin-bottom: 24px; }
+  .split-left h2 {
+    font-size: 1.5rem; font-weight: 800; line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .split-left p {
+    font-size: 0.82rem; opacity: 0.8; line-height: 1.6; margin-bottom: 32px;
+  }
+
+  /* Step indicators on left */
+  .step-list { display: flex; flex-direction: column; gap: 6px; margin-top: auto; }
+  .step-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.78rem; font-weight: 600; opacity: 0.4;
+    transition: opacity 0.3s;
+  }
+  .step-item.active { opacity: 1; }
+  .step-item.done { opacity: 0.7; }
+  .step-dot {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .step-item.active .step-dot { background: #fff; color: #4a8a55; border-color: #fff; }
+  .step-item.done .step-dot { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.3); }
+
+  /* Right — form */
+  .split-right {
+    flex: 1;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(40px);
+    padding: 44px 40px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+
+  .sr-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(26,26,42,0.06); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: rgba(26,26,42,0.4);
+  }
+
+  .sr-question { display: none; flex-direction: column; flex: 1; }
+  .sr-question.active { display: flex; animation: slideIn 0.4s ease; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .sr-question .q-label {
+    font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; color: #7c9070; margin-bottom: 10px;
+  }
+  .sr-question h3 {
+    font-size: 1.5rem; font-weight: 800; margin-bottom: 20px;
+  }
+
+  .s-input {
+    width: 100%; padding: 16px 20px;
+    border: 2px solid rgba(26,26,42,0.08);
+    border-radius: 14px; font-family: inherit;
+    font-size: 1rem; background: #fff;
+    outline: none; transition: border-color 0.3s;
+  }
+  .s-input:focus { border-color: #6CA373; }
+
+  .s-options { display: flex; flex-direction: column; gap: 8px; }
+  .s-opt {
+    padding: 14px 18px; border-radius: 14px;
+    border: 2px solid rgba(26,26,42,0.06);
+    background: #fff; cursor: pointer; font-family: inherit;
+    font-size: 0.92rem; font-weight: 600; text-align: left;
+    transition: all 0.3s;
+  }
+  .s-opt:hover { border-color: #6CA373; }
+  .s-opt.selected { border-color: #6CA373; background: rgba(108,163,115,0.08); }
+
+  .sr-nav {
+    display: flex; justify-content: flex-end; gap: 8px;
+    margin-top: auto; padding-top: 24px;
+  }
+  .sr-btn {
+    padding: 12px 28px; border-radius: 22px;
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .sr-prev { background: rgba(26,26,42,0.06); }
+  .sr-next { background: #f5c542; box-shadow: 0 2px 8px rgba(245,197,66,0.3); }
+  .sr-next:hover { transform: translateY(-1px); }
+</style>
+</head>
+<body>
+
+<div class="page-behind"><p>[ Website visible behind ]</p></div>
+
+<div class="overlay">
+  <div class="split-popup">
+
+    <div class="split-left">
+      <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="rgba(255,255,255,0.3)"/><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="rgba(255,255,255,0.5)"/><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="rgba(255,255,255,0.6)"/><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="rgba(255,255,255,0.35)"/><path d="M354.055 138.647L354.055 592.647" stroke="rgba(255,255,255,0.4)" stroke-width="3"/></svg>
+      <h2>Start your child's journey</h2>
+      <p>A few quick questions so we can design a personalised learning plan.</p>
+
+      <div class="step-list" id="step-list">
+        <div class="step-item active"><div class="step-dot">1</div> Child's name</div>
+        <div class="step-item"><div class="step-dot">2</div> Age group</div>
+        <div class="step-item"><div class="step-dot">3</div> Subjects</div>
+        <div class="step-item"><div class="step-dot">4</div> Location</div>
+        <div class="step-item"><div class="step-dot">5</div> Your email</div>
+      </div>
+    </div>
+
+    <div class="split-right">
+      <button class="sr-close">&times;</button>
+
+      <div class="sr-question active" data-q="0">
+        <div class="q-label">Step 1</div>
+        <h3>What's your child's first name?</h3>
+        <input class="s-input" placeholder="Their name...">
+        <div class="sr-nav">
+          <button class="sr-btn sr-next" onclick="goStep(1)">Next</button>
+        </div>
+      </div>
+
+      <div class="sr-question" data-q="1">
+        <div class="q-label">Step 2</div>
+        <h3>How old are they?</h3>
+        <div class="s-options">
+          <button class="s-opt" onclick="this.classList.toggle('selected')">4–6 years</button>
+          <button class="s-opt" onclick="this.classList.toggle('selected')">7–9 years</button>
+          <button class="s-opt" onclick="this.classList.toggle('selected')">10–12 years</button>
+          <button class="s-opt" onclick="this.classList.toggle('selected')">13+ years</button>
+        </div>
+        <div class="sr-nav">
+          <button class="sr-btn sr-prev" onclick="goStep(0)">Back</button>
+          <button class="sr-btn sr-next" onclick="goStep(2)">Next</button>
+        </div>
+      </div>
+
+      <div class="sr-question" data-q="2">
+        <div class="q-label">Step 3</div>
+        <h3>Which subjects matter most?</h3>
+        <div class="s-options">
+          <button class="s-opt" onclick="this.classList.toggle('selected')">Mathematics</button>
+          <button class="s-opt" onclick="this.classList.toggle('selected')">Languages</button>
+          <button class="s-opt" onclick="this.classList.toggle('selected')">Science</button>
+          <button class="s-opt" onclick="this.classList.toggle('selected')">Art &amp; Creativity</button>
+        </div>
+        <div class="sr-nav">
+          <button class="sr-btn sr-prev" onclick="goStep(1)">Back</button>
+          <button class="sr-btn sr-next" onclick="goStep(3)">Next</button>
+        </div>
+      </div>
+
+      <div class="sr-question" data-q="3">
+        <div class="q-label">Step 4</div>
+        <h3>Where are you based?</h3>
+        <input class="s-input" placeholder="City or country...">
+        <div class="sr-nav">
+          <button class="sr-btn sr-prev" onclick="goStep(2)">Back</button>
+          <button class="sr-btn sr-next" onclick="goStep(4)">Next</button>
+        </div>
+      </div>
+
+      <div class="sr-question" data-q="4">
+        <div class="q-label">Final step</div>
+        <h3>Your email address</h3>
+        <input class="s-input" type="email" placeholder="your@email.com" style="margin-bottom:10px;">
+        <p style="font-size:0.78rem;color:rgba(26,26,42,0.4);">We'll send your personalised plan within 24 hours.</p>
+        <div class="sr-nav">
+          <button class="sr-btn sr-prev" onclick="goStep(3)">Back</button>
+          <button class="sr-btn sr-next" style="background:#6CA373;color:#fff;">Send</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const steps = document.querySelectorAll('.step-item');
+  const qs = document.querySelectorAll('.sr-question');
+  function goStep(idx) {
+    qs.forEach(q => q.classList.remove('active'));
+    qs[idx].classList.add('active');
+    steps.forEach((s, i) => {
+      s.className = 'step-item';
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('done');
+    });
+  }
+</script>
+</body>
+</html>

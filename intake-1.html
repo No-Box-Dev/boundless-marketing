@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake 1 — Typeform Style (One at a time)</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Baloo 2', sans-serif; color: #1a1a2a;
+    background: linear-gradient(to bottom, #c0daf0, #8ec8ee, #b8dce8);
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  }
+  /* Fake page behind */
+  .page-behind {
+    position: fixed; inset: 0; z-index: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; color: rgba(26,26,42,0.2); font-weight: 700;
+  }
+
+  /* Overlay */
+  .overlay {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Popup */
+  .popup {
+    width: 680px; max-width: 92vw;
+    max-height: 85vh;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(40px) saturate(1.8);
+    -webkit-backdrop-filter: blur(40px) saturate(1.8);
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.12);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+
+  /* Header */
+  .popup-header {
+    padding: 28px 36px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .popup-logo { display: flex; align-items: center; gap: 10px; }
+  .popup-logo svg { height: 28px; width: auto; }
+  .popup-logo span { font-size: 1rem; font-weight: 800; }
+  .popup-close {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(26,26,42,0.06); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: rgba(26,26,42,0.4);
+    transition: all 0.2s;
+  }
+  .popup-close:hover { background: rgba(26,26,42,0.12); color: #1a1a2a; }
+
+  /* Progress */
+  .progress-bar {
+    margin: 20px 36px 0;
+    height: 4px; background: rgba(26,26,42,0.08);
+    border-radius: 2px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, #F4AD50, #6CA373);
+    border-radius: 2px; transition: width 0.5s ease;
+  }
+  .progress-text {
+    padding: 8px 36px 0;
+    font-size: 0.7rem; color: rgba(26,26,42,0.35); font-weight: 600;
+  }
+
+  /* Question area — one at a time, Typeform style */
+  .questions {
+    flex: 1; padding: 32px 36px;
+    position: relative; overflow: hidden;
+  }
+  .question {
+    position: absolute; inset: 0;
+    padding: 32px 36px;
+    display: flex; flex-direction: column; justify-content: center;
+    opacity: 0; transform: translateY(40px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+  .question.active {
+    opacity: 1; transform: translateY(0);
+    pointer-events: all;
+  }
+  .question.exit-up {
+    opacity: 0; transform: translateY(-40px);
+  }
+
+  .question .q-number {
+    font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; color: #7c9070; margin-bottom: 12px;
+  }
+  .question h2 {
+    font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;
+    line-height: 1.2; margin-bottom: 24px;
+  }
+
+  /* Input field */
+  .q-input {
+    width: 100%; padding: 16px 20px;
+    border: 2px solid rgba(26,26,42,0.1);
+    border-radius: 16px; font-family: inherit;
+    font-size: 1.05rem; background: rgba(255,255,255,0.6);
+    outline: none; transition: border-color 0.3s;
+  }
+  .q-input:focus { border-color: #7c9070; }
+  .q-input::placeholder { color: rgba(26,26,42,0.3); }
+
+  /* Multiple choice */
+  .q-options { display: flex; flex-direction: column; gap: 10px; }
+  .q-option {
+    padding: 16px 20px; border-radius: 16px;
+    border: 2px solid rgba(26,26,42,0.08);
+    background: rgba(255,255,255,0.5);
+    cursor: pointer; font-family: inherit;
+    font-size: 1rem; font-weight: 600;
+    text-align: left;
+    transition: all 0.3s;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .q-option:hover {
+    border-color: rgba(124,144,112,0.3);
+    background: rgba(255,255,255,0.8);
+    transform: translateX(4px);
+  }
+  .q-option.selected {
+    border-color: #7c9070;
+    background: rgba(124,144,112,0.1);
+  }
+  .q-option-key {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: rgba(26,26,42,0.06);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 800; color: rgba(26,26,42,0.4);
+    flex-shrink: 0;
+  }
+  .q-option.selected .q-option-key {
+    background: #7c9070; color: #fff;
+  }
+
+  /* Footer nav */
+  .popup-footer {
+    padding: 0 36px 28px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-btn {
+    padding: 12px 28px; border-radius: 22px;
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .nav-prev {
+    background: rgba(26,26,42,0.06); color: #1a1a2a;
+  }
+  .nav-prev:hover { background: rgba(26,26,42,0.1); }
+  .nav-next {
+    background: #f5c542; color: #1a1a2a;
+    box-shadow: 0 2px 8px rgba(245,197,66,0.3);
+  }
+  .nav-next:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(245,197,66,0.4); }
+  .nav-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* Enter hint */
+  .enter-hint {
+    font-size: 0.68rem; color: rgba(26,26,42,0.3);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .enter-hint kbd {
+    padding: 2px 8px; border-radius: 6px;
+    background: rgba(26,26,42,0.06); font-family: inherit;
+    font-size: 0.65rem; font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-behind">
+  <p>[ Website content visible behind the popup ]</p>
+</div>
+
+<div class="overlay">
+  <div class="popup">
+
+    <div class="popup-header">
+      <div class="popup-logo">
+        <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/><path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3"/></svg>
+        <span>Intake Survey</span>
+      </div>
+      <button class="popup-close">&times;</button>
+    </div>
+
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width: 20%"></div></div>
+    <div class="progress-text"><span id="step-text">1 of 5</span></div>
+
+    <div class="questions" id="questions">
+
+      <div class="question active" data-q="0">
+        <div class="q-number">Question 1</div>
+        <h2>What's your child's first name?</h2>
+        <input class="q-input" type="text" placeholder="Type their name..." autofocus>
+      </div>
+
+      <div class="question" data-q="1">
+        <div class="q-number">Question 2</div>
+        <h2>How old is your child?</h2>
+        <div class="q-options">
+          <button class="q-option" onclick="selectOption(this)"><span class="q-option-key">A</span> 4–6 years old</button>
+          <button class="q-option" onclick="selectOption(this)"><span class="q-option-key">B</span> 7–9 years old</button>
+          <button class="q-option" onclick="selectOption(this)"><span class="q-option-key">C</span> 10–12 years old</button>
+          <button class="q-option" onclick="selectOption(this)"><span class="q-option-key">D</span> 13+ years old</button>
+        </div>
+      </div>
+
+      <div class="question" data-q="2">
+        <div class="q-number">Question 3</div>
+        <h2>What subjects matter most to you?</h2>
+        <div class="q-options">
+          <button class="q-option" onclick="toggleOption(this)"><span class="q-option-key">A</span> Mathematics</button>
+          <button class="q-option" onclick="toggleOption(this)"><span class="q-option-key">B</span> Languages</button>
+          <button class="q-option" onclick="toggleOption(this)"><span class="q-option-key">C</span> Science</button>
+          <button class="q-option" onclick="toggleOption(this)"><span class="q-option-key">D</span> Art &amp; Creativity</button>
+          <button class="q-option" onclick="toggleOption(this)"><span class="q-option-key">E</span> Life Skills</button>
+        </div>
+      </div>
+
+      <div class="question" data-q="3">
+        <div class="q-number">Question 4</div>
+        <h2>Where are you based right now?</h2>
+        <input class="q-input" type="text" placeholder="City or country...">
+      </div>
+
+      <div class="question" data-q="4">
+        <div class="q-number">Final step</div>
+        <h2>Where should we send your personalised plan?</h2>
+        <input class="q-input" type="email" placeholder="your@email.com" style="margin-bottom: 12px;">
+        <p style="font-size:0.78rem; color:rgba(26,26,42,0.4); line-height:1.5;">We'll review your answers and get back within 24 hours with a tailored learning proposal.</p>
+      </div>
+
+    </div>
+
+    <div class="popup-footer">
+      <div class="enter-hint"><kbd>Enter</kbd> to continue</div>
+      <div style="display:flex; gap:8px;">
+        <button class="nav-btn nav-prev" id="prev-btn" onclick="go(-1)" style="display:none;">Back</button>
+        <button class="nav-btn nav-next" id="next-btn" onclick="go(1)">Next</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let current = 0;
+  const total = 5;
+  const questions = document.querySelectorAll('.question');
+
+  function go(dir) {
+    if (current + dir < 0 || current + dir >= total) return;
+    questions[current].classList.remove('active');
+    questions[current].classList.add(dir > 0 ? 'exit-up' : '');
+    current += dir;
+    questions.forEach((q, i) => {
+      if (i !== current) { q.classList.remove('active'); }
+    });
+    questions[current].classList.remove('exit-up');
+    questions[current].classList.add('active');
+
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.getElementById('step-text').textContent = (current + 1) + ' of ' + total;
+    document.getElementById('prev-btn').style.display = current > 0 ? 'block' : 'none';
+    document.getElementById('next-btn').textContent = current === total - 1 ? 'Send' : 'Next';
+  }
+
+  function selectOption(el) {
+    el.parentElement.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function toggleOption(el) { el.classList.toggle('selected'); }
+</script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suggestion 4 — Open Book, Full-Width Pages</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Baloo 2', sans-serif; color: #1a1a2a;
+    background: #e8e4d8; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+  }
+
+  .back-link {
+    position: fixed; top: 16px; left: 24px; z-index: 50;
+    font-size: 0.82rem; color: rgba(26,26,42,0.4); text-decoration: none;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .back-link:hover { color: #1a1a2a; }
+
+  /* ── The Book ── */
+  .book {
+    display: flex;
+    width: 100%; max-width: 1100px;
+    min-height: 80vh;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.15),
+                0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Purple spine */
+  .book::after {
+    content: ''; position: absolute;
+    left: 320px; top: 0; bottom: 0;
+    width: 3px;
+    background: #B49AF7;
+    z-index: 5;
+  }
+
+  /* ── Left panel — Chapter navigator ── */
+  .book-left {
+    width: 320px; min-width: 320px;
+    background: #f0ece4;
+    padding: 48px 32px;
+    display: flex; flex-direction: column;
+  }
+
+  .book-left-header {
+    text-align: center; margin-bottom: 32px;
+  }
+  .book-left-header svg { width: 80px; height: auto; margin-bottom: 12px; }
+  .book-left-header h2 {
+    font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px;
+  }
+  .book-left-header p {
+    font-size: 0.78rem; color: rgba(26,26,42,0.4); margin-top: 4px;
+  }
+
+  /* Chapter navigation */
+  .ch-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+
+  .ch-nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 14px; border-radius: 14px;
+    cursor: pointer; border: none; background: transparent;
+    font-family: inherit; text-align: left;
+    transition: all 0.3s;
+  }
+  .ch-nav-item:hover { background: rgba(26,26,42,0.04); }
+  .ch-nav-item.active {
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  /* Mini logo icons for each chapter */
+  .ch-mini-logo {
+    width: 40px; height: 34px; flex-shrink: 0;
+    border-radius: 8px; background: rgba(26,26,42,0.04);
+    display: flex; align-items: center; justify-content: center;
+    padding: 4px;
+    transition: background 0.3s;
+  }
+  .ch-nav-item.active .ch-mini-logo { background: rgba(180,154,247,0.12); }
+  .ch-mini-logo svg { width: 100%; height: auto; }
+
+  .ch-nav-info h4 {
+    font-size: 0.85rem; font-weight: 700; line-height: 1.2;
+    margin-bottom: 1px;
+  }
+  .ch-nav-info p {
+    font-size: 0.68rem; color: rgba(26,26,42,0.4); line-height: 1.3;
+  }
+
+  /* Page indicators at bottom */
+  .page-indicators {
+    display: flex; gap: 6px; justify-content: center;
+    margin-top: 24px; padding-top: 20px;
+    border-top: 1px solid rgba(26,26,42,0.08);
+  }
+  .page-ind {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(26,26,42,0.15);
+    transition: all 0.3s; cursor: pointer; border: none; padding: 0;
+  }
+  .page-ind.active { background: #B49AF7; transform: scale(1.3); }
+
+  /* ── Right panel — Story page ── */
+  .book-right {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .story-page {
+    display: none;
+    min-height: 80vh;
+    padding: 60px 56px;
+    animation: pageFade 0.5s ease;
+  }
+  .story-page.active { display: flex; align-items: center; }
+
+  @keyframes pageFade {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .page-inner { max-width: 580px; width: 100%; }
+
+  .page-inner .ch-label {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 14px;
+  }
+  .page-inner h2 {
+    font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px;
+    line-height: 1.15; margin-bottom: 24px;
+  }
+  .page-inner p {
+    font-size: 1rem; line-height: 1.8; margin-bottom: 14px;
+  }
+  .page-inner blockquote {
+    border-left: 3px solid #B49AF7;
+    padding: 4px 0 4px 20px; margin: 28px 0;
+    font-size: 1.2rem; font-style: italic; font-weight: 600;
+    line-height: 1.5;
+  }
+
+  /* Page navigation */
+  .page-nav {
+    display: flex; justify-content: space-between;
+    margin-top: 40px; padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+  .page-nav button {
+    padding: 10px 24px; border-radius: 22px; font-family: inherit;
+    font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    border: none; transition: all 0.2s;
+  }
+  .nav-prev {
+    background: rgba(26,26,42,0.06); color: #1a1a2a;
+  }
+  .nav-prev:hover { background: rgba(26,26,42,0.1); }
+  .nav-next {
+    background: #f5c542; color: #1a1a2a;
+    box-shadow: 0 2px 8px rgba(245,197,66,0.3);
+  }
+  .nav-next:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(245,197,66,0.4); }
+
+  /* Page themes */
+  .pg-1 { background: #faf8f4; }
+  .pg-1 .ch-label { color: #7c9070; }
+  .pg-1 p { color: rgba(26,26,42,0.7); }
+
+  .pg-2 { background: #eef4f8; }
+  .pg-2 .ch-label { color: #4a7a9a; }
+  .pg-2 h2 { color: #1a2a3a; }
+  .pg-2 p { color: #3a5a6a; }
+  .pg-2 blockquote { border-color: #5b8aaa; color: #1a2a3a; }
+
+  .pg-3 { background: #f8f2e4; }
+  .pg-3 .ch-label { color: #9a6a3a; }
+  .pg-3 h2 { color: #2a1a0a; }
+  .pg-3 p { color: #5a4a3a; }
+
+  .pg-4 { background: #ecf4ec; }
+  .pg-4 .ch-label { color: #4a6a40; }
+  .pg-4 h2 { color: #1a2a1a; }
+  .pg-4 p { color: #3a4a38; }
+  .pg-4 blockquote { border-color: #6CA373; }
+
+  .pg-5 { background: #1a1a2a; }
+  .pg-5 .ch-label { color: #6CA373; }
+  .pg-5 h2 { color: #e8eef4; }
+  .pg-5 p { color: #90a0b8; }
+  .pg-5 blockquote { color: #e8eef4; }
+  .pg-5 .page-nav { border-color: rgba(255,255,255,0.08); }
+  .pg-5 .nav-prev { background: rgba(255,255,255,0.08); color: #e8eef4; }
+
+  /* Page number */
+  .page-number {
+    position: absolute; bottom: 20px; right: 28px;
+    font-size: 0.72rem; color: rgba(26,26,42,0.2); font-weight: 600;
+  }
+  .pg-5 .page-number { color: rgba(255,255,255,0.15); }
+
+  @media (max-width: 800px) {
+    body { padding: 0; }
+    .book { flex-direction: column; border-radius: 0; min-height: 100vh; }
+    .book::after { display: none; }
+    .book-left { width: 100%; min-width: auto; padding: 24px 20px; flex-direction: row; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .book-left-header { margin-bottom: 8px; width: 100%; }
+    .ch-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+    .ch-nav-info p { display: none; }
+    .story-page { padding: 40px 24px; }
+    .page-inner h2 { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+  Home
+</a>
+
+<div class="book">
+
+  <!-- LEFT — Navigator -->
+  <div class="book-left">
+    <div class="book-left-header">
+      <svg viewBox="0 0 714 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+        <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+        <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+        <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+        <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+        <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <h2>Our Story</h2>
+      <p>Five chapters of the journey</p>
+    </div>
+
+    <div class="ch-nav">
+      <button class="ch-nav-item active" onclick="goPage(0)">
+        <div class="ch-mini-logo">
+          <svg viewBox="0 0 714 595" fill="none"><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" opacity="0.3"/></svg>
+        </div>
+        <div class="ch-nav-info">
+          <h4>The Walls</h4>
+          <p>Chapter 1</p>
+        </div>
+      </button>
+      <button class="ch-nav-item" onclick="goPage(1)">
+        <div class="ch-mini-logo">
+          <svg viewBox="0 0 714 595" fill="none"><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" opacity="0.3"/></svg>
+        </div>
+        <div class="ch-nav-info">
+          <h4>We Searched</h4>
+          <p>Chapter 2</p>
+        </div>
+      </button>
+      <button class="ch-nav-item" onclick="goPage(2)">
+        <div class="ch-mini-logo">
+          <svg viewBox="0 100 714 500" fill="none"><path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="8" stroke-linecap="round"/><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" opacity="0.15"/><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" opacity="0.15"/></svg>
+        </div>
+        <div class="ch-nav-info">
+          <h4>Build It</h4>
+          <p>Chapter 3</p>
+        </div>
+      </button>
+      <button class="ch-nav-item" onclick="goPage(3)">
+        <div class="ch-mini-logo">
+          <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" opacity="0.3"/></svg>
+        </div>
+        <div class="ch-nav-info">
+          <h4>Curiosity</h4>
+          <p>Chapter 4</p>
+        </div>
+      </button>
+      <button class="ch-nav-item" onclick="goPage(4)">
+        <div class="ch-mini-logo">
+          <svg viewBox="0 0 714 595" fill="none"><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" opacity="0.3"/></svg>
+        </div>
+        <div class="ch-nav-info">
+          <h4>The Platform</h4>
+          <p>Chapter 5</p>
+        </div>
+      </button>
+    </div>
+
+    <div class="page-indicators">
+      <button class="page-ind active" onclick="goPage(0)"></button>
+      <button class="page-ind" onclick="goPage(1)"></button>
+      <button class="page-ind" onclick="goPage(2)"></button>
+      <button class="page-ind" onclick="goPage(3)"></button>
+      <button class="page-ind" onclick="goPage(4)"></button>
+    </div>
+  </div>
+
+  <!-- RIGHT — Pages -->
+  <div class="book-right">
+
+    <div class="story-page pg-1 active" data-page="0">
+      <div class="page-inner">
+        <div class="ch-label">Chapter One</div>
+        <h2>The walls around our plans</h2>
+        <p>We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world. Not as tourists passing through, but as a family putting down temporary roots.</p>
+        <p>But every time we imagined a new place, the same walls enclosed our plans.</p>
+        <blockquote>What if they fall behind? What if we damage their future?</blockquote>
+        <p>And so we always ended up in places that were compromises — never our first choice. Education had quietly become the invisible fence around our lives.</p>
+        <p>So we started asking a different question. Not <em>where can we go without disrupting school?</em> But something bigger: what if high-quality education could evolve around our children, wherever we go?</p>
+        <div class="page-nav">
+          <span></span>
+          <button class="nav-next" onclick="goPage(1)">Next chapter &rarr;</button>
+        </div>
+      </div>
+      <div class="page-number">1 / 5</div>
+    </div>
+
+    <div class="story-page pg-2" data-page="1">
+      <div class="page-inner">
+        <div class="ch-label">Chapter Two</div>
+        <h2>We searched</h2>
+        <p>Thoroughly, and for a long time. What we found disappointed us — not because the platforms were poorly made, but because they misunderstood what learning actually is.</p>
+        <p>Most were static and linear. Many were not built for families moving across different national curricula. And a striking number were so focused on keeping children engaged that they had forgotten the deeper goal: to make children genuinely curious.</p>
+        <blockquote>We found nothing that came close.</blockquote>
+        <p>To challenge them at exactly the right level. To build the kind of intrinsic motivation that sustains a learner for life.</p>
+        <div class="page-nav">
+          <button class="nav-prev" onclick="goPage(0)">&larr; Previous</button>
+          <button class="nav-next" onclick="goPage(2)">Next chapter &rarr;</button>
+        </div>
+      </div>
+      <div class="page-number">2 / 5</div>
+    </div>
+
+    <div class="story-page pg-3" data-page="2">
+      <div class="page-inner">
+        <div class="ch-label">Chapter Three</div>
+        <h2>If you cannot find it, build it</h2>
+        <p>My background is in psychology. I understand how people learn, remember, and stay motivated. For a while, I tried teaching our children directly, tracking curricula, adapting material. But when our oldest reached Year 8, keeping pace became almost a full-time job. For one child.</p>
+        <blockquote>If you cannot find what you are looking for, build it yourself.</blockquote>
+        <p>We gathered everything — learning science, developmental psychology, smart adaptive learning, international curricula, and the hard-won knowledge from years of working alongside our own children. We designed, built, tested, and rebuilt.</p>
+        <div class="page-nav">
+          <button class="nav-prev" onclick="goPage(1)">&larr; Previous</button>
+          <button class="nav-next" onclick="goPage(3)">Next chapter &rarr;</button>
+        </div>
+      </div>
+      <div class="page-number">3 / 5</div>
+    </div>
+
+    <div class="story-page pg-4" data-page="3">
+      <div class="page-inner">
+        <div class="ch-label">Chapter Four</div>
+        <h2>Our children became curious again</h2>
+        <p>Not the performed curiosity of a classroom. Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
+        <p>Academically strong. Often ahead. And the world became the lesson.</p>
+        <blockquote>A platform where curiosity is treated not as a nice extra but as the entire point.</blockquote>
+        <p>Where a family no longer has to choose between the life they want and the education their children deserve.</p>
+        <div class="page-nav">
+          <button class="nav-prev" onclick="goPage(2)">&larr; Previous</button>
+          <button class="nav-next" onclick="goPage(4)">Next chapter &rarr;</button>
+        </div>
+      </div>
+      <div class="page-number">4 / 5</div>
+    </div>
+
+    <div class="story-page pg-5" data-page="4">
+      <div class="page-inner">
+        <div class="ch-label">Chapter Five</div>
+        <h2>The platform that builds itself</h2>
+        <p>No Box Education is not finished. It never will be. Our children use it every day — and when something could be better, they tell us.</p>
+        <p>Our daughter was eight when she programmed her first game for the platform. Then a second. Then a third.</p>
+        <blockquote>She did it because she had learned to believe: if you see something missing, you fill it.</blockquote>
+        <p>Not just teach children what is already known — but grow children who build what does not yet exist.</p>
+        <p style="margin-top:32px;font-size:1.3rem;color:#F4AD50;font-weight:700;font-style:italic;">The world is too big to only see it during school holidays.</p>
+        <div class="page-nav">
+          <button class="nav-prev" onclick="goPage(3)">&larr; Previous</button>
+          <button class="nav-next" onclick="window.location.href='index.html#start'">Start Your Intake &rarr;</button>
+        </div>
+      </div>
+      <div class="page-number">5 / 5</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const storyPages = document.querySelectorAll('.story-page');
+  const navItems = document.querySelectorAll('.ch-nav-item');
+  const indicators = document.querySelectorAll('.page-ind');
+
+  function goPage(idx) {
+    storyPages.forEach((p, i) => p.classList.toggle('active', i === idx));
+    navItems.forEach((n, i) => n.classList.toggle('active', i === idx));
+    indicators.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+</script>
+
+</body>
+</html>
