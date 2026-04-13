@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake — NoBox Education</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Baloo 2', sans-serif; color: #1a1a2a;
+    background: linear-gradient(to bottom, #c0daf0, #8ec8ee, #b8dce8);
+    min-height: 100vh;
+  }
+  .page-behind {
+    position: fixed; inset: 0; z-index: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; color: rgba(26,26,42,0.2); font-weight: 700;
+  }
+  .overlay {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Split popup */
+  .split-popup {
+    display: flex;
+    width: 900px; max-width: 94vw;
+    max-height: 85vh;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.15);
+  }
+
+  /* ── Left — green panel with stepping stones ── */
+  .split-left {
+    width: 300px; min-width: 300px;
+    background: linear-gradient(160deg, #6CA373 0%, #4a8a55 60%, #3d7548 100%);
+    padding: 44px 28px;
+    display: flex; flex-direction: column;
+    color: #fff;
+  }
+  .split-left svg { width: 56px; height: auto; margin-bottom: 20px; }
+  .split-left h2 {
+    font-size: 1.4rem; font-weight: 800; line-height: 1.2;
+    margin-bottom: 10px; color: #fff;
+  }
+  .split-left > p {
+    font-size: 0.8rem; color: rgba(255,255,255,0.7);
+    line-height: 1.6; margin-bottom: 32px;
+  }
+
+  /* Stepping stones on left */
+  .stone-steps {
+    display: flex; flex-direction: column;
+    gap: 0; margin-top: auto;
+  }
+  .stone-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 0 4px;
+  }
+  .stone-circle {
+    width: 44px; height: 44px;
+    border-radius: 55% 45% 50% 50% / 50% 55% 45% 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 0.85rem;
+    flex-shrink: 0;
+    transition: all 0.4s;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.35);
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+  .stone-row.active .stone-circle {
+    background: #F4AD50;
+    color: #fff;
+    border-color: #F4AD50;
+    box-shadow: 0 4px 16px rgba(244,173,80,0.35);
+    transform: scale(1.1);
+  }
+  .stone-row.done .stone-circle {
+    background: rgba(244,173,80,0.6);
+    color: #fff;
+    border-color: rgba(244,173,80,0.4);
+  }
+  .stone-row:nth-child(odd) .stone-circle {
+    border-radius: 45% 55% 50% 50% / 55% 45% 50% 50%;
+  }
+
+  .stone-info h4 {
+    font-size: 0.82rem; font-weight: 700; color: #fff;
+    opacity: 0.4; transition: opacity 0.3s;
+  }
+  .stone-info p {
+    font-size: 0.65rem; color: rgba(255,255,255,0.3);
+    transition: color 0.3s;
+  }
+  .stone-row.active .stone-info h4 { opacity: 1; }
+  .stone-row.active .stone-info p { color: rgba(255,255,255,0.6); }
+  .stone-row.done .stone-info h4 { opacity: 0.7; }
+  .stone-row.done .stone-info p { color: rgba(255,255,255,0.4); }
+
+  /* Connector line between stones */
+  .stone-connector {
+    width: 3px; height: 20px;
+    background: rgba(255,255,255,0.08);
+    margin-left: 24px;
+    border-radius: 2px;
+    transition: background 0.4s;
+  }
+  .stone-connector.done {
+    background: rgba(244,173,80,0.4);
+  }
+
+  /* ── Right — form panel ── */
+  .split-right {
+    flex: 1;
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(50px) saturate(1.8);
+    -webkit-backdrop-filter: blur(50px) saturate(1.8);
+    padding: 44px 44px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+
+  .sr-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(26,26,42,0.06); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: rgba(26,26,42,0.4);
+    transition: all 0.2s;
+  }
+  .sr-close:hover { background: rgba(26,26,42,0.1); color: #1a1a2a; }
+
+  /* Questions */
+  .sr-q { display: none; flex-direction: column; flex: 1; }
+  .sr-q.active {
+    display: flex;
+    animation: qSlide 0.4s ease;
+  }
+  @keyframes qSlide {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .sr-q .q-step {
+    font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; color: #7c9070; margin-bottom: 8px;
+  }
+  .sr-q h3 {
+    font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;
+    line-height: 1.2; margin-bottom: 6px;
+  }
+  .sr-q .q-hint {
+    font-size: 0.82rem; color: rgba(26,26,42,0.4);
+    margin-bottom: 24px; line-height: 1.5;
+  }
+
+  /* Input */
+  .f-input {
+    width: 100%; padding: 16px 20px;
+    border: 2px solid rgba(26,26,42,0.08);
+    border-radius: 16px; font-family: inherit;
+    font-size: 1.05rem; background: #fff;
+    outline: none; transition: border-color 0.3s;
+  }
+  .f-input:focus { border-color: #6CA373; }
+  .f-input::placeholder { color: rgba(26,26,42,0.3); }
+
+  /* Multiple choice grid */
+  .f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .f-opt {
+    padding: 16px 18px; border-radius: 16px;
+    border: 2px solid rgba(26,26,42,0.06);
+    background: #fff; cursor: pointer; font-family: inherit;
+    font-size: 0.95rem; font-weight: 600; text-align: center;
+    transition: all 0.3s;
+  }
+  .f-opt:hover {
+    border-color: rgba(124,144,112,0.4);
+    background: rgba(124,144,112,0.04);
+    transform: translateY(-2px);
+  }
+  .f-opt.selected {
+    border-color: #6CA373;
+    background: rgba(108,163,115,0.1);
+    box-shadow: 0 2px 8px rgba(108,163,115,0.12);
+  }
+
+  /* Nav */
+  .sr-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: auto; padding-top: 28px;
+  }
+  .sr-btn {
+    padding: 14px 32px; border-radius: 24px;
+    font-family: inherit; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .sr-prev {
+    background: rgba(26,26,42,0.06); color: #1a1a2a;
+  }
+  .sr-prev:hover { background: rgba(26,26,42,0.1); }
+  .sr-next {
+    background: #f5c542; color: #1a1a2a;
+    box-shadow: 0 2px 10px rgba(245,197,66,0.3);
+  }
+  .sr-next:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(245,197,66,0.4); }
+  .sr-send {
+    background: linear-gradient(145deg, #6CA373, #4a8a55);
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(108,163,115,0.3);
+  }
+  .sr-send:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(108,163,115,0.4); }
+
+  .enter-hint {
+    font-size: 0.65rem; color: rgba(26,26,42,0.25);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .enter-hint kbd {
+    padding: 2px 7px; border-radius: 5px;
+    background: rgba(26,26,42,0.06); font-family: inherit;
+    font-size: 0.62rem; font-weight: 700;
+  }
+
+  @media (max-width: 700px) {
+    .split-popup { flex-direction: column; }
+    .split-left {
+      width: 100%; min-width: auto;
+      padding: 24px 20px;
+      flex-direction: row; align-items: center; gap: 16px;
+    }
+    .split-left h2, .split-left > p { display: none; }
+    .split-left svg { margin-bottom: 0; }
+    .stone-steps { flex-direction: row; gap: 4px; margin-top: 0; }
+    .stone-connector { width: 16px; height: 3px; margin-left: 0; }
+    .stone-info { display: none; }
+    .split-right { padding: 28px 20px; }
+    .sr-q h3 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-behind"><p>[ Website content visible behind the popup ]</p></div>
+
+<div class="overlay">
+  <div class="split-popup">
+
+    <!-- LEFT — Green panel with stepping stones -->
+    <div class="split-left">
+      <svg viewBox="0 0 714 595" fill="none">
+        <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="rgba(255,255,255,0.25)"/>
+        <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="rgba(255,255,255,0.45)"/>
+        <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="rgba(255,255,255,0.55)"/>
+        <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="rgba(255,255,255,0.3)"/>
+        <path d="M354.055 138.647L354.055 592.647" stroke="rgba(255,255,255,0.35)" stroke-width="3"/>
+      </svg>
+      <h2>Start your child's journey</h2>
+      <p>A few quick questions so we can design a personalised learning plan.</p>
+
+      <div class="stone-steps" id="stone-steps">
+        <div class="stone-row active">
+          <div class="stone-circle">1</div>
+          <div class="stone-info"><h4>Child's name</h4><p>Who are we teaching?</p></div>
+        </div>
+        <div class="stone-connector"></div>
+        <div class="stone-row">
+          <div class="stone-circle">2</div>
+          <div class="stone-info"><h4>Age group</h4><p>Right difficulty level</p></div>
+        </div>
+        <div class="stone-connector"></div>
+        <div class="stone-row">
+          <div class="stone-circle">3</div>
+          <div class="stone-info"><h4>Subjects</h4><p>What interests them</p></div>
+        </div>
+        <div class="stone-connector"></div>
+        <div class="stone-row">
+          <div class="stone-circle">4</div>
+          <div class="stone-info"><h4>Location</h4><p>Curriculum alignment</p></div>
+        </div>
+        <div class="stone-connector"></div>
+        <div class="stone-row">
+          <div class="stone-circle">5</div>
+          <div class="stone-info"><h4>Your email</h4><p>Where we send the plan</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT — Form -->
+    <div class="split-right">
+      <button class="sr-close">&times;</button>
+
+      <div class="sr-q active" data-q="0">
+        <div class="q-step">Step 1 of 5</div>
+        <h3>What's your child's first name?</h3>
+        <p class="q-hint">We'll use this to personalise their learning journey.</p>
+        <input class="f-input" placeholder="Their first name..." autofocus>
+        <div class="sr-nav">
+          <div class="enter-hint"><kbd>Enter</kbd> to continue</div>
+          <button class="sr-btn sr-next" onclick="goStep(1)">Next</button>
+        </div>
+      </div>
+
+      <div class="sr-q" data-q="1">
+        <div class="q-step">Step 2 of 5</div>
+        <h3>How old are they?</h3>
+        <p class="q-hint">This helps us pick the right difficulty level.</p>
+        <div class="f-grid">
+          <button class="f-opt" onclick="pickOne(this)">4–6 years</button>
+          <button class="f-opt" onclick="pickOne(this)">7–9 years</button>
+          <button class="f-opt" onclick="pickOne(this)">10–12 years</button>
+          <button class="f-opt" onclick="pickOne(this)">13+ years</button>
+        </div>
+        <div class="sr-nav">
+          <button class="sr-btn sr-prev" onclick="goStep(0)">Back</button>
+          <button class="sr-btn sr-next" onclick="goStep(2)">Next</button>
+        </div>
+      </div>
+
+      <div class="sr-q" data-q="2">
+        <div class="q-step">Step 3 of 5</div>
+        <h3>Which subjects interest them?</h3>
+        <p class="q-hint">Pick all that apply — we'll build around these.</p>
+        <div class="f-grid">
+          <button class="f-opt" onclick="this.classList.toggle('selected')">Mathematics</button>
+          <button class="f-opt" onclick="this.classList.toggle('selected')">Languages</button>
+          <button class="f-opt" onclick="this.classList.toggle('selected')">Science</button>
+          <button class="f-opt" onclick="this.classList.toggle('selected')">Art &amp; Creativity</button>
+          <button class="f-opt" onclick="this.classList.toggle('selected')">Life Skills</button>
+          <button class="f-opt" onclick="this.classList.toggle('selected')">Music</button>
+        </div>
+        <div class="sr-nav">
+          <button class="sr-btn sr-prev" onclick="goStep(1)">Back</button>
+          <button class="sr-btn sr-next" onclick="goStep(3)">Next</button>
+        </div>
+      </div>
+
+      <div class="sr-q" data-q="3">
+        <div class="q-step">Step 4 of 5</div>
+        <h3>Where are you currently based?</h3>
+        <p class="q-hint">So we can align with your local curriculum if needed.</p>
+        <input class="f-input" placeholder="City or country...">
+        <div class="sr-nav">
+          <button class="sr-btn sr-prev" onclick="goStep(2)">Back</button>
+          <button class="sr-btn sr-next" onclick="goStep(4)">Next</button>
+        </div>
+      </div>
+
+      <div class="sr-q" data-q="4">
+        <div class="q-step">Final step</div>
+        <h3>Where should we send your plan?</h3>
+        <p class="q-hint">We'll review your answers and get back within 24 hours with a tailored learning proposal.</p>
+        <input class="f-input" type="email" placeholder="your@email.com">
+        <div class="sr-nav">
+          <button class="sr-btn sr-prev" onclick="goStep(3)">Back</button>
+          <button class="sr-btn sr-send" onclick="alert('Sent! We\'ll be in touch.')">Send</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const rows = document.querySelectorAll('.stone-row');
+  const connectors = document.querySelectorAll('.stone-connector');
+  const qs = document.querySelectorAll('.sr-q');
+
+  function goStep(idx) {
+    qs.forEach(q => q.classList.remove('active'));
+    qs[idx].classList.add('active');
+
+    rows.forEach((r, i) => {
+      r.className = 'stone-row';
+      if (i === idx) r.classList.add('active');
+      else if (i < idx) r.classList.add('done');
+    });
+    connectors.forEach((c, i) => {
+      c.classList.toggle('done', i < idx);
+    });
+
+    // Focus input if present
+    const input = qs[idx].querySelector('.f-input');
+    if (input) setTimeout(() => input.focus(), 400);
+  }
+
+  function pickOne(el) {
+    el.parentElement.querySelectorAll('.f-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // Enter key advances
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const active = document.querySelector('.sr-q.active');
+      const idx = parseInt(active.dataset.q);
+      if (idx < 4) goStep(idx + 1);
+    }
+  });
+</script>
+</body>
+</html>

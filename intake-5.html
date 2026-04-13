@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake 5 — Stepping Stones</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Baloo 2', sans-serif; color: #1a1a2a;
+    background: linear-gradient(to bottom, #c0daf0, #8ec8ee);
+    min-height: 100vh;
+  }
+  .page-behind {
+    position: fixed; inset: 0; z-index: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; color: rgba(26,26,42,0.2); font-weight: 700;
+  }
+  .overlay {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .stone-popup {
+    width: 720px; max-width: 94vw;
+    max-height: 85vh;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(40px) saturate(1.8);
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.12);
+    padding: 40px;
+    display: flex; flex-direction: column;
+  }
+
+  .stone-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(26,26,42,0.06); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: rgba(26,26,42,0.4);
+  }
+
+  /* Stepping stones progress at top */
+  .stones-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin-bottom: 36px; position: relative;
+  }
+  .stone-step {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; position: relative; z-index: 2;
+  }
+  .stone-circle {
+    width: 48px; height: 48px; border-radius: 55% 45% 50% 50% / 50% 55% 45% 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 0.9rem; color: #fff;
+    transition: all 0.4s;
+    background: rgba(26,26,42,0.12);
+    color: rgba(26,26,42,0.3);
+  }
+  .stone-step.active .stone-circle {
+    background: linear-gradient(145deg, #7c9070, #5a7550);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(124,144,112,0.3);
+    transform: scale(1.1);
+  }
+  .stone-step.done .stone-circle {
+    background: #F4AD50;
+    color: #fff;
+  }
+  .stone-label {
+    font-size: 0.6rem; font-weight: 700; color: rgba(26,26,42,0.3);
+    text-transform: uppercase; letter-spacing: 1px;
+    transition: color 0.3s;
+  }
+  .stone-step.active .stone-label { color: #4a6a40; }
+  .stone-step.done .stone-label { color: #9a7a3a; }
+
+  .stone-connector {
+    width: 40px; height: 3px; background: rgba(26,26,42,0.08);
+    border-radius: 2px; margin: 0 4px;
+    align-self: center; margin-bottom: 20px;
+    transition: background 0.4s;
+  }
+  .stone-connector.done { background: #F4AD50; }
+
+  /* Question area */
+  .stone-content {
+    flex: 1; position: relative;
+  }
+  .sq {
+    display: none; flex-direction: column;
+    animation: sqIn 0.4s ease;
+  }
+  .sq.active { display: flex; }
+  @keyframes sqIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .sq h2 {
+    font-size: 1.7rem; font-weight: 800; letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .sq .sq-sub {
+    font-size: 0.85rem; color: rgba(26,26,42,0.45);
+    margin-bottom: 24px;
+  }
+
+  .st-input {
+    width: 100%; padding: 16px 20px;
+    border: 2px solid rgba(26,26,42,0.08);
+    border-radius: 16px; font-family: inherit;
+    font-size: 1.05rem; background: #fff;
+    outline: none; transition: border-color 0.3s;
+  }
+  .st-input:focus { border-color: #7c9070; }
+
+  .st-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .st-opt {
+    padding: 18px 20px; border-radius: 16px;
+    border: 2px solid rgba(26,26,42,0.06);
+    background: #fff; cursor: pointer; font-family: inherit;
+    font-size: 0.95rem; font-weight: 600; text-align: center;
+    transition: all 0.3s;
+  }
+  .st-opt:hover { border-color: rgba(124,144,112,0.4); transform: translateY(-2px); }
+  .st-opt.selected { border-color: #7c9070; background: rgba(124,144,112,0.08); }
+
+  .st-nav {
+    display: flex; justify-content: space-between;
+    margin-top: 32px;
+  }
+  .st-btn {
+    padding: 14px 32px; border-radius: 24px;
+    font-family: inherit; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .st-prev { background: rgba(26,26,42,0.06); }
+  .st-next {
+    background: linear-gradient(145deg, #7c9070, #5a7550);
+    color: #fff; box-shadow: 0 4px 16px rgba(124,144,112,0.25);
+  }
+  .st-next:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,144,112,0.3); }
+</style>
+</head>
+<body>
+
+<div class="page-behind"><p>[ Website visible behind ]</p></div>
+
+<div class="overlay">
+  <div class="stone-popup" style="position:relative;">
+    <button class="stone-close">&times;</button>
+
+    <!-- Stepping stones progress -->
+    <div class="stones-row" id="stones-row">
+      <div class="stone-step active"><div class="stone-circle">1</div><div class="stone-label">Name</div></div>
+      <div class="stone-connector"></div>
+      <div class="stone-step"><div class="stone-circle">2</div><div class="stone-label">Age</div></div>
+      <div class="stone-connector"></div>
+      <div class="stone-step"><div class="stone-circle">3</div><div class="stone-label">Subjects</div></div>
+      <div class="stone-connector"></div>
+      <div class="stone-step"><div class="stone-circle">4</div><div class="stone-label">Location</div></div>
+      <div class="stone-connector"></div>
+      <div class="stone-step"><div class="stone-circle">5</div><div class="stone-label">Email</div></div>
+    </div>
+
+    <div class="stone-content">
+
+      <div class="sq active" data-q="0">
+        <h2>What's your child's name?</h2>
+        <p class="sq-sub">We'll use this to personalise their learning plan.</p>
+        <input class="st-input" placeholder="Their first name...">
+        <div class="st-nav">
+          <span></span>
+          <button class="st-btn st-next" onclick="goStone(1)">Continue</button>
+        </div>
+      </div>
+
+      <div class="sq" data-q="1">
+        <h2>How old are they?</h2>
+        <p class="sq-sub">This helps us pick the right difficulty level.</p>
+        <div class="st-grid">
+          <button class="st-opt" onclick="this.classList.toggle('selected')">4–6 years</button>
+          <button class="st-opt" onclick="this.classList.toggle('selected')">7–9 years</button>
+          <button class="st-opt" onclick="this.classList.toggle('selected')">10–12 years</button>
+          <button class="st-opt" onclick="this.classList.toggle('selected')">13+ years</button>
+        </div>
+        <div class="st-nav">
+          <button class="st-btn st-prev" onclick="goStone(0)">Back</button>
+          <button class="st-btn st-next" onclick="goStone(2)">Continue</button>
+        </div>
+      </div>
+
+      <div class="sq" data-q="2">
+        <h2>Which subjects interest them?</h2>
+        <p class="sq-sub">Pick all that apply.</p>
+        <div class="st-grid">
+          <button class="st-opt" onclick="this.classList.toggle('selected')">Mathematics</button>
+          <button class="st-opt" onclick="this.classList.toggle('selected')">Languages</button>
+          <button class="st-opt" onclick="this.classList.toggle('selected')">Science</button>
+          <button class="st-opt" onclick="this.classList.toggle('selected')">Art &amp; Creativity</button>
+          <button class="st-opt" onclick="this.classList.toggle('selected')">Life Skills</button>
+          <button class="st-opt" onclick="this.classList.toggle('selected')">Music</button>
+        </div>
+        <div class="st-nav">
+          <button class="st-btn st-prev" onclick="goStone(1)">Back</button>
+          <button class="st-btn st-next" onclick="goStone(3)">Continue</button>
+        </div>
+      </div>
+
+      <div class="sq" data-q="3">
+        <h2>Where are you based?</h2>
+        <p class="sq-sub">So we can align with your local curriculum if needed.</p>
+        <input class="st-input" placeholder="City or country...">
+        <div class="st-nav">
+          <button class="st-btn st-prev" onclick="goStone(2)">Back</button>
+          <button class="st-btn st-next" onclick="goStone(4)">Continue</button>
+        </div>
+      </div>
+
+      <div class="sq" data-q="4">
+        <h2>Your email address</h2>
+        <p class="sq-sub">We'll send your personalised plan within 24 hours.</p>
+        <input class="st-input" type="email" placeholder="your@email.com">
+        <div class="st-nav">
+          <button class="st-btn st-prev" onclick="goStone(3)">Back</button>
+          <button class="st-btn st-next" style="background:linear-gradient(145deg,#F4AD50,#e09030);">Send</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const stoneSteps = document.querySelectorAll('.stone-step');
+  const connectors = document.querySelectorAll('.stone-connector');
+  const sqs = document.querySelectorAll('.sq');
+
+  function goStone(idx) {
+    sqs.forEach(q => q.classList.remove('active'));
+    sqs[idx].classList.add('active');
+    stoneSteps.forEach((s, i) => {
+      s.className = 'stone-step';
+      if (i === idx) s.classList.add('active');
+      else if (i < idx) s.classList.add('done');
+    });
+    connectors.forEach((c, i) => {
+      c.classList.toggle('done', i < idx);
+    });
+  }
+</script>
+</body>
+</html>

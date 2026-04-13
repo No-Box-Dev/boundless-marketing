@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boundless Learning — Book Cover Concepts</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0ede8;
+    padding: 60px 40px;
+    color: #1a1a2a;
+  }
+  h1 {
+    text-align: center; font-size: 2rem; font-weight: 800;
+    margin-bottom: 12px; letter-spacing: -0.5px;
+  }
+  .subtitle {
+    text-align: center; font-size: 1rem; color: #5a5a6a;
+    margin-bottom: 60px; line-height: 1.6;
+  }
+  .covers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .cover-concept {
+    text-align: center;
+  }
+  .cover-concept h2 {
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;
+    color: #7c9070;
+  }
+  .cover-concept .desc {
+    font-size: 0.85rem; color: #5a5a6a; margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  /* Book shape */
+  .book-cover {
+    width: 380px; height: 520px;
+    margin: 0 auto;
+    border-radius: 4px 16px 16px 4px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: -4px 0 0 #00000015, 0 12px 40px rgba(0,0,0,0.25);
+  }
+  /* Spine edge */
+  .book-cover::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 18px;
+    background: linear-gradient(to right, rgba(0,0,0,0.15), rgba(0,0,0,0.05), transparent);
+    z-index: 10;
+  }
+  /* Page edges visible at bottom */
+  .book-cover::after {
+    content: '';
+    position: absolute; bottom: -2px; left: 6px; right: 4px; height: 6px;
+    background: repeating-linear-gradient(to right, #f5f2ed 0px, #f5f2ed 1px, #e8e5e0 1px, #e8e5e0 2px);
+    border-radius: 0 0 4px 0;
+    z-index: 10;
+  }
+
+  .cover-inner {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+
+  /* ═══════════════════════════════════
+     COVER 1: Four Seasons Split
+     ═══════════════════════════════════ */
+  .cover-1 .cover-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .cover-1 .quad {
+    background-size: cover;
+    background-position: center;
+  }
+  .cover-1 .quad:nth-child(1) { background-image: url('hero-bg.png'); }
+  .cover-1 .quad:nth-child(2) { background-image: url('dive-bg.png'); }
+  .cover-1 .quad:nth-child(3) { background-image: url('horizon-bg.png'); }
+  .cover-1 .quad:nth-child(4) { background-image: url('night-bg.png'); }
+  .cover-1 .title-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.3);
+    z-index: 5;
+  }
+  .cover-1 .title-overlay h3 {
+    font-size: 2.2rem; font-weight: 800; color: #fff;
+    text-align: center; line-height: 1.15;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    letter-spacing: -0.5px;
+  }
+  .cover-1 .title-overlay .tagline {
+    font-size: 0.8rem; color: rgba(255,255,255,0.85);
+    margin-top: 10px; letter-spacing: 2px; text-transform: uppercase;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+  }
+
+  /* ═══════════════════════════════════
+     COVER 2: Mountain Panorama
+     ═══════════════════════════════════ */
+  .cover-2 .cover-inner {
+    background: linear-gradient(to bottom, #c0daf0 0%, #e8d8c0 60%, #7c9070 100%);
+  }
+  .cover-2 .mountain-scene {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 55%;
+    background: url('hero-bg.png') center bottom / 120% auto no-repeat;
+  }
+  .cover-2 .title-block {
+    position: relative; z-index: 5;
+    padding: 50px 32px 0;
+    text-align: center;
+  }
+  .cover-2 .title-block .label {
+    font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 4px; color: #7c9070; margin-bottom: 12px;
+  }
+  .cover-2 .title-block h3 {
+    font-size: 2rem; font-weight: 800; color: #1a1a2a;
+    line-height: 1.15; letter-spacing: -0.5px;
+  }
+  .cover-2 .title-block .sub {
+    font-size: 0.78rem; color: #5a5a6a; margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  /* ═══════════════════════════════════
+     COVER 3: Underwater Window
+     ═══════════════════════════════════ */
+  .cover-3 .cover-inner {
+    background: #1a3a5a;
+  }
+  .cover-3 .ocean-window {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: url('dive-bg.png') center / cover no-repeat;
+    box-shadow: 0 0 0 12px rgba(255,255,255,0.1), 0 0 40px rgba(0,150,200,0.3);
+  }
+  .cover-3 .title-top {
+    position: relative; z-index: 5;
+    padding: 44px 28px 0; text-align: center;
+  }
+  .cover-3 .title-top .label {
+    font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 5px; color: #88c8f0; margin-bottom: 8px;
+  }
+  .cover-3 .title-top h3 {
+    font-size: 1.8rem; font-weight: 800; color: #e8f0f8;
+    line-height: 1.15;
+  }
+  .cover-3 .title-bottom {
+    position: absolute; bottom: 40px; left: 0; right: 0;
+    text-align: center; z-index: 5;
+  }
+  .cover-3 .title-bottom p {
+    font-size: 0.75rem; color: #88c8f0; letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ═══════════════════════════════════
+     COVER 4: Diagonal Journey
+     ═══════════════════════════════════ */
+  .cover-4 .cover-inner {
+    background: #f5f0e8;
+  }
+  .cover-4 .strip {
+    position: absolute;
+    width: 100%; height: 25%;
+    background-size: cover;
+    background-position: center;
+  }
+  .cover-4 .strip:nth-child(1) { top: 0; background-image: url('hero-bg.png'); clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%); }
+  .cover-4 .strip:nth-child(2) { top: 22%; background-image: url('dive-bg.png'); clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%); }
+  .cover-4 .strip:nth-child(3) { top: 44%; background-image: url('horizon-bg.png'); clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%); }
+  .cover-4 .strip:nth-child(4) { top: 66%; background-image: url('night-bg.png'); clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%); }
+  .cover-4 .title-center {
+    position: absolute; top: 50%; left: 50%; z-index: 5;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: rgba(245,240,232,0.92);
+    padding: 28px 36px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+  .cover-4 .title-center h3 {
+    font-size: 1.6rem; font-weight: 800; color: #1a1a2a;
+    line-height: 1.2; letter-spacing: -0.3px;
+  }
+  .cover-4 .title-center .sub {
+    font-size: 0.72rem; color: #7c9070; margin-top: 8px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 3px;
+  }
+
+  /* ═══════════════════════════════════
+     COVER 5: Night Sky with Campfire
+     ═══════════════════════════════════ */
+  .cover-5 .cover-inner {
+    background: linear-gradient(to bottom, #0a0a20 0%, #151535 40%, #1a2a45 70%, #0d1525 100%);
+  }
+  .cover-5 .night-scene {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 45%;
+    background: url('night-bg.png') center bottom / 130% auto no-repeat;
+  }
+  .cover-5 .horizon-glow {
+    position: absolute; bottom: 38%; left: 0; right: 0; height: 60px;
+    background: radial-gradient(ellipse at center, rgba(200,120,60,0.15) 0%, transparent 70%);
+  }
+  .cover-5 .cover-stars {
+    position: absolute; top: 0; left: 0; right: 0; height: 60%;
+    overflow: hidden;
+  }
+  .cover-5 .cover-star {
+    position: absolute; width: 2px; height: 2px;
+    background: #fff; border-radius: 50%;
+    opacity: 0.7;
+  }
+  .cover-5 .cover-star.warm { background: #ffe8a0; }
+  .cover-5 .cover-star.big { width: 3px; height: 3px; }
+  .cover-5 .title-night {
+    position: relative; z-index: 5;
+    padding: 60px 32px 0; text-align: center;
+  }
+  .cover-5 .title-night h3 {
+    font-size: 2.2rem; font-weight: 800; color: #e8eef4;
+    line-height: 1.15; letter-spacing: -0.5px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+  .cover-5 .title-night .sub {
+    font-size: 0.72rem; color: rgba(200,200,220,0.7);
+    margin-top: 14px; letter-spacing: 3px; text-transform: uppercase;
+  }
+  .cover-5 .moon {
+    position: absolute; top: 30px; right: 40px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #ffeedd, #f0d8b0);
+    box-shadow: 0 0 20px rgba(255,230,180,0.3);
+    z-index: 5;
+  }
+
+  @media (max-width: 860px) {
+    .covers-grid { grid-template-columns: 1fr; }
+    .book-cover { width: 320px; height: 440px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Book Cover Concepts</h1>
+<p class="subtitle">5 front cover designs for the Boundless storybook — using elements from all 4 illustrations</p>
+
+<div class="covers-grid">
+
+  <!-- COVER 1: Four Seasons Split -->
+  <div class="cover-concept">
+    <h2>1. Four Worlds</h2>
+    <p class="desc">All 4 illustrations in a grid with title overlay. Shows the full journey at a glance.</p>
+    <div class="book-cover cover-1">
+      <div class="cover-inner">
+        <div class="quad"></div>
+        <div class="quad"></div>
+        <div class="quad"></div>
+        <div class="quad"></div>
+        <div class="title-overlay">
+          <h3>Boundless<br>Learning</h3>
+          <div class="tagline">Where curiosity has no walls</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COVER 2: Mountain Panorama -->
+  <div class="cover-concept">
+    <h2>2. Mountain Top</h2>
+    <p class="desc">Clean sky at top with title, mountain illustration filling the bottom half. Classic children's book feel.</p>
+    <div class="book-cover cover-2">
+      <div class="cover-inner">
+        <div class="title-block">
+          <div class="label">A Boundless Story</div>
+          <h3>What if school<br>could travel<br>with you?</h3>
+          <div class="sub">A learning journey for curious families</div>
+        </div>
+        <div class="mountain-scene"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COVER 3: Underwater Window -->
+  <div class="cover-concept">
+    <h2>3. Deep Dive</h2>
+    <p class="desc">Dark ocean background with a circular window into the underwater world. Mysterious and inviting.</p>
+    <div class="book-cover cover-3">
+      <div class="cover-inner">
+        <div class="title-top">
+          <div class="label">Boundless Learning</div>
+          <h3>Dive into<br>learning</h3>
+        </div>
+        <div class="ocean-window"></div>
+        <div class="title-bottom">
+          <p>A story of curious minds</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COVER 4: Diagonal Journey -->
+  <div class="cover-concept">
+    <h2>4. Journey Strips</h2>
+    <p class="desc">Diagonal slices of all 4 illustrations flowing top to bottom — mountains to night. Title in a floating card.</p>
+    <div class="book-cover cover-4">
+      <div class="cover-inner">
+        <div class="strip"></div>
+        <div class="strip"></div>
+        <div class="strip"></div>
+        <div class="strip"></div>
+        <div class="title-center">
+          <h3>Boundless<br>Learning</h3>
+          <div class="sub">The Story</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COVER 5: Night Sky -->
+  <div class="cover-concept">
+    <h2>5. Starlit</h2>
+    <p class="desc">Night sky with stars and moon above the mountain silhouettes. Calm, dreamy, end-of-day feeling.</p>
+    <div class="book-cover cover-5">
+      <div class="cover-inner">
+        <div class="cover-stars">
+          <div class="cover-star" style="top:12%;left:15%;"></div>
+          <div class="cover-star warm" style="top:8%;left:45%;"></div>
+          <div class="cover-star big" style="top:20%;left:72%;"></div>
+          <div class="cover-star" style="top:30%;left:28%;"></div>
+          <div class="cover-star warm big" style="top:5%;left:85%;"></div>
+          <div class="cover-star" style="top:25%;left:55%;"></div>
+          <div class="cover-star warm" style="top:15%;left:35%;"></div>
+          <div class="cover-star" style="top:35%;left:80%;"></div>
+          <div class="cover-star big" style="top:10%;left:60%;"></div>
+          <div class="cover-star warm" style="top:28%;left:12%;"></div>
+          <div class="cover-star" style="top:18%;left:92%;"></div>
+          <div class="cover-star" style="top:38%;left:42%;"></div>
+          <div class="cover-star warm big" style="top:22%;left:68%;"></div>
+          <div class="cover-star" style="top:8%;left:22%;"></div>
+          <div class="cover-star warm" style="top:32%;left:90%;"></div>
+        </div>
+        <div class="moon"></div>
+        <div class="title-night">
+          <h3>Boundless<br>Learning</h3>
+          <div class="sub">A story written by curious minds</div>
+        </div>
+        <div class="horizon-glow"></div>
+        <div class="night-scene"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storybook Section — 5 Concepts</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Baloo 2', sans-serif;
+    color: #1a1a2a;
+    background: #e8e4dc;
+  }
+
+  /* ── Concept separator ── */
+  .concept-divider {
+    text-align: center;
+    padding: 60px 40px 20px;
+    background: #1a1a2a;
+    color: #fff;
+  }
+  .concept-divider h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .concept-divider p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    max-width: 600px;
+    margin: 10px auto 0;
+    line-height: 1.6;
+  }
+
+  /* ── Shared NoBox logo SVG ── */
+  .nbe-logo svg { width: 100%; height: auto; }
+
+  /* ── Shared button ── */
+  .read-more {
+    display: inline-block;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #F4AD50;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .read-more:hover { border-bottom-color: #F4AD50; }
+
+  /* ── Inline character illustrations (CSS-drawn) ── */
+  .char-cat, .char-elephant {
+    display: inline-block;
+    position: relative;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     CONCEPT 1 — Logo Anchor + Story Card
+     ═══════════════════════════════════════════════════ */
+  .c1 {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #a8d4f0 0%, #8ec8ee 50%, #b8dce8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .c1-layout {
+    display: flex;
+    align-items: center;
+    max-width: 960px;
+    width: 100%;
+    gap: 0;
+    position: relative;
+  }
+  .c1-logo {
+    flex: 0 0 320px;
+    position: relative;
+    z-index: 2;
+    margin-right: -60px;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
+  }
+  .c1-card {
+    flex: 1;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 48px 48px 48px 80px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1;
+  }
+  .c1-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #6CA373;
+    margin-bottom: 8px;
+  }
+  .c1-card h3 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 14px;
+    color: #1a1a2a;
+  }
+  .c1-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(26,26,42,0.7);
+    margin-bottom: 12px;
+  }
+  .c1-card blockquote {
+    border-left: 3px solid #F4AD50;
+    padding: 4px 0 4px 16px;
+    margin: 16px 0;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: 600;
+    color: #1a1a2a;
+    line-height: 1.5;
+  }
+  .c1-dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    align-items: center;
+  }
+  .c1-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(26,26,42,0.15);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .c1-dot.active {
+    background: #F4AD50;
+    transform: scale(1.3);
+  }
+  .c1-characters {
+    position: absolute;
+    bottom: -10px;
+    left: 40px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    z-index: 3;
+  }
+  /* CSS Cat */
+  .css-cat {
+    width: 50px;
+    height: 60px;
+    position: relative;
+  }
+  .css-cat-body {
+    width: 36px;
+    height: 30px;
+    background: #F4AD50;
+    border-radius: 50% 50% 40% 40%;
+    position: absolute;
+    bottom: 0;
+    left: 7px;
+  }
+  .css-cat-head {
+    width: 28px;
+    height: 24px;
+    background: #F4AD50;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 24px;
+    left: 11px;
+  }
+  .css-cat-ear-l, .css-cat-ear-r {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid #F4AD50;
+    position: absolute;
+    bottom: 44px;
+  }
+  .css-cat-ear-l { left: 10px; transform: rotate(-10deg); }
+  .css-cat-ear-r { left: 28px; transform: rotate(10deg); }
+  .css-cat-eye-l, .css-cat-eye-r {
+    width: 5px;
+    height: 5px;
+    background: #1a1a2a;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 34px;
+  }
+  .css-cat-eye-l { left: 17px; }
+  .css-cat-eye-r { left: 28px; }
+  .css-cat-tail {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #F4AD50;
+    border-radius: 50%;
+    border-bottom: none;
+    border-left: none;
+    position: absolute;
+    bottom: 8px;
+    right: -5px;
+    transform: rotate(30deg);
+  }
+
+  /* CSS Elephant */
+  .css-elephant {
+    width: 70px;
+    height: 65px;
+    position: relative;
+  }
+  .css-elephant-body {
+    width: 50px;
+    height: 38px;
+    background: #B49AF7;
+    border-radius: 50% 50% 30% 30%;
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+  }
+  .css-elephant-head {
+    width: 32px;
+    height: 28px;
+    background: #B49AF7;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+  }
+  .css-elephant-ear {
+    width: 18px;
+    height: 22px;
+    background: #a085e8;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 30px;
+    left: -6px;
+  }
+  .css-elephant-trunk {
+    width: 8px;
+    height: 22px;
+    background: #B49AF7;
+    border-radius: 0 0 12px 12px;
+    position: absolute;
+    bottom: 14px;
+    left: 4px;
+    transform: rotate(10deg);
+  }
+  .css-elephant-eye {
+    width: 5px;
+    height: 5px;
+    background: #1a1a2a;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 42px;
+    left: 12px;
+  }
+  .css-elephant-leg1, .css-elephant-leg2, .css-elephant-leg3, .css-elephant-leg4 {
+    width: 10px;
+    height: 12px;
+    background: #a085e8;
+    border-radius: 0 0 4px 4px;
+    position: absolute;
+    bottom: 0;
+  }
+  .css-elephant-leg1 { left: 14px; }
+  .css-elephant-leg2 { left: 26px; }
+  .css-elephant-leg3 { left: 38px; }
+  .css-elephant-leg4 { left: 48px; }
+
+  /* ═══════════════════════════════════════════════════
+     CONCEPT 2 — Horizontal Story River
+     ═══════════════════════════════════════════════════ */
+  .c2 {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #d4e8e0 0%, #e8e0c8 100%);
+    display: flex;
+    align-items: center;
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .c2-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+  .c2-logo-sticky {
+    flex: 0 0 220px;
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    padding-left: 40px;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.1));
+  }
+  .c2-river {
+    display: flex;
+    gap: 28px;
+    padding: 20px 60px 20px 40px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .c2-river::-webkit-scrollbar { display: none; }
+  .c2-river-card {
+    flex: 0 0 340px;
+    scroll-snap-align: start;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(16px);
+    border-radius: 20px;
+    padding: 36px 32px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    position: relative;
+    transition: transform 0.3s;
+  }
+  .c2-river-card:hover { transform: translateY(-4px); }
+  .c2-river-card .c2-ch-num {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #6CA373;
+    margin-bottom: 6px;
+  }
+  .c2-river-card h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    margin-bottom: 10px;
+    color: #1a1a2a;
+    line-height: 1.2;
+  }
+  .c2-river-card p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(26,26,42,0.65);
+    margin-bottom: 10px;
+  }
+  .c2-char {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    bottom: -24px;
+    right: 20px;
+  }
+  .c2-scroll-hint {
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    font-size: 0.8rem;
+    color: rgba(26,26,42,0.4);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: c2drift 2s ease-in-out infinite;
+  }
+  @keyframes c2drift {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
+  }
+
+  /* ═══════════════════════════════════════════════════
+     CONCEPT 3 — Stacked Cards with Logo Watermark
+     ═══════════════════════════════════════════════════ */
+  .c3 {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0d8a0 0%, #e8e0c8 50%, #d4e8e0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .c3-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    opacity: 0.07;
+    z-index: 1;
+  }
+  .c3-stack {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 560px;
+  }
+  .c3-card {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px 36px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s;
+    cursor: pointer;
+  }
+  .c3-card + .c3-card {
+    margin-top: -160px;
+    opacity: 0.7;
+    transform: scale(0.96);
+  }
+  .c3-card + .c3-card + .c3-card {
+    opacity: 0.4;
+    transform: scale(0.92);
+  }
+  .c3-card + .c3-card + .c3-card + .c3-card {
+    opacity: 0.2;
+    transform: scale(0.88);
+  }
+  .c3-card + .c3-card + .c3-card + .c3-card + .c3-card {
+    opacity: 0.1;
+    transform: scale(0.84);
+  }
+  .c3-card .c3-ch {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #6CA373;
+    margin-bottom: 6px;
+  }
+  .c3-card h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #1a1a2a;
+    line-height: 1.2;
+  }
+  .c3-card p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: rgba(26,26,42,0.65);
+    margin-bottom: 10px;
+  }
+  .c3-card blockquote {
+    border-left: 3px solid #F4AD50;
+    padding: 4px 0 4px 16px;
+    margin: 14px 0;
+    font-style: italic;
+    font-weight: 600;
+    color: #1a1a2a;
+    line-height: 1.5;
+  }
+  .c3-hint {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.8rem;
+    color: rgba(26,26,42,0.4);
+  }
+
+  /* ═══════════════════════════════════════════════════
+     CONCEPT 4 — Split Panel: Logo Left, Story Right
+     ═══════════════════════════════════════════════════ */
+  .c4 {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #a8d4f0 0%, #c0daf0 100%);
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+    position: relative;
+  }
+  .c4-left {
+    flex: 0 0 42%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+  .c4-logo {
+    width: 260px;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.12));
+    position: relative;
+  }
+  .c4-characters {
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+    align-items: flex-end;
+  }
+  .c4-tagline {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: rgba(26,26,42,0.5);
+    text-align: center;
+    font-weight: 600;
+  }
+  .c4-right {
+    flex: 1;
+    padding: 100px 60px 100px 40px;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+  .c4-story-card {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 48px 44px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.08);
+  }
+  .c4-story-card .c4-ch {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #6CA373;
+    margin-bottom: 4px;
+  }
+  .c4-story-card h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: #1a1a2a;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+  .c4-story-card p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: rgba(26,26,42,0.65);
+    margin-bottom: 14px;
+  }
+  .c4-story-card blockquote {
+    border-left: 3px solid #F4AD50;
+    padding: 6px 0 6px 18px;
+    margin: 20px 0;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #1a1a2a;
+    line-height: 1.5;
+  }
+  .c4-sep {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #F4AD50, #6CA373);
+    border-radius: 2px;
+    margin: 32px 0;
+  }
+  .c4-story-footer {
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     CONCEPT 5 — Floating Chapter Bubbles
+     ═══════════════════════════════════════════════════ */
+  .c5 {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e8e0c8 0%, #d4e8e0 50%, #c0daf0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .c5-layout {
+    display: flex;
+    align-items: flex-start;
+    max-width: 1000px;
+    width: 100%;
+    gap: 40px;
+  }
+  .c5-logo-col {
+    flex: 0 0 240px;
+    position: sticky;
+    top: 120px;
+    filter: drop-shadow(0 12px 30px rgba(0,0,0,0.1));
+  }
+  .c5-bubbles {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    padding-left: 30px;
+  }
+  .c5-path {
+    position: absolute;
+    left: 14px;
+    top: 30px;
+    bottom: 30px;
+    width: 2px;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(180,154,247,0.4) 0px,
+      rgba(180,154,247,0.4) 6px,
+      transparent 6px,
+      transparent 12px
+    );
+  }
+  .c5-bubble {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(16px);
+    border-radius: 20px;
+    padding: 28px 32px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .c5-bubble:hover {
+    transform: translateX(6px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.1);
+  }
+  .c5-bubble::before {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 32px;
+    width: 12px;
+    height: 12px;
+    background: #B49AF7;
+    border-radius: 50%;
+    border: 3px solid #fff;
+  }
+  .c5-bubble .c5-ch {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #6CA373;
+    margin-bottom: 4px;
+  }
+  .c5-bubble h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #1a1a2a;
+    line-height: 1.2;
+  }
+  .c5-bubble p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(26,26,42,0.6);
+  }
+  .c5-char-walk {
+    position: absolute;
+    z-index: 2;
+  }
+  .c5-footer {
+    text-align: center;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     CONCEPT 1 — Logo Anchor + Story Card
+     ════════════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h1>Concept 1 — Logo Anchor + Story Card</h1>
+  <p>Large logo on the left, overlapping a frosted-glass card. Cat and elephant peek in from below.</p>
+</div>
+
+<section class="c1">
+  <div class="c1-layout">
+    <div class="c1-logo nbe-logo">
+      <svg viewBox="0 0 714 595" fill="none">
+        <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/>
+        <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/>
+        <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/>
+        <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/>
+        <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/>
+      </svg>
+      <!-- Characters at bottom of logo -->
+      <div class="c1-characters">
+        <div class="css-cat">
+          <div class="css-cat-ear-l"></div>
+          <div class="css-cat-ear-r"></div>
+          <div class="css-cat-head"></div>
+          <div class="css-cat-eye-l"></div>
+          <div class="css-cat-eye-r"></div>
+          <div class="css-cat-body"></div>
+          <div class="css-cat-tail"></div>
+        </div>
+        <div class="css-elephant">
+          <div class="css-elephant-ear"></div>
+          <div class="css-elephant-head"></div>
+          <div class="css-elephant-eye"></div>
+          <div class="css-elephant-trunk"></div>
+          <div class="css-elephant-body"></div>
+          <div class="css-elephant-leg1"></div>
+          <div class="css-elephant-leg2"></div>
+          <div class="css-elephant-leg3"></div>
+          <div class="css-elephant-leg4"></div>
+        </div>
+      </div>
+    </div>
+    <div class="c1-card">
+      <div class="c1-label">Chapter One</div>
+      <h3>The walls around our plans</h3>
+      <p>We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world.</p>
+      <blockquote>What if high-quality education could evolve around our children, wherever we go?</blockquote>
+      <a href="story.html" class="read-more">Read the full story →</a>
+      <div class="c1-dots">
+        <button class="c1-dot active"></button>
+        <button class="c1-dot"></button>
+        <button class="c1-dot"></button>
+        <button class="c1-dot"></button>
+        <button class="c1-dot"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     CONCEPT 2 — Horizontal Story River
+     ════════════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h1>Concept 2 — Horizontal Story River</h1>
+  <p>Logo fixed on the left, story cards flow horizontally. Scroll sideways to read.</p>
+</div>
+
+<section class="c2">
+  <div class="c2-wrapper">
+    <div class="c2-logo-sticky nbe-logo">
+      <svg viewBox="0 0 714 595" fill="none">
+        <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/>
+        <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/>
+        <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/>
+        <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/>
+        <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/>
+      </svg>
+    </div>
+    <div class="c2-river">
+      <div class="c2-river-card">
+        <div class="c2-ch-num">Chapter One</div>
+        <h3>The walls around our plans</h3>
+        <p>We had a dream that many families recognise but few dare to act on — to live in different parts of the world.</p>
+        <a href="story.html" class="read-more">Read more →</a>
+        <!-- Cat peeking -->
+        <div class="c2-char">
+          <div class="css-cat" style="transform: scale(0.8);">
+            <div class="css-cat-ear-l"></div><div class="css-cat-ear-r"></div>
+            <div class="css-cat-head"></div><div class="css-cat-eye-l"></div><div class="css-cat-eye-r"></div>
+            <div class="css-cat-body"></div><div class="css-cat-tail"></div>
+          </div>
+        </div>
+      </div>
+      <div class="c2-river-card">
+        <div class="c2-ch-num">Chapter Two</div>
+        <h3>We searched</h3>
+        <p>What we found disappointed us — not because the platforms were poorly made, but because they misunderstood what learning actually is.</p>
+        <a href="story.html" class="read-more">Read more →</a>
+      </div>
+      <div class="c2-river-card">
+        <div class="c2-ch-num">Chapter Three</div>
+        <h3>If you cannot find it, build it</h3>
+        <p>My background is in psychology. I understand how people learn, remember, and stay motivated.</p>
+        <a href="story.html" class="read-more">Read more →</a>
+      </div>
+      <div class="c2-river-card">
+        <div class="c2-ch-num">Chapter Four</div>
+        <h3>Our children became curious again</h3>
+        <p>Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
+        <a href="story.html" class="read-more">Read more →</a>
+        <!-- Elephant -->
+        <div class="c2-char">
+          <div class="css-elephant" style="transform: scale(0.75);">
+            <div class="css-elephant-ear"></div><div class="css-elephant-head"></div>
+            <div class="css-elephant-eye"></div><div class="css-elephant-trunk"></div>
+            <div class="css-elephant-body"></div>
+            <div class="css-elephant-leg1"></div><div class="css-elephant-leg2"></div>
+            <div class="css-elephant-leg3"></div><div class="css-elephant-leg4"></div>
+          </div>
+        </div>
+      </div>
+      <div class="c2-river-card">
+        <div class="c2-ch-num">Chapter Five</div>
+        <h3>The platform that builds itself</h3>
+        <p>No Box Education is not finished. It never will be. Our children use it every day.</p>
+        <a href="story.html" class="read-more">Read the full story →</a>
+      </div>
+    </div>
+  </div>
+  <div class="c2-scroll-hint">scroll → <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     CONCEPT 3 — Stacked Cards with Logo Watermark
+     ════════════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h1>Concept 3 — Stacked Cards with Logo Watermark</h1>
+  <p>Cards stacked like a deck. Logo as giant watermark behind. Click top card to reveal the next.</p>
+</div>
+
+<section class="c3">
+  <div class="c3-watermark nbe-logo">
+    <svg viewBox="0 0 714 595" fill="none">
+      <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/>
+      <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/>
+      <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/>
+      <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/>
+      <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/>
+    </svg>
+  </div>
+  <div class="c3-stack">
+    <div class="c3-card">
+      <div class="c3-ch">Chapter One</div>
+      <h3>The walls around our plans</h3>
+      <p>We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world. But every time we imagined a new place, the same walls enclosed our plans.</p>
+      <blockquote>What if high-quality education could evolve around our children, wherever we go?</blockquote>
+      <a href="story.html" class="read-more">Read the full story →</a>
+    </div>
+    <div class="c3-card">
+      <div class="c3-ch">Chapter Two</div>
+      <h3>We searched</h3>
+    </div>
+    <div class="c3-card">
+      <div class="c3-ch">Chapter Three</div>
+      <h3>If you cannot find it, build it</h3>
+    </div>
+    <div class="c3-card">
+      <div class="c3-ch">Chapter Four</div>
+      <h3>Our children became curious again</h3>
+    </div>
+    <div class="c3-card">
+      <div class="c3-ch">Chapter Five</div>
+      <h3>The platform that builds itself</h3>
+    </div>
+  </div>
+  <div class="c3-hint">Click the card to flip through chapters</div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     CONCEPT 4 — Split Panel: Logo Left, Story Right
+     ════════════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h1>Concept 4 — Split Panel: Logo Left, Scrolling Story Right</h1>
+  <p>Logo and characters stay pinned on the left. The story flows as continuous narrative on the right.</p>
+</div>
+
+<section class="c4">
+  <div class="c4-left">
+    <div class="c4-logo nbe-logo">
+      <svg viewBox="0 0 714 595" fill="none">
+        <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/>
+        <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/>
+        <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/>
+        <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/>
+        <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/>
+      </svg>
+    </div>
+    <div class="c4-characters">
+      <!-- Cat sitting on gold side -->
+      <div class="css-cat">
+        <div class="css-cat-ear-l"></div><div class="css-cat-ear-r"></div>
+        <div class="css-cat-head"></div><div class="css-cat-eye-l"></div><div class="css-cat-eye-r"></div>
+        <div class="css-cat-body"></div><div class="css-cat-tail"></div>
+      </div>
+      <!-- Elephant on green side -->
+      <div class="css-elephant">
+        <div class="css-elephant-ear"></div><div class="css-elephant-head"></div>
+        <div class="css-elephant-eye"></div><div class="css-elephant-trunk"></div>
+        <div class="css-elephant-body"></div>
+        <div class="css-elephant-leg1"></div><div class="css-elephant-leg2"></div>
+        <div class="css-elephant-leg3"></div><div class="css-elephant-leg4"></div>
+      </div>
+    </div>
+    <div class="c4-tagline">The NoBox story</div>
+  </div>
+  <div class="c4-right">
+    <div class="c4-story-card">
+      <div class="c4-ch">Chapter One</div>
+      <h3>The walls around our plans</h3>
+      <p>We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world.</p>
+      <p>But every time we imagined a new place, the same walls enclosed our plans. Education had quietly become the invisible fence around our lives.</p>
+      <blockquote>What if high-quality education could evolve around our children, wherever we go?</blockquote>
+
+      <div class="c4-sep"></div>
+
+      <div class="c4-ch">Chapter Two</div>
+      <h3>We searched</h3>
+      <p>Thoroughly, and for a long time. What we found disappointed us — not because the platforms were poorly made, but because they misunderstood what learning actually is.</p>
+      <p>A striking number had forgotten the deeper goal: to make children genuinely curious.</p>
+
+      <div class="c4-sep"></div>
+
+      <div class="c4-ch">Chapter Three</div>
+      <h3>If you cannot find it, build it</h3>
+      <p>My background is in psychology. I understand how people learn, remember, and stay motivated.</p>
+      <blockquote>If you cannot find what you are looking for, build it yourself.</blockquote>
+
+      <div class="c4-sep"></div>
+
+      <div class="c4-ch">Chapter Four</div>
+      <h3>Our children became curious again</h3>
+      <p>Not the performed curiosity of a classroom. Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
+      <blockquote>Where curiosity is treated not as a nice extra but as the entire point.</blockquote>
+
+      <div class="c4-sep"></div>
+
+      <div class="c4-ch">Chapter Five</div>
+      <h3>The platform that builds itself</h3>
+      <p>No Box Education is not finished. It never will be. Our children use it every day — and when something could be better, they tell us.</p>
+      <blockquote>Not just teach children what is already known — but grow children who build what does not yet exist.</blockquote>
+      <p style="color: #F4AD50; font-weight: 700; font-style: italic; margin-top: 20px;">The world is too big to only see it during school holidays.</p>
+
+      <div class="c4-story-footer">
+        <a href="story.html" class="read-more">Read the full story →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     CONCEPT 5 — Floating Chapter Bubbles
+     ════════════════════════════════════════════════════════════ -->
+<div class="concept-divider">
+  <h1>Concept 5 — Floating Chapter Bubbles</h1>
+  <p>Logo on the left, bubbles float out from a dotted path. Characters walk between them.</p>
+</div>
+
+<section class="c5">
+  <div class="c5-layout">
+    <div class="c5-logo-col nbe-logo">
+      <svg viewBox="0 0 714 595" fill="none">
+        <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/>
+        <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/>
+        <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/>
+        <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/>
+        <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="6"/>
+      </svg>
+      <!-- Cat sitting below logo -->
+      <div style="display: flex; justify-content: center; margin-top: 20px; gap: 24px; align-items: flex-end;">
+        <div class="css-cat">
+          <div class="css-cat-ear-l"></div><div class="css-cat-ear-r"></div>
+          <div class="css-cat-head"></div><div class="css-cat-eye-l"></div><div class="css-cat-eye-r"></div>
+          <div class="css-cat-body"></div><div class="css-cat-tail"></div>
+        </div>
+        <div class="css-elephant">
+          <div class="css-elephant-ear"></div><div class="css-elephant-head"></div>
+          <div class="css-elephant-eye"></div><div class="css-elephant-trunk"></div>
+          <div class="css-elephant-body"></div>
+          <div class="css-elephant-leg1"></div><div class="css-elephant-leg2"></div>
+          <div class="css-elephant-leg3"></div><div class="css-elephant-leg4"></div>
+        </div>
+      </div>
+    </div>
+    <div class="c5-bubbles">
+      <div class="c5-path"></div>
+      <div class="c5-bubble">
+        <div class="c5-ch">Chapter One</div>
+        <h3>The walls around our plans</h3>
+        <p>We wanted to live in different parts of the world — but education became the invisible fence around our lives.</p>
+      </div>
+      <div class="c5-bubble">
+        <div class="c5-ch">Chapter Two</div>
+        <h3>We searched</h3>
+        <p>Every platform we found had forgotten the deeper goal: to make children genuinely curious.</p>
+      </div>
+      <div class="c5-bubble">
+        <div class="c5-ch">Chapter Three</div>
+        <h3>If you cannot find it, build it</h3>
+        <p>Psychology, learning science, international curricula — we built, tested, and rebuilt until we were all satisfied.</p>
+      </div>
+      <div class="c5-bubble">
+        <div class="c5-ch">Chapter Four</div>
+        <h3>Our children became curious again</h3>
+        <p>Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
+      </div>
+      <div class="c5-bubble">
+        <div class="c5-ch">Chapter Five</div>
+        <h3>The platform that builds itself</h3>
+        <p>Our daughter was eight when she programmed her first game for the platform. Then a second. Then a third.</p>
+      </div>
+      <div class="c5-footer">
+        <a href="story.html" class="read-more">Read the full story →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

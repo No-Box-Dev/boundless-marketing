@@ -5,107 +5,303 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="How two parents turned the biggest obstacle to freedom into an education platform — the story behind NoBox Education.">
 <title>Our Story — NoBox Education</title>
+<link rel="stylesheet" href="globals.css">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
-    font-family: 'Baloo 2', sans-serif; color: #1a1a2a;
+    font-family: var(--nbe-font-body, 'Baloo 2', sans-serif);
+    color: var(--nbe-text, #1a1a2a);
+    overflow-x: hidden;
     background: #f8f6f0;
   }
-  html { scroll-behavior: smooth; }
 
-  /* Nav */
+  /* ── Nav ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
     background: rgba(248,246,240,0.85); backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(0,0,0,0.06);
+    transition: background 0.4s, border-color 0.4s;
+  }
+  nav.dark {
+    background: rgba(26,26,42,0.85);
+    border-bottom-color: rgba(255,255,255,0.06);
   }
   .nav-logo {
     font-size: 1.2rem; font-weight: 800; color: #1a1a2a;
     text-decoration: none; letter-spacing: -0.5px;
     display: flex; align-items: center; gap: 10px;
+    transition: color 0.4s;
   }
+  nav.dark .nav-logo { color: #e8eef4; }
   .nav-logo svg { height: 32px; width: auto; }
   .nav-logo span { line-height: 1; }
   .nav-back {
-    font-size: 0.9rem; color: rgba(26,26,42,0.5); text-decoration: none;
-    display: flex; align-items: center; gap: 6px;
-    transition: color 0.2s;
+    font-size: 1rem; color: rgba(26,26,42,0.5); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border-radius: 20px;
+    background: rgba(26,26,42,0.06);
+    font-weight: 600;
+    transition: all 0.3s;
   }
-  .nav-back:hover { color: #1a1a2a; }
-  .nav-back svg { width: 18px; height: 18px; stroke: currentColor; }
+  .nav-back:hover { color: #1a1a2a; background: rgba(26,26,42,0.1); }
+  nav.dark .nav-back { color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.08); }
+  nav.dark .nav-back:hover { color: #fff; background: rgba(255,255,255,0.15); }
+  .nav-back svg { width: 20px; height: 20px; stroke: currentColor; }
 
-  /* Hero */
+  /* ── Hero ── */
   .story-hero {
-    padding: 140px 40px 80px;
-    max-width: 720px; margin: 0 auto;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     text-align: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    background: linear-gradient(180deg, #f8f6f0 0%, #e8e4d8 100%);
+  }
+  .hero-logo {
+    width: 120px; height: auto; margin-bottom: 40px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 1s 0.2s ease forwards;
   }
   .story-hero h1 {
-    font-size: 2.8rem; font-weight: 800; letter-spacing: -1px;
-    line-height: 1.15; margin-bottom: 16px;
+    font-size: 3.2rem; font-weight: 800; letter-spacing: -1.5px;
+    line-height: 1.1; margin-bottom: 20px; max-width: 640px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 1s 0.4s ease forwards;
   }
-  .story-hero p {
-    font-size: 1.05rem; color: rgba(26,26,42,0.55); line-height: 1.7;
+  .story-hero .subtitle {
+    font-size: 1.1rem; color: rgba(26,26,42,0.5); line-height: 1.7;
+    max-width: 520px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 1s 0.6s ease forwards;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 40px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: rgba(26,26,42,0.25); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    opacity: 0; animation: fadeUp 1s 1s ease forwards;
+  }
+  .scroll-hint svg {
+    width: 20px; height: 20px; stroke: currentColor;
+    animation: bobDown 2s ease-in-out infinite;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bobDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
   }
 
-  /* Blog posts */
-  .posts {
-    max-width: 680px; margin: 0 auto;
-    padding: 0 40px 100px;
-    display: flex; flex-direction: column; gap: 48px;
+  /* ── Chapter layout ── */
+  .chapter {
+    position: relative;
+    padding: 120px 40px;
+    transition: background 0.6s;
   }
-  .post {
-    border-bottom: 1px solid rgba(26,26,42,0.08);
-    padding-bottom: 48px;
+  .chapter-inner {
+    max-width: 720px; margin: 0 auto;
   }
-  .post:last-child { border-bottom: none; }
-  .post-meta {
-    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 2px; color: rgba(26,26,42,0.35);
+
+  /* Chapter number + title */
+  .chapter-label {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 12px;
+  }
+  .chapter h2 {
+    font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px;
+    line-height: 1.15; margin-bottom: 28px;
+  }
+  .chapter p {
+    font-size: 1rem; line-height: 1.8; margin-bottom: 16px;
+  }
+  .chapter blockquote {
+    border-left: 3px solid var(--nbe-purple, #B49AF7);
+    padding: 4px 0 4px 20px; margin: 32px 0;
+    font-size: 1.25rem; font-style: italic; font-weight: 600;
+    line-height: 1.5;
+  }
+
+  /* Chapter image — full bleed */
+  .chapter-image {
+    width: 100%; max-width: 720px; margin: 40px auto;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+  }
+  .chapter-image img {
+    width: 100%; height: auto; display: block;
+  }
+
+  /* ── Chapter themes ── */
+  /* Ch1: The Walls — warm cream */
+  .ch-walls {
+    background: #f8f6f0;
+  }
+  .ch-walls .chapter-label { color: var(--nbe-sage-btn, #7c9070); }
+  .ch-walls p { color: rgba(26,26,42,0.7); }
+
+  /* Ch2: The Search — cool blue */
+  .ch-search {
+    background: #e8f0f4;
+  }
+  .ch-search .chapter-label { color: #4a7a9a; }
+  .ch-search h2 { color: #1a2a3a; }
+  .ch-search p { color: #3a5a6a; }
+  .ch-search blockquote { color: #1a2a3a; border-color: #5b8aaa; }
+
+  /* Ch3: Building It — warm gold */
+  .ch-build {
+    background: #f4eed8;
+  }
+  .ch-build .chapter-label { color: #9a6a3a; }
+  .ch-build h2 { color: #2a1a0a; }
+  .ch-build p { color: #5a4a3a; }
+  .ch-build blockquote { color: #2a1a0a; }
+
+  /* Ch4: Curiosity — soft green */
+  .ch-curiosity {
+    background: #e4f0e4;
+  }
+  .ch-curiosity .chapter-label { color: #4a6a40; }
+  .ch-curiosity h2 { color: #1a2a1a; }
+  .ch-curiosity p { color: #3a4a38; }
+  .ch-curiosity blockquote { color: #1a2a1a; border-color: var(--nbe-sage, #6CA373); }
+
+  /* Ch5: The Platform — deep twilight */
+  .ch-platform {
+    background: #1a1a2a;
+    color: #e8eef4;
+  }
+  .ch-platform .chapter-label { color: var(--nbe-sage, #6CA373); }
+  .ch-platform h2 { color: #e8eef4; }
+  .ch-platform p { color: #90a0b8; }
+  .ch-platform blockquote { color: #e8eef4; border-color: var(--nbe-purple, #B49AF7); }
+
+  /* Ch6: The World — night sky */
+  .ch-world {
+    background: linear-gradient(180deg, #1a1a2a 0%, #0a0a1a 100%);
+    color: #e8eef4;
+    text-align: center;
+    min-height: 80vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .ch-world::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 100%; z-index: 1;
+    background: url('night-mountains.png') center bottom / 100% auto no-repeat;
+    pointer-events: none;
+  }
+  .ch-world .chapter-inner { position: relative; z-index: 5; }
+  .ch-world .chapter-label { color: var(--nbe-gold, #F4AD50); }
+  .ch-world h2 { color: #e8eef4; font-size: 2.6rem; margin-bottom: 20px; }
+  .ch-world p { color: #90a8c0; font-size: 1.1rem; max-width: 520px; margin: 0 auto 16px; }
+  .ch-world blockquote {
+    border: none; padding: 0; margin: 40px auto 0;
+    font-size: 1.5rem; color: var(--nbe-gold, #F4AD50);
+    max-width: 480px;
+  }
+
+  /* ── Divider — the purple spine line between chapters ── */
+  .spine-divider {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; height: 0; position: relative;
+  }
+  .spine-divider::before {
+    content: ''; position: absolute;
+    width: 3px; height: 60px;
+    background: var(--nbe-purple, #B49AF7);
+    border-radius: 2px;
+    top: -30px;
+  }
+
+  /* ── CTA bar ── */
+  .story-cta {
+    background: var(--nbe-sage-btn, #7c9070);
+    padding: 60px 40px; text-align: center;
+  }
+  .story-cta h3 {
+    font-size: 1.6rem; font-weight: 800; color: #fff;
     margin-bottom: 12px;
   }
-  .post h2 {
-    font-size: 1.6rem; font-weight: 800; line-height: 1.25;
-    letter-spacing: -0.3px; margin-bottom: 14px;
+  .story-cta p {
+    font-size: 1rem; color: rgba(255,255,255,0.8);
+    margin-bottom: 24px; max-width: 420px; margin-left: auto; margin-right: auto;
+    line-height: 1.6;
   }
-  .post p {
-    font-size: 0.95rem; line-height: 1.75; color: rgba(26,26,42,0.7);
-    margin-bottom: 10px;
+  .btn {
+    display: inline-block; padding: 14px 32px; border-radius: 28px;
+    background: var(--nbe-gold-btn, #f5c542); color: #1a1a2a;
+    font-weight: 600; font-size: 0.95rem;
+    text-decoration: none; border: none; cursor: pointer; font-family: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(245,197,66,0.3);
   }
-  .post blockquote {
-    border-left: 3px solid #B49AF7;
-    padding-left: 16px; margin: 20px 0;
-    font-size: 1.15rem; font-style: italic; font-weight: 600;
-    color: #1a1a2a;
-  }
-  .post-tag {
-    display: inline-block; padding: 4px 12px; border-radius: 12px;
-    font-size: 0.7rem; font-weight: 600; margin-right: 6px;
-    margin-top: 12px;
-  }
-  .tag-green { background: #e4f0e4; color: #4a6a4a; }
-  .tag-blue { background: #d8eaf4; color: #3a5a7a; }
-  .tag-gold { background: #f4ead0; color: #7a5a2a; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(245,197,66,0.4); }
 
-  /* Coming soon placeholder */
-  .coming-soon {
-    text-align: center; padding: 60px 40px;
-    color: rgba(26,26,42,0.3); font-size: 0.9rem;
+  /* ── Footer ── */
+  .story-footer {
+    background: #0a0a1a; padding: 24px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .story-footer p { font-size: 0.8rem; color: rgba(255,255,255,0.2); }
+  .story-footer a { font-size: 0.8rem; color: rgba(255,255,255,0.3); text-decoration: none; }
+  .story-footer a:hover { color: rgba(255,255,255,0.5); }
+
+  /* ── Stars (reused from main) ── */
+  .stars {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    opacity: 0; transition: opacity 0.5s;
+  }
+  .star {
+    position: absolute; width: 2px; height: 2px;
+    background: #fff; border-radius: 50%;
+    box-shadow: 0 0 3px 1px rgba(255,255,255,0.4);
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  .star.big { width: 3px; height: 3px; box-shadow: 0 0 5px 2px rgba(255,255,255,0.6); }
+  .star.warm { background: #ffe8a0; box-shadow: 0 0 4px 1px rgba(255,220,120,0.5); }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
   }
 
-  @media (max-width: 600px) {
-    .story-hero h1 { font-size: 2rem; }
-    .story-hero { padding: 120px 24px 60px; }
-    .posts { padding: 0 24px 80px; }
+  /* ── Scroll-triggered fade-in ── */
+  .fade-in {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    .story-hero h1 { font-size: 2.2rem; }
+    .story-hero { padding: 100px 24px 60px; min-height: 80vh; }
+    .chapter { padding: 80px 24px; }
+    .chapter h2 { font-size: 1.7rem; }
+    .chapter blockquote { font-size: 1.1rem; }
+    .ch-world h2 { font-size: 2rem; }
+    .ch-world blockquote { font-size: 1.2rem; }
     nav { padding: 14px 20px; }
+    .story-footer { flex-direction: column; gap: 8px; text-align: center; }
   }
 </style>
 </head>
 <body>
 
-<nav>
+<!-- Stars layer (visible in dark sections) -->
+<div class="stars" id="stars"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
   <a href="index.html" class="nav-logo">
     <svg viewBox="0 0 714 595" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
@@ -128,36 +324,202 @@
   </a>
 </nav>
 
-<div class="story-hero">
-  <h1>Our Story</h1>
-  <p>How two parents turned the biggest obstacle to freedom into an education platform — and what we learned along the way.</p>
+
+<!-- ═══ HERO ═══ -->
+<section class="story-hero">
+  <img src="logos/mark.svg" alt="NoBox Education" class="hero-logo">
+  <h1>What if education could travel with your children?</h1>
+  <p class="subtitle">The story of how two parents turned the biggest obstacle to freedom into an education platform — and what we learned along the way.</p>
+  <div class="scroll-hint">
+    <span>Scroll to read</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+
+<!-- ═══ CHAPTER ONE — The Walls ═══ -->
+<div class="spine-divider"></div>
+
+<section class="chapter ch-walls">
+  <div class="chapter-inner">
+    <div class="chapter-label fade-in">Chapter One</div>
+    <h2 class="fade-in">The walls around our plans</h2>
+
+    <p class="fade-in">We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world. Not as tourists passing through, but as a family putting down temporary roots. Experiencing different cultures, languages, landscapes, and people. Watching our children grow up understanding that the world is wide and full of possibility.</p>
+
+    <p class="fade-in">But every time we imagined a new place, the same walls enclosed our plans.</p>
+
+    <blockquote class="fade-in">What if they fall behind? What if we damage their future?</blockquote>
+
+    <p class="fade-in">And so we always ended up in places that were compromises — never our first choice. Education had quietly become the invisible fence around our lives.</p>
+
+    <div class="chapter-image fade-in">
+      <img src="family-window.png" alt="Family looking through a window at the world beyond">
+    </div>
+
+    <p class="fade-in">So we started asking a different question. Not <em>where can we go without disrupting school?</em> But something bigger: what if high-quality education could evolve around our children, wherever we go?</p>
+  </div>
+</section>
+
+
+<!-- ═══ CHAPTER TWO — The Search ═══ -->
+<div class="spine-divider"></div>
+
+<section class="chapter ch-search">
+  <div class="chapter-inner">
+    <div class="chapter-label fade-in">Chapter Two</div>
+    <h2 class="fade-in">We searched</h2>
+
+    <p class="fade-in">Thoroughly, and for a long time. What we found disappointed us — not because the platforms were poorly made, but because they misunderstood what learning actually is.</p>
+
+    <p class="fade-in">Most were static and linear. Many were not built for families moving across different national curricula. And a striking number were so focused on keeping children <em>engaged</em> — bright colours, games, constant rewards — that they had forgotten the deeper goal: to make children genuinely curious.</p>
+
+    <div class="chapter-image fade-in">
+      <img src="search.png" alt="Searching for the right solution">
+    </div>
+
+    <p class="fade-in">To challenge them at exactly the right level. To build the kind of intrinsic motivation that sustains a learner for life. We needed something grounded in the science of learning — not just age-appropriate content, but real understanding of how curiosity is sparked and protected, how challenge should stretch without overwhelming, how a child builds confidence through the right kind of difficulty.</p>
+
+    <blockquote class="fade-in">We found nothing that came close.</blockquote>
+  </div>
+</section>
+
+
+<!-- ═══ CHAPTER THREE — Building It ═══ -->
+<div class="spine-divider"></div>
+
+<section class="chapter ch-build">
+  <div class="chapter-inner">
+    <div class="chapter-label fade-in">Chapter Three</div>
+    <h2 class="fade-in">If you cannot find it, build it</h2>
+
+    <p class="fade-in">My background is in psychology. I understand how different people learn, remember, and stay motivated. I know what good developmental scaffolding looks like — and what it feels like when it is missing.</p>
+
+    <p class="fade-in">For a while, I tried to fill the gap myself — teaching our children directly, tracking curricula, adapting material to their individual levels. It worked, in the way that an enormous amount of personal effort sometimes works. But when our oldest reached Year 8 and the subjects deepened, keeping pace became almost a full-time job. For one child.</p>
+
+    <blockquote class="fade-in">If you cannot find what you are looking for, build it yourself.</blockquote>
+
+    <div class="chapter-image fade-in">
+      <img src="building.png" alt="Building the platform">
+    </div>
+
+    <p class="fade-in">We gathered everything — our research into learning science, developmental psychology, smart adaptive learning, international school curricula, and the hard-won knowledge from years of working alongside our own children. We designed, built, tested, and rebuilt. We worked with our children on the platform directly, watching what worked and what didn't, iterating until all of us — parents and children alike — were genuinely satisfied with what it had become.</p>
+  </div>
+</section>
+
+
+<!-- ═══ CHAPTER FOUR — Curiosity Returns ═══ -->
+<div class="spine-divider"></div>
+
+<section class="chapter ch-curiosity">
+  <div class="chapter-inner">
+    <div class="chapter-label fade-in">Chapter Four</div>
+    <h2 class="fade-in">Our children became curious again</h2>
+
+    <p class="fade-in">Not the performed curiosity of a classroom. Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
+
+    <p class="fade-in">Academically strong. Often ahead. And the world became the lesson.</p>
+
+    <div class="chapter-image fade-in">
+      <img src="curious.png" alt="Children exploring the world with curiosity">
+    </div>
+
+    <p class="fade-in">The result is No Box Education. A platform where tutors, parents, and children work together. Where structure meets flexibility. Where curiosity is treated not as a nice extra but as the entire point. And where a family no longer has to choose between the life they want and the education their children deserve.</p>
+  </div>
+</section>
+
+
+<!-- ═══ CHAPTER FIVE — The Platform ═══ -->
+<div class="spine-divider"></div>
+
+<section class="chapter ch-platform">
+  <div class="chapter-inner">
+    <div class="chapter-label fade-in">Chapter Five</div>
+    <h2 class="fade-in">The platform that builds itself</h2>
+
+    <p class="fade-in">No Box Education is not finished. It never will be. Our children use it every day — and when something could be better, they tell us. The ones worth building, we build.</p>
+
+    <p class="fade-in">Our daughter was eight when she programmed her first game for the platform. Then a second. Then a third.</p>
+
+    <blockquote class="fade-in">She did not do it because we asked her to. She did it because she had learned to believe: if you see something missing, you fill it.</blockquote>
+
+    <p class="fade-in">That is what No Box Education is trying to do. Not just teach children what is already known — but grow children who build what does not yet exist.</p>
+  </div>
+</section>
+
+
+<!-- ═══ CLOSING — The World ═══ -->
+<section class="chapter ch-world">
+  <div class="chapter-inner">
+    <div class="chapter-label fade-in">NoBox Education</div>
+    <h2 class="fade-in">The world is too big to only see it during school holidays.</h2>
+    <p class="fade-in">Every child learns differently. We built this so yours can keep exploring — wherever you are in the world.</p>
+    <blockquote class="fade-in">Learning is a journey, not a destination.</blockquote>
+  </div>
+</section>
+
+
+<!-- ═══ CTA ═══ -->
+<section class="story-cta">
+  <h3>Ready to start your next chapter?</h3>
+  <p>Begin with a short intake survey. Then we'll personally design a learning program around your child.</p>
+  <a href="index.html#start" class="btn">Start Your Intake</a>
+</section>
+
+
+<!-- ═══ Footer ═══ -->
+<div class="story-footer">
+  <p>&copy; 2026 NoBox Education &middot; NoBoxDev</p>
+  <a href="index.html">Back to home</a>
 </div>
 
-<div class="posts">
 
-  <article class="post">
-    <div class="post-meta">Our Story</div>
-    <h2>What if education could travel with your children?</h2>
-    <p>We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world. Not as tourists passing through, but as a family putting down temporary roots. Experiencing different cultures, languages, landscapes, and people. Watching our children grow up understanding that the world is wide and full of possibility.</p>
-    <p>But every time we imagined a new place, the same walls enclosed our plans. What if they fall behind? What if we damage their future? And so we always ended up in places that were compromises — never our first choice. Education had quietly become the invisible fence around our lives.</p>
-    <blockquote>So we started asking a different question. Not where can we go without disrupting school? But something bigger: what if high-quality education could evolve around our children, wherever we go?</blockquote>
-    <p>We searched. Thoroughly, and for a long time. What we found disappointed us — not because the platforms were poorly made, but because they misunderstood what learning actually is. Most were static and linear. Many were not built for families moving across different national curricula. And a striking number were so focused on keeping children engaged — bright colours, games, constant rewards — that they had forgotten the deeper goal: to make children genuinely curious. To challenge them at exactly the right level. To build the kind of intrinsic motivation that sustains a learner for life.</p>
-    <p>My background is in psychology. I understand how different people learn, remember, and stay motivated. I know what good developmental scaffolding looks like and what it feels like when it is missing. And for a while, I tried to fill the gap myself — teaching our children directly, tracking curricula, adapting material to their individual levels. It worked, in the way that an enormous amount of personal effort sometimes works. But when our oldest reached Year 8 and the subjects deepened, keeping pace with the academic detail became almost a full-time job. For one child. The thought of sustaining that for two or three made it clear: this was not a scalable answer.</p>
-    <p>What we wanted was something grounded in the science of learning. Something that understood child development — not just age-appropriate content, but how curiosity is sparked and protected, how challenge should stretch without overwhelming, how a child builds confidence through the right kind of difficulty. We wanted a platform built on those foundations, one that adapted smartly to each child rather than delivering the same experience to everyone.</p>
-    <blockquote>We could not find it. So we did what we teach our children to do: if you cannot find what you are looking for, build it yourself.</blockquote>
-    <p>We gathered everything — our research into learning science, developmental psychology, smart adaptive learning, international school curricula, and the hard-won knowledge from years of working alongside our own children. We designed, built, tested, and rebuilt. We worked with our children on the platform directly, watching what worked and what didn't, iterating until all of us — parents and children alike — were genuinely satisfied with what it had become.</p>
-    <p>The result is No Box Education. A platform where tutors, parents, and children work together. Where structure meets flexibility. Where curiosity is treated not as a nice extra but as the entire point. And where a family no longer has to choose between the life they want and the education their children deserve.</p>
-    <blockquote>Because the world is too big to only see it during school holidays.</blockquote>
-    <span class="post-tag tag-green">Family</span>
-    <span class="post-tag tag-gold">Freedom</span>
-    <span class="post-tag tag-blue">Psychology</span>
-  </article>
+<script>
+  // Generate stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const star = document.createElement('div');
+    let cls = 'star';
+    if (Math.random() > 0.88) cls += ' big';
+    if (Math.random() > 0.65) cls += ' warm';
+    star.className = cls;
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = (Math.random() * 4).toFixed(1) + 's';
+    star.style.animationDuration = (2 + Math.random() * 3).toFixed(1) + 's';
+    starsEl.appendChild(star);
+  }
 
-</div>
+  // Stars fade in when dark sections are visible
+  const nav = document.getElementById('nav');
+  function updateStarsAndNav() {
+    const scrollY = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? scrollY / docHeight : 0;
 
-<div class="coming-soon">
-  More chapters coming as our journey continues.
-</div>
+    // Stars visible in the last ~35% of the page (dark chapters)
+    starsEl.style.opacity = Math.max(0, (pct - 0.6) / 0.15).toFixed(2);
+
+    // Nav goes dark when over dark sections
+    const darkThreshold = document.querySelector('.ch-platform');
+    if (darkThreshold) {
+      const rect = darkThreshold.getBoundingClientRect();
+      nav.classList.toggle('dark', rect.top < 60);
+    }
+  }
+  window.addEventListener('scroll', updateStarsAndNav);
+
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>

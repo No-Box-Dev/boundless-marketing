@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suggestion 3 — Logo Chapter Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Baloo 2', sans-serif; color: #1a1a2a;
+    background: #f0ece4; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+
+  .back-link {
+    position: fixed; top: 16px; left: 24px; z-index: 50;
+    font-size: 0.82rem; color: rgba(26,26,42,0.4); text-decoration: none;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .back-link:hover { color: #1a1a2a; }
+
+  /* ── Logo Map View ── */
+  .map-view {
+    text-align: center; padding: 60px 40px;
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .map-view.hidden { opacity: 0; transform: scale(0.95); pointer-events: none; position: absolute; }
+
+  .map-title { font-size: 2.4rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+  .map-subtitle { font-size: 0.95rem; color: rgba(26,26,42,0.45); margin-bottom: 48px; }
+
+  /* Interactive logo */
+  .logo-map {
+    position: relative; width: 500px; height: 420px;
+    margin: 0 auto 40px;
+  }
+  .logo-map svg { width: 100%; height: auto; }
+
+  /* Clickable zones overlaid on the logo */
+  .logo-zone {
+    position: absolute; cursor: pointer;
+    transition: transform 0.3s, filter 0.3s;
+    opacity: 0.85;
+  }
+  .logo-zone:hover { transform: scale(1.04); opacity: 1; }
+  .logo-zone .zone-label {
+    position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2px; white-space: nowrap;
+    opacity: 0; transition: opacity 0.3s;
+    background: rgba(26,26,42,0.85); color: #fff;
+    padding: 4px 10px; border-radius: 8px;
+  }
+  .logo-zone:hover .zone-label { opacity: 1; }
+
+  /* Zone positions mapped to logo sections */
+  .zone-gold-left { left: 2%; top: 25%; width: 47%; height: 72%; }
+  .zone-green-right { left: 51%; top: 25%; width: 47%; height: 72%; }
+  .zone-gold-tri { left: 2%; top: 0%; width: 47%; height: 26%; }
+  .zone-green-tri { left: 51%; top: 0%; width: 47%; height: 26%; }
+  .zone-spine { left: 47%; top: 22%; width: 6%; height: 78%; }
+
+  /* Chapter icons under the logo */
+  .chapter-icons {
+    display: flex; gap: 16px; justify-content: center; margin-bottom: 24px;
+  }
+  .ch-icon {
+    width: 52px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: 2px solid transparent;
+    transition: all 0.3s; position: relative;
+    background: rgba(26,26,42,0.06);
+  }
+  .ch-icon:hover { background: rgba(26,26,42,0.1); transform: translateY(-2px); }
+  .ch-icon.active { border-color: #B49AF7; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .ch-icon svg { width: 28px; height: 24px; }
+  .ch-icon .ch-num {
+    position: absolute; bottom: -6px; right: -4px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #B49AF7; color: #fff;
+    font-size: 0.6rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ch-icon-label {
+    font-size: 0.65rem; color: rgba(26,26,42,0.4); margin-top: 6px;
+    text-align: center; font-weight: 600;
+  }
+
+  .map-hint { font-size: 0.78rem; color: rgba(26,26,42,0.3); }
+
+  /* ── Story Panel (slides in) ── */
+  .story-panel {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100; display: flex; align-items: stretch;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .story-panel.open { opacity: 1; pointer-events: all; }
+
+  .story-backdrop { flex: 1; cursor: pointer; }
+
+  .story-drawer {
+    width: 620px; max-width: 90vw;
+    background: #fff; overflow-y: auto;
+    padding: 60px 48px;
+    transform: translateX(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+  }
+  .story-panel.open .story-drawer { transform: translateX(0); }
+
+  .story-close {
+    position: absolute; top: 20px; right: 20px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(26,26,42,0.06); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .story-close:hover { background: rgba(26,26,42,0.12); }
+  .story-close svg { width: 18px; height: 18px; stroke: #1a1a2a; }
+
+  .drawer-content { display: none; }
+  .drawer-content.active { display: block; }
+
+  .drawer-content .ch-label {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 14px;
+  }
+  .drawer-content h2 {
+    font-size: 2rem; font-weight: 800; letter-spacing: -0.5px;
+    line-height: 1.15; margin-bottom: 24px;
+  }
+  .drawer-content p {
+    font-size: 1rem; line-height: 1.8; margin-bottom: 14px;
+    color: rgba(26,26,42,0.7);
+  }
+  .drawer-content blockquote {
+    border-left: 3px solid #B49AF7;
+    padding: 4px 0 4px 20px; margin: 28px 0;
+    font-size: 1.2rem; font-style: italic; font-weight: 600;
+    color: #1a1a2a; line-height: 1.5;
+  }
+
+  /* Drawer nav */
+  .drawer-nav {
+    display: flex; justify-content: space-between; margin-top: 40px;
+    padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.08);
+  }
+  .drawer-nav button {
+    padding: 8px 20px; border-radius: 20px; font-family: inherit;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    border: 2px solid rgba(0,0,0,0.1); background: #fff;
+    transition: all 0.2s;
+  }
+  .drawer-nav button:hover { border-color: #B49AF7; background: #f8f6ff; }
+
+  /* Chapter label colours */
+  .cl-1 { color: #7c9070; }
+  .cl-2 { color: #4a7a9a; }
+  .cl-3 { color: #9a6a3a; }
+  .cl-4 { color: #4a6a40; }
+  .cl-5 { color: #6a5a8a; }
+
+  @media (max-width: 600px) {
+    .logo-map { width: 300px; height: 252px; }
+    .map-title { font-size: 1.8rem; }
+    .story-drawer { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+  Home
+</a>
+
+<!-- ═══ Logo Map ═══ -->
+<div class="map-view" id="map-view">
+  <h1 class="map-title">Our Story</h1>
+  <p class="map-subtitle">Click a chapter to read — or explore the logo to discover.</p>
+
+  <div class="logo-map">
+    <svg viewBox="0 0 714 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373" stroke="#6CA373"/>
+      <line x1="407.212" y1="242.9" x2="610.217" y2="251.642" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="407.187" y1="310.873" x2="626.19" y2="318.659" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="407.178" y1="377.863" x2="644.181" y2="385.633" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50" stroke="#F4AD50"/>
+      <line x1="111.412" y1="251.6" x2="314.417" y2="242.941" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="91.4409" y1="318.627" x2="314.445" y2="310.87" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <line x1="74.4496" y1="385.635" x2="314.453" y2="377.861" stroke="#FDF8F8" stroke-width="7" stroke-linecap="round"/>
+      <path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B" stroke="#F8BE4B"/>
+      <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84" stroke="#79BD84"/>
+      <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+
+    <!-- Clickable zones -->
+    <div class="logo-zone zone-gold-tri" onclick="openChapter(0)">
+      <span class="zone-label">Chapter 1 — The Walls</span>
+    </div>
+    <div class="logo-zone zone-gold-left" onclick="openChapter(1)">
+      <span class="zone-label">Chapter 2 — The Search</span>
+    </div>
+    <div class="logo-zone zone-spine" onclick="openChapter(2)">
+      <span class="zone-label">Chapter 3 — Building It</span>
+    </div>
+    <div class="logo-zone zone-green-right" onclick="openChapter(3)">
+      <span class="zone-label">Chapter 4 — Curiosity</span>
+    </div>
+    <div class="logo-zone zone-green-tri" onclick="openChapter(4)">
+      <span class="zone-label">Chapter 5 — The Platform</span>
+    </div>
+  </div>
+
+  <!-- Chapter icons -->
+  <div class="chapter-icons">
+    <div style="text-align:center;">
+      <div class="ch-icon" onclick="openChapter(0)">
+        <svg viewBox="0 0 714 595" fill="none"><path d="M1.26465 151.646L153.265 0.646484L352.565 137.446L1.26465 151.646Z" fill="#F8BE4B"/></svg>
+        <span class="ch-num">1</span>
+      </div>
+      <div class="ch-icon-label">Walls</div>
+    </div>
+    <div style="text-align:center;">
+      <div class="ch-icon" onclick="openChapter(1)">
+        <svg viewBox="0 0 714 595" fill="none"><path d="M0.564697 391.246V152.246L353.565 138.378V593.246L0.564697 391.246Z" fill="#F4AD50"/></svg>
+        <span class="ch-num">2</span>
+      </div>
+      <div class="ch-icon-label">Search</div>
+    </div>
+    <div style="text-align:center;">
+      <div class="ch-icon" onclick="openChapter(2)">
+        <svg viewBox="0 300 714 300" fill="none"><path d="M354.055 300L354.055 592.647" stroke="#B49AF7" stroke-width="8" stroke-linecap="round"/></svg>
+        <span class="ch-num">3</span>
+      </div>
+      <div class="ch-icon-label">Build</div>
+    </div>
+    <div style="text-align:center;">
+      <div class="ch-icon" onclick="openChapter(3)">
+        <svg viewBox="0 0 714 595" fill="none"><path d="M712.565 391.746L354.565 593.246V138.378L712.565 152.746V391.746Z" fill="#6CA373"/></svg>
+        <span class="ch-num">4</span>
+      </div>
+      <div class="ch-icon-label">Curiosity</div>
+    </div>
+    <div style="text-align:center;">
+      <div class="ch-icon" onclick="openChapter(4)">
+        <svg viewBox="0 0 714 595" fill="none"><path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/></svg>
+        <span class="ch-num">5</span>
+      </div>
+      <div class="ch-icon-label">Platform</div>
+    </div>
+  </div>
+
+  <p class="map-hint">Click any chapter — or hover over the logo to explore.</p>
+</div>
+
+
+<!-- ═══ Story Drawer ═══ -->
+<div class="story-panel" id="story-panel">
+  <div class="story-backdrop" onclick="closePanel()"></div>
+  <div class="story-drawer" id="story-drawer">
+
+    <div class="drawer-content" data-ch="0">
+      <div class="ch-label cl-1">Chapter One</div>
+      <h2>The walls around our plans</h2>
+      <p>We had a dream that many families recognise but few dare to act on. We wanted to live — really live — in different parts of the world. Not as tourists passing through, but as a family putting down temporary roots.</p>
+      <p>But every time we imagined a new place, the same walls enclosed our plans.</p>
+      <blockquote>What if they fall behind? What if we damage their future?</blockquote>
+      <p>And so we always ended up in places that were compromises — never our first choice. Education had quietly become the invisible fence around our lives.</p>
+      <p>So we started asking a different question. Not <em>where can we go without disrupting school?</em> But something bigger: what if high-quality education could evolve around our children, wherever we go?</p>
+      <div class="drawer-nav">
+        <span></span>
+        <button onclick="openChapter(1)">Next: The Search &rarr;</button>
+      </div>
+    </div>
+
+    <div class="drawer-content" data-ch="1">
+      <div class="ch-label cl-2">Chapter Two</div>
+      <h2>We searched</h2>
+      <p>Thoroughly, and for a long time. What we found disappointed us — not because the platforms were poorly made, but because they misunderstood what learning actually is.</p>
+      <p>Most were static and linear. Many were not built for families moving across different national curricula. And a striking number had forgotten the deeper goal: to make children genuinely curious.</p>
+      <blockquote>We found nothing that came close.</blockquote>
+      <div class="drawer-nav">
+        <button onclick="openChapter(0)">&larr; The Walls</button>
+        <button onclick="openChapter(2)">Next: Build It &rarr;</button>
+      </div>
+    </div>
+
+    <div class="drawer-content" data-ch="2">
+      <div class="ch-label cl-3">Chapter Three</div>
+      <h2>If you cannot find it, build it</h2>
+      <p>My background is in psychology. I understand how people learn, remember, and stay motivated. For a while, I tried teaching our children directly. But when our oldest reached Year 8, keeping pace became a full-time job. For one child.</p>
+      <blockquote>If you cannot find what you are looking for, build it yourself.</blockquote>
+      <p>We gathered everything — learning science, developmental psychology, international curricula — and built, tested, and rebuilt until we were all satisfied.</p>
+      <div class="drawer-nav">
+        <button onclick="openChapter(1)">&larr; The Search</button>
+        <button onclick="openChapter(3)">Next: Curiosity &rarr;</button>
+      </div>
+    </div>
+
+    <div class="drawer-content" data-ch="3">
+      <div class="ch-label cl-4">Chapter Four</div>
+      <h2>Our children became curious again</h2>
+      <p>Not the performed curiosity of a classroom. Real curiosity — the kind that wakes up early and wants to know why the fishermen leave before dawn.</p>
+      <p>Academically strong. Often ahead. And the world became the lesson.</p>
+      <blockquote>Where a family no longer has to choose between the life they want and the education their children deserve.</blockquote>
+      <div class="drawer-nav">
+        <button onclick="openChapter(2)">&larr; Build It</button>
+        <button onclick="openChapter(4)">Next: The Platform &rarr;</button>
+      </div>
+    </div>
+
+    <div class="drawer-content" data-ch="4">
+      <div class="ch-label cl-5">Chapter Five</div>
+      <h2>The platform that builds itself</h2>
+      <p>No Box Education is not finished. It never will be. Our children use it every day.</p>
+      <p>Our daughter was eight when she programmed her first game for the platform. Then a second. Then a third.</p>
+      <blockquote>She did it because she had learned to believe: if you see something missing, you fill it.</blockquote>
+      <p>Not just teach children what is already known — but grow children who build what does not yet exist.</p>
+      <p style="margin-top:32px;font-size:1.2rem;color:#F4AD50;font-weight:700;font-style:italic;">The world is too big to only see it during school holidays.</p>
+      <div class="drawer-nav">
+        <button onclick="openChapter(3)">&larr; Curiosity</button>
+        <button onclick="closePanel()">Back to map</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+  const panel = document.getElementById('story-panel');
+  const contents = document.querySelectorAll('.drawer-content');
+  const icons = document.querySelectorAll('.ch-icon');
+  let current = -1;
+
+  function openChapter(idx) {
+    current = idx;
+    contents.forEach(c => c.classList.toggle('active', parseInt(c.dataset.ch) === idx));
+    icons.forEach((ic, i) => ic.classList.toggle('active', i === idx));
+    panel.classList.add('open');
+    document.getElementById('story-drawer').scrollTop = 0;
+  }
+
+  function closePanel() {
+    panel.classList.remove('open');
+    icons.forEach(ic => ic.classList.remove('active'));
+    current = -1;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePanel();
+  });
+</script>
+
+</body>
+</html>
