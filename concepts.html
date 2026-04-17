@@ -314,6 +314,24 @@
   .c10-ev-card h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
   .c10-ev-card p { font-size: 0.78rem; color: #5a5a6a; line-height: 1.5; }
 
+  /* Responsive */
+  @media (max-width: 768px) {
+    .page-header { padding: 40px 20px 16px; }
+    .page-header h1 { font-size: 1.6rem; }
+    .filter-row { padding: 16px 20px 24px; }
+    .concepts-grid { padding: 0 20px 40px; gap: 40px; }
+    .concept-label { padding: 16px 20px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .c1-path { padding: 20px; gap: 12px; }
+    [class*="c"][class*="-split"],
+    .c2-split { grid-template-columns: 1fr; }
+    .c2-features { grid-template-columns: 1fr; }
+    .c3-dash { grid-template-columns: 1fr; }
+    .c3-trust { flex-direction: column; gap: 16px; padding: 20px; }
+    .c5-cards { padding: 0 20px 16px; }
+    .c7-grid { grid-template-columns: 1fr; }
+    .c8-columns { grid-template-columns: 1fr; padding: 0 20px 20px; }
+    .c10-evidence { grid-template-columns: 1fr; padding: 20px; }
+  }
 </style>
 </head>
 <body>

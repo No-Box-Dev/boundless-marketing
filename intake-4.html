@@ -124,6 +124,13 @@
   }
   .chat-send:hover { transform: scale(1.08); }
   .chat-send svg { width: 18px; height: 18px; fill: #1a1a2a; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .chat-popup { max-width: 100vw; max-height: 100vh; border-radius: 0; height: 100vh; }
+    .chat-header { padding: 16px; }
+    .chat-input-row { padding: 12px; }
+  }
 </style>
 </head>
 <body>

@@ -661,6 +661,23 @@
     text-align: center;
     margin-top: 10px;
   }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .concept-divider { padding: 40px 20px 16px; }
+    .concept-divider h1 { font-size: 1.4rem; }
+    .c1, .c2, .c3, .c4, .c5 { padding: 40px 20px; }
+    .c1-layout { flex-direction: column; align-items: center; }
+    .c1-logo { flex: none; width: 180px; margin-right: 0; margin-bottom: -30px; }
+    .c1-card { padding: 40px 28px 28px 28px; }
+    .c2-logo-sticky { flex: none; width: 140px; padding-left: 20px; }
+    .c2-river-card { flex: 0 0 280px; }
+    .c4 { flex-direction: column; }
+    .c4-left { flex: none; width: 100%; height: auto; position: static; padding: 40px 20px; }
+    .c4-right { padding: 40px 20px; max-height: none; }
+    .c5-layout { flex-direction: column; align-items: center; }
+    .c5-logo-col { flex: none; width: 160px; position: static; }
+  }
 </style>
 </head>
 <body>

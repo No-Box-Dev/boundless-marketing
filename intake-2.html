@@ -130,6 +130,14 @@
   .c-prev { background: rgba(26,26,42,0.06); color: #1a1a2a; }
   .c-next { background: #f5c542; color: #1a1a2a; box-shadow: 0 2px 8px rgba(245,197,66,0.3); }
   .c-next:hover { transform: translateY(-1px); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .card-stack { max-width: 100vw; height: auto; min-height: 420px; }
+    .card { padding: 28px 24px; }
+    .card h2 { font-size: 1.3rem; }
+    .card-nav { padding: 0 24px 24px; }
+  }
 </style>
 </head>
 <body>
