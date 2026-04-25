@@ -2099,7 +2099,14 @@
       status = document.createElement('p');
       status.className = 'form-status';
       status.style.cssText = 'margin-top:12px; font-size:0.9rem; line-height:1.4;';
-      card.appendChild(status);
+      // Insert above .intake-nav when present so the status is visible
+      // between the input and the buttons (the intake card is overflow-clipped).
+      const nav = card.querySelector('.intake-nav');
+      if (nav) {
+        card.insertBefore(status, nav);
+      } else {
+        card.appendChild(status);
+      }
     }
     status.textContent = message;
     status.style.color = kind === 'error' ? '#c0392b' : '#2c5f3a';
