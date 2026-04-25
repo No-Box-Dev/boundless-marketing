@@ -2084,9 +2084,9 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    let data = {};
+    let data = null;
     try { data = await res.json(); } catch (_) {}
-    return { ok: res.ok && data.ok !== false, message: data.message };
+    return { ok: res.ok && data?.ok !== false, message: data?.message };
   }
 
   function isValidEmail(value) {
@@ -2134,7 +2134,8 @@
           setCardStatus(card, result.message || 'Something went wrong. Please try again.', 'error');
         }
       } catch (err) {
-        setCardStatus(card, 'Network error. Please try again.', 'error');
+        console.error('Subscribe failed:', err);
+        setCardStatus(card, 'Something went wrong. Please try again.', 'error');
       } finally {
         emailSendBtn.disabled = false;
         emailSendBtn.textContent = originalLabel;
@@ -2187,7 +2188,8 @@
           setCardStatus(finalStep, result.message || 'Something went wrong. Please try again.', 'error');
         }
       } catch (err) {
-        setCardStatus(finalStep, 'Network error. Please try again.', 'error');
+        console.error('Subscribe failed:', err);
+        setCardStatus(finalStep, 'Something went wrong. Please try again.', 'error');
       } finally {
         intakeSendBtn.disabled = false;
         intakeSendBtn.textContent = originalLabel;
