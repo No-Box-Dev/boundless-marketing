@@ -2150,7 +2150,7 @@
     });
     let data = null;
     try { data = await res.json(); } catch (_) {}
-    return { ok: res.ok && data?.ok !== false, message: data?.message };
+    return { ok: res.ok && data?.ok === true, message: data?.message };
   }
 
   function isValidEmail(value) {
@@ -2252,6 +2252,7 @@
       const email = (emailInput.value || '').trim();
       if (!isValidEmail(email)) {
         setCardStatus(finalStep, 'Please enter a valid email address.', 'error');
+        emailInput.focus();
         return;
       }
       const roleBtn = finalStep.querySelector('.iq-opt.selected');
@@ -2283,16 +2284,17 @@
         if (result.ok) {
           setCardStatus(finalStep, result.message || "Thanks — we'll review your answers and be in touch within 24 hours.", 'success');
           emailInput.value = '';
-        } else {
-          setCardStatus(finalStep, result.message || 'Something went wrong. Please try again.', 'error');
+          intakeSendBtn.textContent = 'Submitted ✓';
+          // Leave the button disabled to prevent duplicate submissions.
+          return;
         }
+        setCardStatus(finalStep, result.message || 'Something went wrong. Please try again.', 'error');
       } catch (err) {
         console.error('Subscribe failed:', err);
         setCardStatus(finalStep, 'Something went wrong. Please try again.', 'error');
-      } finally {
-        intakeSendBtn.disabled = false;
-        intakeSendBtn.textContent = originalLabel;
       }
+      intakeSendBtn.disabled = false;
+      intakeSendBtn.textContent = originalLabel;
     });
   }
 
