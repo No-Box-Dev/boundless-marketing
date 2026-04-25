@@ -1573,8 +1573,8 @@
 </section>
 
 
-<!-- ═══ WELCOME / WAITING LIST POPUP ═══ -->
-<div class="welcome-overlay" id="welcome-overlay">
+<!-- ═══ WELCOME / WAITING LIST POPUP (HIDDEN — kept for future use) ═══ -->
+<div class="welcome-overlay" id="welcome-overlay" style="display:none;">
   <div class="welcome-card" style="position:relative;">
     <button class="welcome-close" onclick="closeWelcome()">&times;</button>
 
@@ -1620,9 +1620,10 @@
       <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/>
       <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3"/>
     </svg>
-    <h3>We'll keep you posted.</h3>
+    <h3>Join the Waiting List</h3>
     <p>Leave your email and we'll let you know as soon as a spot opens up.</p>
-    <div style="display:flex; gap:8px; justify-content:center; margin-bottom:16px;">
+    <!-- Role toggle hidden — kept for future use -->
+    <div style="display:none; gap:8px; justify-content:center; margin-bottom:16px;">
       <button class="iq-opt email-role active" onclick="pickRole(this)" data-role="parent" style="flex:1; padding:12px; border-radius:14px; font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; border:2px solid #4a5a3c; background:#4a5a3c; color:#fff; transition:all 0.3s;">I'm a parent</button>
       <button class="iq-opt email-role" onclick="pickRole(this)" data-role="tutor" style="flex:1; padding:12px; border-radius:14px; font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; border:2px solid rgba(26,26,42,0.06); background:#fff; color:#1a1a2a; transition:all 0.3s;">I'm a tutor</button>
     </div>
@@ -1632,8 +1633,8 @@
   </div>
 </div>
 
-<!-- ═══ INTAKE POPUP ═══ -->
-<div class="intake-overlay" id="intake-overlay">
+<!-- ═══ INTAKE POPUP (HIDDEN — 8-step onboarding, kept for future use) ═══ -->
+<div class="intake-overlay" id="intake-overlay" style="display:none;">
   <div class="intake-split">
 
     <div class="intake-left">
@@ -2062,7 +2063,9 @@
   emailOverlay.addEventListener('click', e => {
     if (e.target === emailOverlay) closeEmailOnly();
   });
+  let selectedEmailRole = 'parent';
   function pickRole(el) {
+    selectedEmailRole = el.dataset.role || 'parent';
     document.querySelectorAll('.email-role').forEach(b => {
       b.style.borderColor = 'rgba(26,26,42,0.06)';
       b.style.background = '#fff';
@@ -2071,6 +2074,134 @@
     el.style.borderColor = '#4a5a3c';
     el.style.background = '#4a5a3c';
     el.style.color = '#fff';
+  }
+
+  // ═══ EMAIL CAPTURE ═══
+  const SUBSCRIBE_URL = 'https://api.noboxdev.com/subscribe';
+
+  async function postSubscribe(payload) {
+    const res = await fetch(SUBSCRIBE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    let data = null;
+    try { data = await res.json(); } catch (_) {}
+    return { ok: res.ok && data?.ok !== false, message: data?.message };
+  }
+
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  function setCardStatus(card, message, kind) {
+    let status = card.querySelector('.form-status');
+    if (!status) {
+      status = document.createElement('p');
+      status.className = 'form-status';
+      status.style.cssText = 'margin-top:12px; font-size:0.9rem; line-height:1.4;';
+      // Insert above .intake-nav when present so the status is visible
+      // between the input and the buttons (the intake card is overflow-clipped).
+      const nav = card.querySelector('.intake-nav');
+      if (nav) {
+        card.insertBefore(status, nav);
+      } else {
+        card.appendChild(status);
+      }
+    }
+    status.textContent = message;
+    status.style.color = kind === 'error' ? '#c0392b' : '#2c5f3a';
+  }
+
+  // Email-only popup submission
+  const emailSendBtn = document.querySelector('#email-overlay .email-send');
+  if (emailSendBtn) {
+    emailSendBtn.addEventListener('click', async () => {
+      const card = emailSendBtn.closest('.email-card');
+      const input = card.querySelector('input[type="email"]');
+      const email = (input.value || '').trim();
+      if (!isValidEmail(email)) {
+        setCardStatus(card, 'Please enter a valid email address.', 'error');
+        return;
+      }
+      emailSendBtn.disabled = true;
+      const originalLabel = emailSendBtn.textContent;
+      emailSendBtn.textContent = 'Sending...';
+      setCardStatus(card, '', 'success');
+      try {
+        const result = await postSubscribe({
+          email,
+          source: 'nobox-education-waitlist',
+          product: 'education',
+        });
+        if (result.ok) {
+          setCardStatus(card, result.message || "You're on the list — we'll be in touch.", 'success');
+          input.value = '';
+        } else {
+          setCardStatus(card, result.message || 'Something went wrong. Please try again.', 'error');
+        }
+      } catch (err) {
+        console.error('Subscribe failed:', err);
+        setCardStatus(card, 'Something went wrong. Please try again.', 'error');
+      } finally {
+        emailSendBtn.disabled = false;
+        emailSendBtn.textContent = originalLabel;
+      }
+    });
+  }
+
+  // Intake form submission (8-step wizard)
+  const intakeSendBtn = document.querySelector('#intake-overlay .iq-send');
+  if (intakeSendBtn) {
+    intakeSendBtn.addEventListener('click', async () => {
+      const root = document.getElementById('intake-overlay');
+      const finalStep = root.querySelector('[data-q="7"]');
+      const emailInput = finalStep.querySelector('input[type="email"]');
+      const email = (emailInput.value || '').trim();
+      if (!isValidEmail(email)) {
+        setCardStatus(finalStep, 'Please enter a valid email address.', 'error');
+        return;
+      }
+      const roleBtn = finalStep.querySelector('.iq-opt.selected');
+      const role = (roleBtn ? roleBtn.textContent : 'Parent').trim().toLowerCase();
+      const subjects = Array.from(root.querySelectorAll('[data-q="2"] .iq-opt.selected'))
+        .map(b => b.textContent.trim());
+      const metadata = {
+        role,
+        child_name: root.querySelector('[data-q="0"] .iq-input').value.trim(),
+        child_age: root.querySelector('[data-q="1"] .iq-input').value.trim(),
+        subjects,
+        motivation: root.querySelector('[data-q="3"] .iq-input').value.trim(),
+        goals: root.querySelector('[data-q="4"] .iq-input').value.trim(),
+        prior_platforms: root.querySelector('[data-q="5"] .iq-input').value.trim(),
+        location: root.querySelector('[data-q="6"] .iq-input').value.trim(),
+      };
+
+      intakeSendBtn.disabled = true;
+      const originalLabel = intakeSendBtn.textContent;
+      intakeSendBtn.textContent = 'Sending...';
+      setCardStatus(finalStep, '', 'success');
+      try {
+        const result = await postSubscribe({
+          email,
+          source: `nobox-education-intake-${role}`,
+          product: 'education',
+          metadata,
+        });
+        if (result.ok) {
+          setCardStatus(finalStep, result.message || "Thanks — we'll review your answers and be in touch within 24 hours.", 'success');
+          emailInput.value = '';
+        } else {
+          setCardStatus(finalStep, result.message || 'Something went wrong. Please try again.', 'error');
+        }
+      } catch (err) {
+        console.error('Subscribe failed:', err);
+        setCardStatus(finalStep, 'Something went wrong. Please try again.', 'error');
+      } finally {
+        intakeSendBtn.disabled = false;
+        intakeSendBtn.textContent = originalLabel;
+      }
+    });
   }
 
   // ═══ INTAKE POPUP ═══
@@ -2105,11 +2236,12 @@
     el.classList.add('selected');
   }
 
-  // Wire all "Join the Waiting List" buttons → open welcome first
+  // Wire all "Join the Waiting List" buttons → open simple email popup
+  // (welcome chooser + multi-step intake are hidden but kept in DOM)
   document.querySelectorAll('a[href="#start"], .nav-cta').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
-      openWelcome();
+      openEmailOnly();
     });
   });
 
