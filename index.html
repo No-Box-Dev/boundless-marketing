@@ -2062,7 +2062,9 @@
   emailOverlay.addEventListener('click', e => {
     if (e.target === emailOverlay) closeEmailOnly();
   });
+  let selectedEmailRole = 'parent';
   function pickRole(el) {
+    selectedEmailRole = el.dataset.role || 'parent';
     document.querySelectorAll('.email-role').forEach(b => {
       b.style.borderColor = 'rgba(26,26,42,0.06)';
       b.style.background = '#fff';
@@ -2071,6 +2073,126 @@
     el.style.borderColor = '#4a5a3c';
     el.style.background = '#4a5a3c';
     el.style.color = '#fff';
+  }
+
+  // ═══ EMAIL CAPTURE ═══
+  const SUBSCRIBE_URL = 'https://api.noboxdev.com/subscribe';
+
+  async function postSubscribe(payload) {
+    const res = await fetch(SUBSCRIBE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    let data = {};
+    try { data = await res.json(); } catch (_) {}
+    return { ok: res.ok && data.ok !== false, message: data.message };
+  }
+
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  function setCardStatus(card, message, kind) {
+    let status = card.querySelector('.form-status');
+    if (!status) {
+      status = document.createElement('p');
+      status.className = 'form-status';
+      status.style.cssText = 'margin-top:12px; font-size:0.9rem; line-height:1.4;';
+      card.appendChild(status);
+    }
+    status.textContent = message;
+    status.style.color = kind === 'error' ? '#c0392b' : '#2c5f3a';
+  }
+
+  // Email-only popup submission
+  const emailSendBtn = document.querySelector('#email-overlay .email-send');
+  if (emailSendBtn) {
+    emailSendBtn.addEventListener('click', async () => {
+      const card = emailSendBtn.closest('.email-card');
+      const input = card.querySelector('input[type="email"]');
+      const email = (input.value || '').trim();
+      if (!isValidEmail(email)) {
+        setCardStatus(card, 'Please enter a valid email address.', 'error');
+        return;
+      }
+      emailSendBtn.disabled = true;
+      const originalLabel = emailSendBtn.textContent;
+      emailSendBtn.textContent = 'Sending...';
+      setCardStatus(card, '', 'success');
+      try {
+        const result = await postSubscribe({
+          email,
+          source: `nobox-education-popup-${selectedEmailRole}`,
+          product: 'education',
+          metadata: { role: selectedEmailRole },
+        });
+        if (result.ok) {
+          setCardStatus(card, result.message || "You're on the list — we'll be in touch.", 'success');
+          input.value = '';
+        } else {
+          setCardStatus(card, result.message || 'Something went wrong. Please try again.', 'error');
+        }
+      } catch (err) {
+        setCardStatus(card, 'Network error. Please try again.', 'error');
+      } finally {
+        emailSendBtn.disabled = false;
+        emailSendBtn.textContent = originalLabel;
+      }
+    });
+  }
+
+  // Intake form submission (8-step wizard)
+  const intakeSendBtn = document.querySelector('#intake-overlay .iq-send');
+  if (intakeSendBtn) {
+    intakeSendBtn.addEventListener('click', async () => {
+      const root = document.getElementById('intake-overlay');
+      const finalStep = root.querySelector('[data-q="7"]');
+      const emailInput = finalStep.querySelector('input[type="email"]');
+      const email = (emailInput.value || '').trim();
+      if (!isValidEmail(email)) {
+        setCardStatus(finalStep, 'Please enter a valid email address.', 'error');
+        return;
+      }
+      const roleBtn = finalStep.querySelector('.iq-opt.selected');
+      const role = (roleBtn ? roleBtn.textContent : 'Parent').trim().toLowerCase();
+      const subjects = Array.from(root.querySelectorAll('[data-q="2"] .iq-opt.selected'))
+        .map(b => b.textContent.trim());
+      const metadata = {
+        role,
+        child_name: root.querySelector('[data-q="0"] .iq-input').value.trim(),
+        child_age: root.querySelector('[data-q="1"] .iq-input').value.trim(),
+        subjects,
+        motivation: root.querySelector('[data-q="3"] .iq-input').value.trim(),
+        goals: root.querySelector('[data-q="4"] .iq-input').value.trim(),
+        prior_platforms: root.querySelector('[data-q="5"] .iq-input').value.trim(),
+        location: root.querySelector('[data-q="6"] .iq-input').value.trim(),
+      };
+
+      intakeSendBtn.disabled = true;
+      const originalLabel = intakeSendBtn.textContent;
+      intakeSendBtn.textContent = 'Sending...';
+      setCardStatus(finalStep, '', 'success');
+      try {
+        const result = await postSubscribe({
+          email,
+          source: `nobox-education-intake-${role}`,
+          product: 'education',
+          metadata,
+        });
+        if (result.ok) {
+          setCardStatus(finalStep, result.message || "Thanks — we'll review your answers and be in touch within 24 hours.", 'success');
+          emailInput.value = '';
+        } else {
+          setCardStatus(finalStep, result.message || 'Something went wrong. Please try again.', 'error');
+        }
+      } catch (err) {
+        setCardStatus(finalStep, 'Network error. Please try again.', 'error');
+      } finally {
+        intakeSendBtn.disabled = false;
+        intakeSendBtn.textContent = originalLabel;
+      }
+    });
   }
 
   // ═══ INTAKE POPUP ═══
