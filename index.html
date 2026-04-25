@@ -1130,33 +1130,77 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 1.1rem; color: rgba(26,26,42,0.4);
   }
-  .email-card svg { width: 48px; height: auto; margin-bottom: 16px; }
-  .email-card h3 {
-    font-size: 1.3rem; font-weight: 800; margin-bottom: 6px;
+  .email-card > svg { width: 56px; height: auto; margin: 0 auto 18px; display: block; }
+  .email-form-block h3 {
+    font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; color: #1a1a2a;
   }
-  .email-card p {
-    font-size: 0.85rem; color: rgba(26,26,42,0.5);
-    line-height: 1.6; margin-bottom: 20px;
+  .email-form-block > p {
+    font-size: 0.9rem; color: rgba(26,26,42,0.55);
+    line-height: 1.55; margin-bottom: 22px;
   }
-  .email-card input {
-    width: 100%; padding: 14px 18px;
+  .email-form { display: flex; flex-direction: column; gap: 10px; }
+  .email-form input {
+    width: 100%; padding: 14px 18px; box-sizing: border-box;
     border: 2px solid rgba(26,26,42,0.08);
     border-radius: 14px; font-family: inherit;
     font-size: 1rem; background: #fff;
     outline: none; text-align: center;
-    transition: border-color 0.3s;
-    margin-bottom: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .email-card input:focus { border-color: #6CA373; }
-  .email-card button.email-send {
-    padding: 14px 40px; border-radius: 24px;
+  .email-form input::placeholder { color: rgba(26,26,42,0.3); }
+  .email-form input:focus {
+    border-color: #6CA373;
+    box-shadow: 0 0 0 4px rgba(108,163,115,0.15);
+  }
+  .email-form button.email-send {
+    width: 100%; padding: 15px 24px; border-radius: 14px;
     background: #f5c542; color: #1a1a2a;
-    font-family: inherit; font-size: 0.95rem; font-weight: 600;
+    font-family: inherit; font-size: 1rem; font-weight: 700;
     border: none; cursor: pointer;
-    box-shadow: 0 2px 10px rgba(245,197,66,0.3);
-    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(245,197,66,0.35);
+    transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
   }
-  .email-card button.email-send:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(245,197,66,0.4); }
+  .email-form button.email-send:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: #f8cf5e;
+    box-shadow: 0 6px 18px rgba(245,197,66,0.45);
+  }
+  .email-form button.email-send:active:not(:disabled) { transform: translateY(0); }
+  .email-form button.email-send:disabled { opacity: 0.65; cursor: progress; }
+  .email-microcopy {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: rgba(26,26,42,0.4);
+  }
+  .email-error {
+    color: #c0392b; font-size: 0.85rem; margin: 0;
+    display: none;
+  }
+  .email-error.show { display: block; }
+  .email-success {
+    display: none; flex-direction: column; align-items: center; gap: 10px;
+    animation: emailSuccessIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .email-success.show { display: flex; }
+  .email-success .check {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #6CA373; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 18px rgba(108,163,115,0.35);
+  }
+  .email-success .check svg { width: 28px; height: 28px; }
+  .email-success h4 {
+    font-size: 1.15rem; font-weight: 800; color: #1a1a2a;
+    margin: 4px 0 0;
+  }
+  .email-success p {
+    font-size: 0.9rem; color: rgba(26,26,42,0.55);
+    line-height: 1.5; margin: 0;
+  }
+  @keyframes emailSuccessIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 </style>
 </head>
 <body>
@@ -1620,16 +1664,30 @@
       <path d="M559.788 0.835372L711.457 151.664L355.564 137.446L559.788 0.835372Z" fill="#79BD84"/>
       <path d="M354.055 138.647L354.055 592.647" stroke="#B49AF7" stroke-width="3"/>
     </svg>
-    <h3>Join the Waiting List</h3>
-    <p>Leave your email and we'll let you know as soon as a spot opens up.</p>
-    <!-- Role toggle hidden — kept for future use -->
-    <div style="display:none; gap:8px; justify-content:center; margin-bottom:16px;">
-      <button class="iq-opt email-role active" onclick="pickRole(this)" data-role="parent" style="flex:1; padding:12px; border-radius:14px; font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; border:2px solid #4a5a3c; background:#4a5a3c; color:#fff; transition:all 0.3s;">I'm a parent</button>
-      <button class="iq-opt email-role" onclick="pickRole(this)" data-role="tutor" style="flex:1; padding:12px; border-radius:14px; font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; border:2px solid rgba(26,26,42,0.06); background:#fff; color:#1a1a2a; transition:all 0.3s;">I'm a tutor</button>
+    <div class="email-form-block">
+      <h3>Join the Waiting List</h3>
+      <p>Leave your email and we'll let you know as soon as a spot opens up.</p>
+      <!-- Role toggle hidden — kept for future use -->
+      <div style="display:none; gap:8px; justify-content:center; margin-bottom:16px;">
+        <button class="iq-opt email-role active" onclick="pickRole(this)" data-role="parent" style="flex:1; padding:12px; border-radius:14px; font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; border:2px solid #4a5a3c; background:#4a5a3c; color:#fff; transition:all 0.3s;">I'm a parent</button>
+        <button class="iq-opt email-role" onclick="pickRole(this)" data-role="tutor" style="flex:1; padding:12px; border-radius:14px; font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; border:2px solid rgba(26,26,42,0.06); background:#fff; color:#1a1a2a; transition:all 0.3s;">I'm a tutor</button>
+      </div>
+      <form class="email-form" id="email-form" novalidate>
+        <input type="email" name="email" placeholder="your@email.com" autocomplete="email" required>
+        <p class="email-error" aria-live="polite"></p>
+        <button type="submit" class="email-send">Join the Waiting List</button>
+      </form>
+      <p class="email-microcopy">No spam — just one note when we open spots.</p>
     </div>
-    <input type="email" placeholder="your@email.com">
-    <br>
-    <button class="email-send">Join the Waiting List</button>
+    <div class="email-success" aria-live="polite">
+      <span class="check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="5 12.5 10 17.5 19 7.5"></polyline>
+        </svg>
+      </span>
+      <h4>You're on the list!</h4>
+      <p>We'll let you know as soon as a spot opens up.</p>
+    </div>
   </div>
 </div>
 
@@ -2053,8 +2111,13 @@
   // ═══ EMAIL-ONLY POPUP ═══
   const emailOverlay = document.getElementById('email-overlay');
   function openEmailOnly() {
+    if (typeof window.resetEmailForm === 'function') window.resetEmailForm();
     emailOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      const input = emailOverlay.querySelector('input[type="email"]');
+      if (input) input.focus();
+    }, 300);
   }
   function closeEmailOnly() {
     emailOverlay.classList.remove('open');
@@ -2114,20 +2177,50 @@
   }
 
   // Email-only popup submission
-  const emailSendBtn = document.querySelector('#email-overlay .email-send');
-  if (emailSendBtn) {
-    emailSendBtn.addEventListener('click', async () => {
-      const card = emailSendBtn.closest('.email-card');
-      const input = card.querySelector('input[type="email"]');
-      const email = (input.value || '').trim();
+  const emailForm = document.getElementById('email-form');
+  if (emailForm) {
+    const emailInput = emailForm.querySelector('input[type="email"]');
+    const emailErrorEl = emailForm.querySelector('.email-error');
+    const emailSendBtn = emailForm.querySelector('.email-send');
+    const emailFormBlock = document.querySelector('#email-overlay .email-form-block');
+    const emailSuccess = document.querySelector('#email-overlay .email-success');
+    const originalLabel = emailSendBtn.textContent;
+
+    function showError(msg) {
+      emailErrorEl.textContent = msg;
+      emailErrorEl.classList.add('show');
+    }
+    function clearError() {
+      emailErrorEl.textContent = '';
+      emailErrorEl.classList.remove('show');
+    }
+    function showSuccess() {
+      if (emailFormBlock) emailFormBlock.style.display = 'none';
+      emailSuccess.classList.add('show');
+    }
+    function resetEmailForm() {
+      if (emailFormBlock) emailFormBlock.style.display = '';
+      emailSuccess.classList.remove('show');
+      emailInput.value = '';
+      clearError();
+      emailSendBtn.disabled = false;
+      emailSendBtn.textContent = originalLabel;
+    }
+    window.resetEmailForm = resetEmailForm;
+
+    emailInput.addEventListener('input', clearError);
+
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = (emailInput.value || '').trim();
       if (!isValidEmail(email)) {
-        setCardStatus(card, 'Please enter a valid email address.', 'error');
+        showError('Please enter a valid email address.');
+        emailInput.focus();
         return;
       }
+      clearError();
       emailSendBtn.disabled = true;
-      const originalLabel = emailSendBtn.textContent;
-      emailSendBtn.textContent = 'Sending...';
-      setCardStatus(card, '', 'success');
+      emailSendBtn.textContent = 'Sending…';
       try {
         const result = await postSubscribe({
           email,
@@ -2135,14 +2228,13 @@
           product: 'education',
         });
         if (result.ok) {
-          setCardStatus(card, result.message || "You're on the list — we'll be in touch.", 'success');
-          input.value = '';
+          showSuccess();
         } else {
-          setCardStatus(card, result.message || 'Something went wrong. Please try again.', 'error');
+          showError(result.message || 'Something went wrong. Please try again.');
         }
       } catch (err) {
         console.error('Subscribe failed:', err);
-        setCardStatus(card, 'Something went wrong. Please try again.', 'error');
+        showError('Something went wrong. Please try again.');
       } finally {
         emailSendBtn.disabled = false;
         emailSendBtn.textContent = originalLabel;
